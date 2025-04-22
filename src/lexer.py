@@ -12,7 +12,7 @@ keywords = {
 }
 
 def t_ID(t):
-    r'\w{1}[a-zA-Z0-9]*'
+    r'^[a-zA-Z_]{1}[a-zA-Z0-9_]*'
     t.type = keywords.get(t.value.lower(), 'ID')
     return t
 
