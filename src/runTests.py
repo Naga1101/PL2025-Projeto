@@ -14,7 +14,7 @@ test_files = [
 
 expected_result = [ # Pode vir a mudar
     "Ola, Mundo!",
-    "", # são precisos inputs para estes testes
+    "O maior é: 9",
     "", # são precisos inputs para estes testes
     "", # são precisos inputs para estes testes
     "", # são precisos inputs para estes testes
