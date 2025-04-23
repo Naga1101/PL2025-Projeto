@@ -1,3 +1,4 @@
+import subprocess
 import sys
 import os
 
@@ -18,7 +19,18 @@ expected_result = [ # Pode vir a mudar
     "", # são precisos inputs para estes testes
     "", # são precisos inputs para estes testes
     "", # são precisos inputs para estes testes
-    "" # são precisos inputs para estes testes
+    ""  # são precisos inputs para estes testes
+]
+
+test_inputs = [
+    None,                
+    "5\n9\n2\n", # input para teste2
+    "", # faltam inputs para este teste
+    "", # faltam inputs para este teste
+    "", # faltam inputs para este teste
+    "", # faltam inputs para este teste
+    "", # faltam inputs para este teste
+    ""  # faltam inputs para este teste
 ]
 
 def main():
@@ -31,18 +43,18 @@ def main():
             print("Selecione os testes pretende correr:")
             for i in range(7):
                 if runTests[i]:
-                    print(f"{i+1}: O teste {i+1} está selecionado;")
+                    print(f" {i+1}: O teste {i+1} está selecionado;")
                 else:
-                    print(f"{i+1}: O teste {i+1} não está selecionado;")
-            print("8: Selecionar todos os testes;")
-            print("9: Desselecionar todos os testes;")
+                    print(f" {i+1}: O teste {i+1} não está selecionado;")
+            print(" 8: Selecionar todos os testes;")
+            print(" 9: Desselecionar todos os testes;")
             print("10: Correr os testes selecionados.")
             option = input("> ")
 
             try:
                 option = int(option)
 
-                if 0<= option < 8:
+                if 0 <= option < 8:
                     option -= 1
                     runTests[option] = not runTests[option] 
                 elif option == 8:
@@ -65,8 +77,32 @@ def main():
         
         for i in range(7): # Atualmente não testa nada sendo que esta estrutura pode mudar
             if runTests[i]:
-                print(f"Expected Output: {expected_result[i]}")
-                print(f"O teste {test_files[i]} foi corrido com sucesso")
+                print(f"Teste {i+1}...")
+
+                process = subprocess.run(
+                    ["python", "nome_do_ficheiro_que_vai_correr_o_codigo", test_files[i]],  # Chamar o interpretador do codigo aqui
+                    input=test_inputs[i],
+                    capture_output=True,
+                    text=True
+                )
+
+                output_lines = process.stdout.strip().splitlines()
+
+                filtered_output = "\n".join(
+                    line for line in output_lines
+                    if not line.startswith("Introduza") and not line.startswith("Write")
+                )
+
+                expected_output = expected_result[i].strip()
+
+                if filtered_output == expected_output:
+                    print(f"Teste {i+1} passou!")
+                else:
+                    print(f"Teste {i+1} falhou.")
+                    print(f"Output esperado: {expected_output}")
+                    print(f"Output recebido: {filtered_output}")
+        
+            print("-" * 40)
         
         print()
         print()
