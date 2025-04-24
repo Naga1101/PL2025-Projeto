@@ -3,7 +3,10 @@ import json
 import sys
 
 tokens = (
+    'PROGRAM',
+    'VAR',
     'BEGIN',
+    'END',
     'LPAREN',     # (
     'RPAREN',     # )
     'COMMA',      # ,
@@ -11,31 +14,88 @@ tokens = (
     'SEMICOLON',  # ;
     'DOT',        # .
     'ASSIGN',     # :=
+    'INTEGERTYPE',
+    'BOOLEANTYPE',
+    'STRINGTYPE',
     'STRING',     # 'string'
+    'CHAR',
     'NUMBER',     # 123
     'ID' # o parser é que decide se é uma var ou o nome de uma func
 )
 
-keywords = {
-    'begin': 'BEGIN',
-}
+# Regular expressions
 
-#Regular expressions
-t_LPAREN = r'\('
-t_RPAREN = r'\)'
-t_COMMA = r','
-t_COLON = r':'
-t_SEMICOLON = r';'
-t_DOT = r'\.'
-t_ASSIGN = r':='
+## Keywords
 
-# Literais numéricos
+def t_PROGRAM(t):
+    r'\bprogram\b'
+    return t
+
+def t_VAR(t):
+    r'\bvar\b'
+    return t
+
+def t_BEGIN(t):
+    r'\bbegin\b'
+    return t
+
+def t_END(t):
+    r'\bend\b'
+    return t
+
+## Simbolos
+
+def t_LPAREN(t): 
+    r'\('
+    return t
+
+def t_RPAREN(t): 
+    r'\)'
+    return t
+
+def t_COMMA(t): 
+    r','
+    return t
+
+def t_ASSIGN(t):
+    r':='
+    return t
+
+def t_COLON(t): 
+    r':'
+    return t
+
+def t_SEMICOLON(t): 
+    r';'
+    return t
+
+def t_DOT(t): 
+    r'\.'
+    return t
+
+## Tipos de variáveis
+
+def t_INTEGERTYPE(t):
+    r'\binteger\b'
+    return t
+
+def t_BOOLEANTYPE(t):
+    r'\bboolean\b'
+    return t
+
+def t_STRINGTYPE(t):
+    r'\bstring\b'
+    return t
+
+## Literais
+
+### Literais numéricos
 def t_NUMBER(t):
     r'\d+'
     t.value = int(t.value)
     return t
 
-# Literais de strings/char
+### Literais de strings/char
 def t_STRING(t):
     r'\'([^\'\n]|(\\\'))*\''
     value = t.value[1:-1]
@@ -44,9 +104,11 @@ def t_STRING(t):
     t.value = value
     return t
 
+
+## Identifiers
+
 def t_ID(t):
-    r'^[a-zA-Z_]{1}[a-zA-Z0-9_]*'
-    t.type = keywords.get(t.value.lower(), 'ID')
+    r'\b[a-zA-Z_]{1}[a-zA-Z0-9_]*'
     return t
 
 t_ignore = ' \t\n'
@@ -56,3 +118,23 @@ def t_error(t):
     t.lexer.skip(1)
 
 lexer = lex.lex()
+
+def main():
+    data = """
+    program funcaoTeste
+    var
+    var1, var2: integer;
+    begin
+    var1 := 10;
+    var2 := 'a';
+    end.
+    """
+
+    lexer.input(data)
+
+    print("Tokens:")
+    for tok in lexer:
+        print(f"{tok.type}({tok.value}) at line {tok.lineno}, position {tok.lexpos}")
+
+if __name__ == '__main__':
+    main()

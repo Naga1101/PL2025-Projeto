@@ -1,5 +1,5 @@
 from ply import yacc
-from lexer import tokens
+from lexer import tokens, lexer
 
 """
 P1: Init        →   program FuncName
@@ -7,7 +7,7 @@ P2: FuncName    →   ID ';' VarDeclPart | BeginPart
 P3: VarDeclPart    →   var VarDeclList
 P4: VarDeclList →   ID IDListCont
 P5: IDListCont  →   ',' ID IDListCont | ':' Type ';'
-P6: Type        →   TIPOVAR VarDeclList | BeginPart
+P6: Type        →   INTEGERTYPE VarDeclList | BeginPart
 P7: BeginPart   →   begin ...
 """
 
@@ -16,7 +16,7 @@ def p_init(p):
     p[0] = ("program", p[2])
 
 def p_funcname_decl(p):
-    'funcname : ID PONTOEVIRGULA VarDeclPart'
+    'funcname : ID SEMICOLON VarDeclPart'
     p[0] = ("functionName", p[1], p[3])
 
 def p_funcname_begin(p):
@@ -32,15 +32,15 @@ def p_vardecllist(p):
     p[0] = ("var", [p[1]] + p[2])
 
 def p_idlistcont_more(p):
-    'idlistcont : VIRGULA ID idlistcont'
+    'idlistcont : COMMA ID idlistcont'
     p[0] = [p[2]] + p[3]
 
 def p_idlistcont_type(p):
-    'idlistcont : DOISPONTOS type PONTOEVIRGULA'
+    'idlistcont : COLON type SEMICOLON'
     p[0] = [("type", p[2])]
 
-def p_type_var(p):
-    'type : TIPOVAR vardecllist'
+def p_type_var(p): # integer type for testing
+    'type : INTEGERTYPE SEMICOLON vardecllist'
     p[0] = ("typed_vars", p[1], p[2])
 
 def p_type_begin(p):
@@ -55,3 +55,17 @@ def p_error(p):
     print(f"Syntax error at {p.value if p else 'EOF'}")
 
 parser = yacc.yacc()
+
+def test_parser(data):
+    lexer.input(data)
+    for tok in lexer:
+        print(tok)
+    result = parser.parse(lexer=lexer)
+    print(result)
+
+# Example input string
+data = """
+program funcaoTeste;
+var var1, var2: integer;
+begin
+"""
