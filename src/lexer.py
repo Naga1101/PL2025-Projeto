@@ -3,16 +3,42 @@ import json
 import sys
 
 tokens = (
+    # --- Keywords ---
     'PROGRAM',
     'VAR',
     'BEGIN',
     'END',
-    'PROGRAM','BEGIN','END','VAR','FUNCTION','PROCEDURE',
-    'IF','THEN','ELSE','WHILE','DO','FOR','TO','DOWNTO',
-    'REPEAT','UNTIL','CASE','OF','CONST','TYPE',
-    'PLUS','MINUS','TIMES','DIVIDE',
-    'EQ','NE','LT','LE','GT','GE','ASSIGN',
-    'AND','OR','NOT', 
+    'FUNCTION',
+    'PROCEDURE',
+    'CONST',
+    'TYPE',
+    'IF',
+    'THEN',
+    'ELSE',
+    'WHILE',
+    'DO',
+    'FOR',
+    'TO',
+    'DOWNTO',
+    'REPEAT',
+    'UNTIL',
+    'CASE',
+    'OF',
+    # --- Operators ---
+    'PLUS',
+    'MINUS',
+    'TIMES',
+    'DIVIDE',
+    'EQ',
+    'NE',
+    'LT',
+    'LE',
+    'GT',
+    'GE',
+    'AND',
+    'OR',
+    'NOT', 
+    # --- Simbolos ---
     'LPAREN',     # (
     'RPAREN',     # )
     'COMMA',      # ,
@@ -20,29 +46,19 @@ tokens = (
     'SEMICOLON',  # ;
     'DOT',        # .
     'ASSIGN',     # :=
+    # --- Tipos ---
     'INTEGERTYPE',
     'BOOLEANTYPE',
     'STRINGTYPE',
+    # --- Literais ---
     'STRING',     # 'string'
     'CHAR',
     'NUMBER',     # 123
-    'ID' # o parser é que decide se é uma var ou o nome de uma func
+    # --- Identificadores ---
+    'ID' 
 )
 
 # Regular expressions
-
-#Operators
-t_PLUS = r"\+"
-t_MINUS = r"-"
-t_TIMES = r"\*"
-t_DIVIDE = r"/"
-t_EQ = r"="
-t_NE = r"<>"
-t_LE = r"<="
-t_LT = r"<"
-t_GE = r">="
-t_GT = r">"
-t_ASSIGN = r":="
 
 ## Keywords
 
@@ -71,6 +87,13 @@ def t_PROCEDURE(t):
     r"\bprocedure\b"
     return t
 
+def t_CONST(t):
+    r"\bconst\b"
+    return t
+
+def t_TYPE(t):
+    r"\btype\b"
+    return t
 
 def t_IF(t):
     r"\bif\b"
@@ -131,17 +154,6 @@ def t_OF(t):
     r"\bof\b"
     return t
 
-
-def t_CONST(t):
-    r"\bconst\b"
-    return t
-
-
-def t_TYPE(t):
-    r"\btype\b"
-    return t
-
-
 def t_AND(t):
     r"\band\b"
     return t
@@ -184,6 +196,48 @@ def t_SEMICOLON(t):
 
 def t_DOT(t): 
     r'\.'
+    return t
+
+## Operadores
+
+def t_PLUS(t):
+    r"\+"
+    return t
+
+def t_MINUS(t):
+    r"-"
+    return t
+
+def t_TIMES(t):
+    r"\*"
+    return t
+
+def t_DIVIDE(t):
+    r"/"
+    return t
+
+def t_EQ(t):
+    r"="
+    return t
+
+def t_NE(t): 
+    r"<>"
+    return t
+
+def t_LE(t): 
+    r"<="
+    return t
+
+def t_LT(t): 
+    r"<"
+    return t
+
+def t_GE(t): 
+    r">="
+    return t
+
+def t_GT(t): 
+    r">"
     return t
 
 ## Tipos de variáveis

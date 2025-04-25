@@ -7,8 +7,9 @@ P2: FuncName    →   ID ';' VarDeclPart | BeginPart
 P3: VarDeclPart    →   var VarDeclList
 P4: VarDeclList →   ID IDListCont
 P5: IDListCont  →   ',' ID IDListCont | ':' Type ';'
-P6: Type        →   INTEGERTYPE VarDeclList | BeginPart
-P7: BeginPart   →   begin ...
+P6: TypeRecognition  →   TYPE VarDeclList | BeginPart
+P7: TYPE → INTEGERTYPE | BOOLEANTYPE | STRINGTYPE
+P8: BeginPart   →   begin ...
 """
 
 def p_init(p):
@@ -37,11 +38,17 @@ def p_idlistcont_more(p):
 
 def p_idlistcont_type(p):
     'idlistcont : COLON type SEMICOLON'
-    p[0] = [("type", p[2])]
+    p[0] = [("typercognition", p[2])]
 
-def p_type_var(p): # integer type for testing
-    'type : INTEGERTYPE SEMICOLON vardecllist'
+def p_typerecognition_var(p): # integer type for testing
+    'typerecognition : TYPE SEMICOLON vardecllist'
     p[0] = ("typed_vars", p[1], p[2])
+
+def p_type(p):
+    '''type : INTEGERTYPE
+            | BOOLEANTYPE
+            | STRINGTYPE'''
+    p[0] = ("type", p[1])
 
 def p_type_begin(p):
     'type : beginpart'
