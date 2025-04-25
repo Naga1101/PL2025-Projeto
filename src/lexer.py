@@ -63,7 +63,7 @@ def t_END(t):
     return t
 
 def t_FUNCTION(t):
-    r"\function\b"
+    r"\bfunction\b"
     return t
 
 
@@ -73,72 +73,72 @@ def t_PROCEDURE(t):
 
 
 def t_IF(t):
-    r"\if\b"
+    r"\bif\b"
     return t
 
 
 def t_THEN(t):
-    r"\then\b"
+    r"\bthen\b"
     return t
 
 
 def t_ELSE(t):
-    r"\else\b"
+    r"\belse\b"
     return t
 
 
 def t_WHILE(t):
-    r"\while\b"
+    r"\bwhile\b"
     return t
 
 
 def t_DO(t):
-    r"\do\b"
+    r"\bdo\b"
     return t
 
 
 def t_FOR(t):
-    r"\for\b"
+    r"\bfor\b"
     return t
 
 
 def t_TO(t):
-    r"\to\b"
+    r"\bto\b"
     return t
 
 
 def t_DOWNTO(t):
-    r"\downto\b"
+    r"\bdownto\b"
     return t
 
 
 def t_REPEAT(t):
-    r"\repeat\b"
+    r"\brepeat\b"
     return t
 
 
 def t_UNTIL(t):
-    r"\until\b"
+    r"\buntil\b"
     return t
 
 
 def t_CASE(t):
-    r"\case\b"
+    r"\bcase\b"
     return t
 
 
 def t_OF(t):
-    r"\of\b"
+    r"\bof\b"
     return t
 
 
 def t_CONST(t):
-    r"\const\b"
+    r"\bconst\b"
     return t
 
 
 def t_TYPE(t):
-    r"\type\b"
+    r"\btype\b"
     return t
 
 
