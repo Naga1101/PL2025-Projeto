@@ -21,7 +21,7 @@ def p_funcname_decl(p):
     p[0] = ("functionName", p[1], p[3])
 
 def p_funcname_begin(p):
-    'funcname : beginpart'
+    'funcname : ID SEMICOLON beginpart'
     p[0] = ("begin", p[1])
 
 def p_varDeclPart(p):
@@ -37,22 +37,22 @@ def p_idlistcont_more(p):
     p[0] = [p[2]] + p[3]
 
 def p_idlistcont_type(p):
-    'idlistcont : COLON type SEMICOLON'
-    p[0] = [("typercognition", p[2])]
+    'idlistcont : COLON typerecognition'
+    p[0] = [("typerecognition", p[2])]
 
 def p_typerecognition_var(p): # integer type for testing
-    'typerecognition : TYPE SEMICOLON vardecllist'
+    'typerecognition : typedefinition SEMICOLON vardecllist'
     p[0] = ("typed_vars", p[1], p[2])
 
-def p_type(p):
-    '''type : INTEGERTYPE
-            | BOOLEANTYPE
-            | STRINGTYPE'''
-    p[0] = ("type", p[1])
-
-def p_type_begin(p):
-    'type : beginpart'
+def p_typerecognition_begin(p):
+    'typerecognition : typedefinition SEMICOLON beginpart'
     p[0] = p[1]
+
+def p_typedefinition(p):
+    '''typedefinition : INTEGERTYPE
+                      | BOOLEANTYPE
+                      | STRINGTYPE'''
+    p[0] = ("typedefinition", p[1])
 
 def p_beginpart(p):
     'beginpart : BEGIN'
@@ -61,7 +61,7 @@ def p_beginpart(p):
 def p_error(p):
     print(f"Syntax error at {p.value if p else 'EOF'}")
 
-parser = yacc.yacc()
+parser = yacc.yacc(debug=True)
 
 def test_parser(data):
     lexer.input(data)
@@ -72,7 +72,11 @@ def test_parser(data):
 
 # Example input string
 data = """
-program funcaoTeste;
-var var1, var2: integer;
+program Maior3;
+var
+    num1, num2, num3, maior: Integer;
 begin
 """
+
+if __name__ == "__main__":
+    test_parser(data)

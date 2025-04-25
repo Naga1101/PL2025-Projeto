@@ -243,15 +243,15 @@ def t_GT(t):
 ## Tipos de variáveis
 
 def t_INTEGERTYPE(t):
-    r'\binteger\b'
+    r'\bInteger\b'
     return t
 
 def t_BOOLEANTYPE(t):
-    r'\bboolean\b'
+    r'\bBoolean\b'
     return t
 
 def t_STRINGTYPE(t):
-    r'\bstring\b'
+    r'\bString\b'
     return t
 
 ## Literais
@@ -275,7 +275,7 @@ def t_STRING(t):
 ## Identifiers
 
 def t_ID(t):
-    r'\b[a-zA-Z_]{1}[a-zA-Z0-9_]*'
+    r'\b[a-zA-Z_]{1}[a-zA-Z0-9_]*\b'
     return t
 
 t_ignore = ' \t\n'
