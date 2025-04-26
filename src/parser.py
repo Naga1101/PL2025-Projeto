@@ -40,13 +40,13 @@ def p_idlistcont_type(p):
     'idlistcont : COLON typerecognition'
     p[0] = [("typerecognition", p[2])]
 
-def p_typerecognition_var(p): # integer type for testing
+def p_typerecognition_var(p):
     'typerecognition : typedefinition SEMICOLON vardecllist'
-    p[0] = ("typed_vars", p[1], p[2])
+    p[0] = ("typed_vars", p[1], p[3])
 
 def p_typerecognition_begin(p):
     'typerecognition : typedefinition SEMICOLON beginpart'
-    p[0] = p[1]
+    p[0] = ("type_and_begin", p[1], p[3])  
 
 def p_typedefinition(p):
     '''typedefinition : INTEGERTYPE
@@ -56,7 +56,7 @@ def p_typedefinition(p):
 
 def p_beginpart(p):
     'beginpart : BEGIN'
-    p[0] = "BEGIN_BLOCK"  # Placeholder for now
+    p[0] = "BEGIN_BLOCK"  # Falta a parte dos statements
 
 def p_error(p):
     print(f"Syntax error at {p.value if p else 'EOF'}")
@@ -65,18 +65,36 @@ parser = yacc.yacc(debug=True)
 
 def test_parser(data):
     lexer.input(data)
-    for tok in lexer:
+    lexer_clone = lexer.clone() 
+    for tok in lexer_clone:
         print(tok)
-    result = parser.parse(lexer=lexer)
+    result = parser.parse(lexer=lexer, debug=True)
     print(result)
 
-# Example input string
-data = """
+data0 = """
+program Maior3;
+begin
+"""
+
+data1 = """
 program Maior3;
 var
     num1, num2, num3, maior: Integer;
 begin
 """
 
+data2 = """
+program Maior3;
+var
+    num1, num2, num3, maior: Integer;
+    bol1, bol2: Boolean;
+begin
+"""
+
 if __name__ == "__main__":
-    test_parser(data)
+    print("Primeiro teste:")
+    test_parser(data0)
+    print("Segundo teste:")
+    test_parser(data1)
+    print("Terceiro teste:")
+    test_parser(data2)

@@ -24,7 +24,7 @@ tokens = (
     'UNTIL',
     'CASE',
     'OF',
-    # --- Operators ---
+    # --- Operators --- 
     'PLUS',
     'MINUS',
     'TIMES',
@@ -81,7 +81,6 @@ def t_END(t):
 def t_FUNCTION(t):
     r"\bfunction\b"
     return t
-
 
 def t_PROCEDURE(t):
     r"\bprocedure\b"
