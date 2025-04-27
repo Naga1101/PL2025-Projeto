@@ -50,44 +50,49 @@ P15: expression → expression PLUS expression
 def p_init(p):
     'init : PROGRAM func_name'
     p[0] = ("program", p[2])
-### mudar a partir daqui
-def p_func_name_decl(p):
-    'func_name : ID SEMICOLON var_decl'
+
+def p_func_name(p):
+    'func_name : ID SEMICOLON var_decl_or_func'
     p[0] = ("functionName", p[1], p[3])
 
-def p_func_name_begin(p):
-    'func_name : ID SEMICOLON begin_func'
-    p[0] = ("begin", p[1])
+def p_var_decl_or_func(p):
+    '''var_decl_or_func : var_decl begin_func
+                        | begin_func'''
+    if len(p) == 3:
+        p[0] = ("var_declaration", [p[1]] + [p[2]])
+    else:
+        p[0] = ("begin_function", p[1])
 
 def p_var_decl(p):
-    'var_decl : VAR var_decl_list'
-    p[0] = ("var_decl", p[2])
+    'var_decl : VAR var_decl_lines'
+    p[0] = ("var_decl_lines", p[2])
 
-def p_var_decl_list(p):
-    'var_decl_list : ID id_list_cont'
-    p[0] = ("var", [p[1]] + p[2])
+def p_var_decl_lines(p):
+    '''var_decl_lines : var_decl_line
+                      | var_decl_lines var_decl_line'''
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        p[0] = p[1] + [p[2]]
 
-def p_id_list_cont_more(p):
-    'id_list_cont : COMMA ID id_list_cont'
-    p[0] = [p[2]] + p[3]
+def p_var_decl_line(p):
+    'var_decl_line : id_list COLON type SEMICOLON'
+    p[0] = (("vars", p[1]), ("type", p[3]))
 
-def p_id_list_cont_type(p):
-    'id_list_cont : COLON type_recognition'
-    p[0] = [("type_recognition", p[2])]
 
-def p_type_recognition_var(p):
-    'type_recognition : typedefinition SEMICOLON var_decl_list'
-    p[0] = ("typed_vars", p[1], p[3])
+def p_id_list(p):
+    '''id_list : ID
+               | id_list COMMA ID'''
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        p[0] = p[1] + [p[3]]
 
-def p_type_recognition_begin(p):
-    'type_recognition : typedefinition SEMICOLON begin_func'
-    p[0] = ("type_and_begin", p[1], p[3])  
-
-def p_typedefinition(p):
-    '''typedefinition : INTEGERTYPE
+def p_type(p):
+    '''type : INTEGERTYPE
                       | BOOLEANTYPE
                       | STRINGTYPE'''
-    p[0] = ("typedefinition", p[1])
+    p[0] = p[1]
 
 def p_begin_func(p):
     'begin_func : BEGIN'
