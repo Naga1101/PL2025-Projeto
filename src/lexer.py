@@ -24,6 +24,9 @@ tokens = (
     'UNTIL',
     'CASE',
     'OF',
+    # --- Funções Predefinidas --- 
+    'WRITEFUNC',
+    'READFUNC',
     # --- Operators --- 
     'PLUS',
     'MINUS',
@@ -165,6 +168,16 @@ def t_OR(t):
 
 def t_NOT(t):
     r"\bnot\b"
+    return t
+
+## Funções Predefinidas
+
+def t_WRITEFUNC(t):
+    r'\bWrite\b'
+    return t
+
+def t_READFUNC(t):
+    r'\bReadLn\b'
     return t
 
 ## Simbolos
