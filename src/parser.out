@@ -1,0 +1,1004 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    AND
+    CASE
+    CONST
+    DO
+    DOWNTO
+    EQ
+    FOR
+    FUNCTION
+    GE
+    GT
+    LE
+    LT
+    NE
+    NOT
+    OF
+    OR
+    PROCEDURE
+    READFUNC
+    READFUNCLN
+    REPEAT
+    TO
+    TYPE
+    UNTIL
+    WHILE
+
+Grammar
+
+Rule 0     S' -> init
+Rule 1     init -> PROGRAM program_name
+Rule 2     program_name -> ID SEMICOLON var_decl_or_func
+Rule 3     var_decl_or_func -> var_decl begin_func
+Rule 4     var_decl_or_func -> begin_func
+Rule 5     var_decl -> VAR var_decl_lines
+Rule 6     var_decl_lines -> var_decl_line
+Rule 7     var_decl_lines -> var_decl_lines var_decl_line
+Rule 8     var_decl_line -> id_list COLON type SEMICOLON
+Rule 9     id_list -> ID
+Rule 10    id_list -> id_list COMMA ID
+Rule 11    type -> INTEGERTYPE
+Rule 12    type -> BOOLEANTYPE
+Rule 13    type -> STRINGTYPE
+Rule 14    begin_func -> compound_statement DOT
+Rule 15    statement_list -> statement
+Rule 16    statement_list -> statement_list statement
+Rule 17    statement -> simple_statement SEMICOLON
+Rule 18    statement -> compound_statement SEMICOLON
+Rule 19    statement -> selection_statement SEMICOLON
+Rule 20    simple_statement -> ID ASSIGN expression
+Rule 21    simple_statement -> WRITEFUNC LPAREN expression RPAREN
+Rule 22    simple_statement -> WRITEFUNCLN LPAREN expression RPAREN
+Rule 23    selection_statement -> IF expression THEN statement
+Rule 24    selection_statement -> IF expression THEN statement ELSE statement
+Rule 25    compound_statement -> BEGIN statement_list END
+Rule 26    expression -> expression PLUS expression
+Rule 27    expression -> expression MINUS expression
+Rule 28    expression -> expression TIMES expression
+Rule 29    expression -> expression DIVIDE expression
+Rule 30    expression -> STRING
+Rule 31    expression -> NUMBER
+Rule 32    expression -> CHAR
+Rule 33    expression -> ID
+
+Terminals, with rules where they appear
+
+AND                  : 
+ASSIGN               : 20
+BEGIN                : 25
+BOOLEANTYPE          : 12
+CASE                 : 
+CHAR                 : 32
+COLON                : 8
+COMMA                : 10
+CONST                : 
+DIVIDE               : 29
+DO                   : 
+DOT                  : 14
+DOWNTO               : 
+ELSE                 : 24
+END                  : 25
+EQ                   : 
+FOR                  : 
+FUNCTION             : 
+GE                   : 
+GT                   : 
+ID                   : 2 9 10 20 33
+IF                   : 23 24
+INTEGERTYPE          : 11
+LE                   : 
+LPAREN               : 21 22
+LT                   : 
+MINUS                : 27
+NE                   : 
+NOT                  : 
+NUMBER               : 31
+OF                   : 
+OR                   : 
+PLUS                 : 26
+PROCEDURE            : 
+PROGRAM              : 1
+READFUNC             : 
+READFUNCLN           : 
+REPEAT               : 
+RPAREN               : 21 22
+SEMICOLON            : 2 8 17 18 19
+STRING               : 30
+STRINGTYPE           : 13
+THEN                 : 23 24
+TIMES                : 28
+TO                   : 
+TYPE                 : 
+UNTIL                : 
+VAR                  : 5
+WHILE                : 
+WRITEFUNC            : 21
+WRITEFUNCLN          : 22
+error                : 
+
+Nonterminals, with rules where they appear
+
+begin_func           : 3 4
+compound_statement   : 14 18
+expression           : 20 21 22 23 24 26 26 27 27 28 28 29 29
+id_list              : 8 10
+init                 : 0
+program_name         : 1
+selection_statement  : 19
+simple_statement     : 17
+statement            : 15 16 23 24 24
+statement_list       : 16 25
+type                 : 8
+var_decl             : 3
+var_decl_line        : 6 7
+var_decl_lines       : 5 7
+var_decl_or_func     : 2
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . init
+    (1) init -> . PROGRAM program_name
+
+    PROGRAM         shift and go to state 2
+
+    init                           shift and go to state 1
+
+state 1
+
+    (0) S' -> init .
+
+
+
+state 2
+
+    (1) init -> PROGRAM . program_name
+    (2) program_name -> . ID SEMICOLON var_decl_or_func
+
+    ID              shift and go to state 4
+
+    program_name                   shift and go to state 3
+
+state 3
+
+    (1) init -> PROGRAM program_name .
+
+    $end            reduce using rule 1 (init -> PROGRAM program_name .)
+
+
+state 4
+
+    (2) program_name -> ID . SEMICOLON var_decl_or_func
+
+    SEMICOLON       shift and go to state 5
+
+
+state 5
+
+    (2) program_name -> ID SEMICOLON . var_decl_or_func
+    (3) var_decl_or_func -> . var_decl begin_func
+    (4) var_decl_or_func -> . begin_func
+    (5) var_decl -> . VAR var_decl_lines
+    (14) begin_func -> . compound_statement DOT
+    (25) compound_statement -> . BEGIN statement_list END
+
+    VAR             shift and go to state 9
+    BEGIN           shift and go to state 11
+
+    var_decl_or_func               shift and go to state 6
+    var_decl                       shift and go to state 7
+    begin_func                     shift and go to state 8
+    compound_statement             shift and go to state 10
+
+state 6
+
+    (2) program_name -> ID SEMICOLON var_decl_or_func .
+
+    $end            reduce using rule 2 (program_name -> ID SEMICOLON var_decl_or_func .)
+
+
+state 7
+
+    (3) var_decl_or_func -> var_decl . begin_func
+    (14) begin_func -> . compound_statement DOT
+    (25) compound_statement -> . BEGIN statement_list END
+
+    BEGIN           shift and go to state 11
+
+    begin_func                     shift and go to state 12
+    compound_statement             shift and go to state 10
+
+state 8
+
+    (4) var_decl_or_func -> begin_func .
+
+    $end            reduce using rule 4 (var_decl_or_func -> begin_func .)
+
+
+state 9
+
+    (5) var_decl -> VAR . var_decl_lines
+    (6) var_decl_lines -> . var_decl_line
+    (7) var_decl_lines -> . var_decl_lines var_decl_line
+    (8) var_decl_line -> . id_list COLON type SEMICOLON
+    (9) id_list -> . ID
+    (10) id_list -> . id_list COMMA ID
+
+    ID              shift and go to state 16
+
+    var_decl_lines                 shift and go to state 13
+    var_decl_line                  shift and go to state 14
+    id_list                        shift and go to state 15
+
+state 10
+
+    (14) begin_func -> compound_statement . DOT
+
+    DOT             shift and go to state 17
+
+
+state 11
+
+    (25) compound_statement -> BEGIN . statement_list END
+    (15) statement_list -> . statement
+    (16) statement_list -> . statement_list statement
+    (17) statement -> . simple_statement SEMICOLON
+    (18) statement -> . compound_statement SEMICOLON
+    (19) statement -> . selection_statement SEMICOLON
+    (20) simple_statement -> . ID ASSIGN expression
+    (21) simple_statement -> . WRITEFUNC LPAREN expression RPAREN
+    (22) simple_statement -> . WRITEFUNCLN LPAREN expression RPAREN
+    (25) compound_statement -> . BEGIN statement_list END
+    (23) selection_statement -> . IF expression THEN statement
+    (24) selection_statement -> . IF expression THEN statement ELSE statement
+
+    ID              shift and go to state 23
+    WRITEFUNC       shift and go to state 24
+    WRITEFUNCLN     shift and go to state 25
+    BEGIN           shift and go to state 11
+    IF              shift and go to state 26
+
+    statement_list                 shift and go to state 18
+    statement                      shift and go to state 19
+    simple_statement               shift and go to state 20
+    compound_statement             shift and go to state 21
+    selection_statement            shift and go to state 22
+
+state 12
+
+    (3) var_decl_or_func -> var_decl begin_func .
+
+    $end            reduce using rule 3 (var_decl_or_func -> var_decl begin_func .)
+
+
+state 13
+
+    (5) var_decl -> VAR var_decl_lines .
+    (7) var_decl_lines -> var_decl_lines . var_decl_line
+    (8) var_decl_line -> . id_list COLON type SEMICOLON
+    (9) id_list -> . ID
+    (10) id_list -> . id_list COMMA ID
+
+    BEGIN           reduce using rule 5 (var_decl -> VAR var_decl_lines .)
+    ID              shift and go to state 16
+
+    var_decl_line                  shift and go to state 27
+    id_list                        shift and go to state 15
+
+state 14
+
+    (6) var_decl_lines -> var_decl_line .
+
+    ID              reduce using rule 6 (var_decl_lines -> var_decl_line .)
+    BEGIN           reduce using rule 6 (var_decl_lines -> var_decl_line .)
+
+
+state 15
+
+    (8) var_decl_line -> id_list . COLON type SEMICOLON
+    (10) id_list -> id_list . COMMA ID
+
+    COLON           shift and go to state 28
+    COMMA           shift and go to state 29
+
+
+state 16
+
+    (9) id_list -> ID .
+
+    COLON           reduce using rule 9 (id_list -> ID .)
+    COMMA           reduce using rule 9 (id_list -> ID .)
+
+
+state 17
+
+    (14) begin_func -> compound_statement DOT .
+
+    $end            reduce using rule 14 (begin_func -> compound_statement DOT .)
+
+
+state 18
+
+    (25) compound_statement -> BEGIN statement_list . END
+    (16) statement_list -> statement_list . statement
+    (17) statement -> . simple_statement SEMICOLON
+    (18) statement -> . compound_statement SEMICOLON
+    (19) statement -> . selection_statement SEMICOLON
+    (20) simple_statement -> . ID ASSIGN expression
+    (21) simple_statement -> . WRITEFUNC LPAREN expression RPAREN
+    (22) simple_statement -> . WRITEFUNCLN LPAREN expression RPAREN
+    (25) compound_statement -> . BEGIN statement_list END
+    (23) selection_statement -> . IF expression THEN statement
+    (24) selection_statement -> . IF expression THEN statement ELSE statement
+
+    END             shift and go to state 30
+    ID              shift and go to state 23
+    WRITEFUNC       shift and go to state 24
+    WRITEFUNCLN     shift and go to state 25
+    BEGIN           shift and go to state 11
+    IF              shift and go to state 26
+
+    statement                      shift and go to state 31
+    simple_statement               shift and go to state 20
+    compound_statement             shift and go to state 21
+    selection_statement            shift and go to state 22
+
+state 19
+
+    (15) statement_list -> statement .
+
+    END             reduce using rule 15 (statement_list -> statement .)
+    ID              reduce using rule 15 (statement_list -> statement .)
+    WRITEFUNC       reduce using rule 15 (statement_list -> statement .)
+    WRITEFUNCLN     reduce using rule 15 (statement_list -> statement .)
+    BEGIN           reduce using rule 15 (statement_list -> statement .)
+    IF              reduce using rule 15 (statement_list -> statement .)
+
+
+state 20
+
+    (17) statement -> simple_statement . SEMICOLON
+
+    SEMICOLON       shift and go to state 32
+
+
+state 21
+
+    (18) statement -> compound_statement . SEMICOLON
+
+    SEMICOLON       shift and go to state 33
+
+
+state 22
+
+    (19) statement -> selection_statement . SEMICOLON
+
+    SEMICOLON       shift and go to state 34
+
+
+state 23
+
+    (20) simple_statement -> ID . ASSIGN expression
+
+    ASSIGN          shift and go to state 35
+
+
+state 24
+
+    (21) simple_statement -> WRITEFUNC . LPAREN expression RPAREN
+
+    LPAREN          shift and go to state 36
+
+
+state 25
+
+    (22) simple_statement -> WRITEFUNCLN . LPAREN expression RPAREN
+
+    LPAREN          shift and go to state 37
+
+
+state 26
+
+    (23) selection_statement -> IF . expression THEN statement
+    (24) selection_statement -> IF . expression THEN statement ELSE statement
+    (26) expression -> . expression PLUS expression
+    (27) expression -> . expression MINUS expression
+    (28) expression -> . expression TIMES expression
+    (29) expression -> . expression DIVIDE expression
+    (30) expression -> . STRING
+    (31) expression -> . NUMBER
+    (32) expression -> . CHAR
+    (33) expression -> . ID
+
+    STRING          shift and go to state 39
+    NUMBER          shift and go to state 40
+    CHAR            shift and go to state 41
+    ID              shift and go to state 42
+
+    expression                     shift and go to state 38
+
+state 27
+
+    (7) var_decl_lines -> var_decl_lines var_decl_line .
+
+    ID              reduce using rule 7 (var_decl_lines -> var_decl_lines var_decl_line .)
+    BEGIN           reduce using rule 7 (var_decl_lines -> var_decl_lines var_decl_line .)
+
+
+state 28
+
+    (8) var_decl_line -> id_list COLON . type SEMICOLON
+    (11) type -> . INTEGERTYPE
+    (12) type -> . BOOLEANTYPE
+    (13) type -> . STRINGTYPE
+
+    INTEGERTYPE     shift and go to state 44
+    BOOLEANTYPE     shift and go to state 45
+    STRINGTYPE      shift and go to state 46
+
+    type                           shift and go to state 43
+
+state 29
+
+    (10) id_list -> id_list COMMA . ID
+
+    ID              shift and go to state 47
+
+
+state 30
+
+    (25) compound_statement -> BEGIN statement_list END .
+
+    DOT             reduce using rule 25 (compound_statement -> BEGIN statement_list END .)
+    SEMICOLON       reduce using rule 25 (compound_statement -> BEGIN statement_list END .)
+
+
+state 31
+
+    (16) statement_list -> statement_list statement .
+
+    END             reduce using rule 16 (statement_list -> statement_list statement .)
+    ID              reduce using rule 16 (statement_list -> statement_list statement .)
+    WRITEFUNC       reduce using rule 16 (statement_list -> statement_list statement .)
+    WRITEFUNCLN     reduce using rule 16 (statement_list -> statement_list statement .)
+    BEGIN           reduce using rule 16 (statement_list -> statement_list statement .)
+    IF              reduce using rule 16 (statement_list -> statement_list statement .)
+
+
+state 32
+
+    (17) statement -> simple_statement SEMICOLON .
+
+    END             reduce using rule 17 (statement -> simple_statement SEMICOLON .)
+    ID              reduce using rule 17 (statement -> simple_statement SEMICOLON .)
+    WRITEFUNC       reduce using rule 17 (statement -> simple_statement SEMICOLON .)
+    WRITEFUNCLN     reduce using rule 17 (statement -> simple_statement SEMICOLON .)
+    BEGIN           reduce using rule 17 (statement -> simple_statement SEMICOLON .)
+    IF              reduce using rule 17 (statement -> simple_statement SEMICOLON .)
+    ELSE            reduce using rule 17 (statement -> simple_statement SEMICOLON .)
+    SEMICOLON       reduce using rule 17 (statement -> simple_statement SEMICOLON .)
+
+
+state 33
+
+    (18) statement -> compound_statement SEMICOLON .
+
+    END             reduce using rule 18 (statement -> compound_statement SEMICOLON .)
+    ID              reduce using rule 18 (statement -> compound_statement SEMICOLON .)
+    WRITEFUNC       reduce using rule 18 (statement -> compound_statement SEMICOLON .)
+    WRITEFUNCLN     reduce using rule 18 (statement -> compound_statement SEMICOLON .)
+    BEGIN           reduce using rule 18 (statement -> compound_statement SEMICOLON .)
+    IF              reduce using rule 18 (statement -> compound_statement SEMICOLON .)
+    ELSE            reduce using rule 18 (statement -> compound_statement SEMICOLON .)
+    SEMICOLON       reduce using rule 18 (statement -> compound_statement SEMICOLON .)
+
+
+state 34
+
+    (19) statement -> selection_statement SEMICOLON .
+
+    END             reduce using rule 19 (statement -> selection_statement SEMICOLON .)
+    ID              reduce using rule 19 (statement -> selection_statement SEMICOLON .)
+    WRITEFUNC       reduce using rule 19 (statement -> selection_statement SEMICOLON .)
+    WRITEFUNCLN     reduce using rule 19 (statement -> selection_statement SEMICOLON .)
+    BEGIN           reduce using rule 19 (statement -> selection_statement SEMICOLON .)
+    IF              reduce using rule 19 (statement -> selection_statement SEMICOLON .)
+    ELSE            reduce using rule 19 (statement -> selection_statement SEMICOLON .)
+    SEMICOLON       reduce using rule 19 (statement -> selection_statement SEMICOLON .)
+
+
+state 35
+
+    (20) simple_statement -> ID ASSIGN . expression
+    (26) expression -> . expression PLUS expression
+    (27) expression -> . expression MINUS expression
+    (28) expression -> . expression TIMES expression
+    (29) expression -> . expression DIVIDE expression
+    (30) expression -> . STRING
+    (31) expression -> . NUMBER
+    (32) expression -> . CHAR
+    (33) expression -> . ID
+
+    STRING          shift and go to state 39
+    NUMBER          shift and go to state 40
+    CHAR            shift and go to state 41
+    ID              shift and go to state 42
+
+    expression                     shift and go to state 48
+
+state 36
+
+    (21) simple_statement -> WRITEFUNC LPAREN . expression RPAREN
+    (26) expression -> . expression PLUS expression
+    (27) expression -> . expression MINUS expression
+    (28) expression -> . expression TIMES expression
+    (29) expression -> . expression DIVIDE expression
+    (30) expression -> . STRING
+    (31) expression -> . NUMBER
+    (32) expression -> . CHAR
+    (33) expression -> . ID
+
+    STRING          shift and go to state 39
+    NUMBER          shift and go to state 40
+    CHAR            shift and go to state 41
+    ID              shift and go to state 42
+
+    expression                     shift and go to state 49
+
+state 37
+
+    (22) simple_statement -> WRITEFUNCLN LPAREN . expression RPAREN
+    (26) expression -> . expression PLUS expression
+    (27) expression -> . expression MINUS expression
+    (28) expression -> . expression TIMES expression
+    (29) expression -> . expression DIVIDE expression
+    (30) expression -> . STRING
+    (31) expression -> . NUMBER
+    (32) expression -> . CHAR
+    (33) expression -> . ID
+
+    STRING          shift and go to state 39
+    NUMBER          shift and go to state 40
+    CHAR            shift and go to state 41
+    ID              shift and go to state 42
+
+    expression                     shift and go to state 50
+
+state 38
+
+    (23) selection_statement -> IF expression . THEN statement
+    (24) selection_statement -> IF expression . THEN statement ELSE statement
+    (26) expression -> expression . PLUS expression
+    (27) expression -> expression . MINUS expression
+    (28) expression -> expression . TIMES expression
+    (29) expression -> expression . DIVIDE expression
+
+    THEN            shift and go to state 51
+    PLUS            shift and go to state 52
+    MINUS           shift and go to state 53
+    TIMES           shift and go to state 54
+    DIVIDE          shift and go to state 55
+
+
+state 39
+
+    (30) expression -> STRING .
+
+    THEN            reduce using rule 30 (expression -> STRING .)
+    PLUS            reduce using rule 30 (expression -> STRING .)
+    MINUS           reduce using rule 30 (expression -> STRING .)
+    TIMES           reduce using rule 30 (expression -> STRING .)
+    DIVIDE          reduce using rule 30 (expression -> STRING .)
+    SEMICOLON       reduce using rule 30 (expression -> STRING .)
+    RPAREN          reduce using rule 30 (expression -> STRING .)
+
+
+state 40
+
+    (31) expression -> NUMBER .
+
+    THEN            reduce using rule 31 (expression -> NUMBER .)
+    PLUS            reduce using rule 31 (expression -> NUMBER .)
+    MINUS           reduce using rule 31 (expression -> NUMBER .)
+    TIMES           reduce using rule 31 (expression -> NUMBER .)
+    DIVIDE          reduce using rule 31 (expression -> NUMBER .)
+    SEMICOLON       reduce using rule 31 (expression -> NUMBER .)
+    RPAREN          reduce using rule 31 (expression -> NUMBER .)
+
+
+state 41
+
+    (32) expression -> CHAR .
+
+    THEN            reduce using rule 32 (expression -> CHAR .)
+    PLUS            reduce using rule 32 (expression -> CHAR .)
+    MINUS           reduce using rule 32 (expression -> CHAR .)
+    TIMES           reduce using rule 32 (expression -> CHAR .)
+    DIVIDE          reduce using rule 32 (expression -> CHAR .)
+    SEMICOLON       reduce using rule 32 (expression -> CHAR .)
+    RPAREN          reduce using rule 32 (expression -> CHAR .)
+
+
+state 42
+
+    (33) expression -> ID .
+
+    THEN            reduce using rule 33 (expression -> ID .)
+    PLUS            reduce using rule 33 (expression -> ID .)
+    MINUS           reduce using rule 33 (expression -> ID .)
+    TIMES           reduce using rule 33 (expression -> ID .)
+    DIVIDE          reduce using rule 33 (expression -> ID .)
+    SEMICOLON       reduce using rule 33 (expression -> ID .)
+    RPAREN          reduce using rule 33 (expression -> ID .)
+
+
+state 43
+
+    (8) var_decl_line -> id_list COLON type . SEMICOLON
+
+    SEMICOLON       shift and go to state 56
+
+
+state 44
+
+    (11) type -> INTEGERTYPE .
+
+    SEMICOLON       reduce using rule 11 (type -> INTEGERTYPE .)
+
+
+state 45
+
+    (12) type -> BOOLEANTYPE .
+
+    SEMICOLON       reduce using rule 12 (type -> BOOLEANTYPE .)
+
+
+state 46
+
+    (13) type -> STRINGTYPE .
+
+    SEMICOLON       reduce using rule 13 (type -> STRINGTYPE .)
+
+
+state 47
+
+    (10) id_list -> id_list COMMA ID .
+
+    COLON           reduce using rule 10 (id_list -> id_list COMMA ID .)
+    COMMA           reduce using rule 10 (id_list -> id_list COMMA ID .)
+
+
+state 48
+
+    (20) simple_statement -> ID ASSIGN expression .
+    (26) expression -> expression . PLUS expression
+    (27) expression -> expression . MINUS expression
+    (28) expression -> expression . TIMES expression
+    (29) expression -> expression . DIVIDE expression
+
+    SEMICOLON       reduce using rule 20 (simple_statement -> ID ASSIGN expression .)
+    PLUS            shift and go to state 52
+    MINUS           shift and go to state 53
+    TIMES           shift and go to state 54
+    DIVIDE          shift and go to state 55
+
+
+state 49
+
+    (21) simple_statement -> WRITEFUNC LPAREN expression . RPAREN
+    (26) expression -> expression . PLUS expression
+    (27) expression -> expression . MINUS expression
+    (28) expression -> expression . TIMES expression
+    (29) expression -> expression . DIVIDE expression
+
+    RPAREN          shift and go to state 57
+    PLUS            shift and go to state 52
+    MINUS           shift and go to state 53
+    TIMES           shift and go to state 54
+    DIVIDE          shift and go to state 55
+
+
+state 50
+
+    (22) simple_statement -> WRITEFUNCLN LPAREN expression . RPAREN
+    (26) expression -> expression . PLUS expression
+    (27) expression -> expression . MINUS expression
+    (28) expression -> expression . TIMES expression
+    (29) expression -> expression . DIVIDE expression
+
+    RPAREN          shift and go to state 58
+    PLUS            shift and go to state 52
+    MINUS           shift and go to state 53
+    TIMES           shift and go to state 54
+    DIVIDE          shift and go to state 55
+
+
+state 51
+
+    (23) selection_statement -> IF expression THEN . statement
+    (24) selection_statement -> IF expression THEN . statement ELSE statement
+    (17) statement -> . simple_statement SEMICOLON
+    (18) statement -> . compound_statement SEMICOLON
+    (19) statement -> . selection_statement SEMICOLON
+    (20) simple_statement -> . ID ASSIGN expression
+    (21) simple_statement -> . WRITEFUNC LPAREN expression RPAREN
+    (22) simple_statement -> . WRITEFUNCLN LPAREN expression RPAREN
+    (25) compound_statement -> . BEGIN statement_list END
+    (23) selection_statement -> . IF expression THEN statement
+    (24) selection_statement -> . IF expression THEN statement ELSE statement
+
+    ID              shift and go to state 23
+    WRITEFUNC       shift and go to state 24
+    WRITEFUNCLN     shift and go to state 25
+    BEGIN           shift and go to state 11
+    IF              shift and go to state 26
+
+    statement                      shift and go to state 59
+    simple_statement               shift and go to state 20
+    compound_statement             shift and go to state 21
+    selection_statement            shift and go to state 22
+
+state 52
+
+    (26) expression -> expression PLUS . expression
+    (26) expression -> . expression PLUS expression
+    (27) expression -> . expression MINUS expression
+    (28) expression -> . expression TIMES expression
+    (29) expression -> . expression DIVIDE expression
+    (30) expression -> . STRING
+    (31) expression -> . NUMBER
+    (32) expression -> . CHAR
+    (33) expression -> . ID
+
+    STRING          shift and go to state 39
+    NUMBER          shift and go to state 40
+    CHAR            shift and go to state 41
+    ID              shift and go to state 42
+
+    expression                     shift and go to state 60
+
+state 53
+
+    (27) expression -> expression MINUS . expression
+    (26) expression -> . expression PLUS expression
+    (27) expression -> . expression MINUS expression
+    (28) expression -> . expression TIMES expression
+    (29) expression -> . expression DIVIDE expression
+    (30) expression -> . STRING
+    (31) expression -> . NUMBER
+    (32) expression -> . CHAR
+    (33) expression -> . ID
+
+    STRING          shift and go to state 39
+    NUMBER          shift and go to state 40
+    CHAR            shift and go to state 41
+    ID              shift and go to state 42
+
+    expression                     shift and go to state 61
+
+state 54
+
+    (28) expression -> expression TIMES . expression
+    (26) expression -> . expression PLUS expression
+    (27) expression -> . expression MINUS expression
+    (28) expression -> . expression TIMES expression
+    (29) expression -> . expression DIVIDE expression
+    (30) expression -> . STRING
+    (31) expression -> . NUMBER
+    (32) expression -> . CHAR
+    (33) expression -> . ID
+
+    STRING          shift and go to state 39
+    NUMBER          shift and go to state 40
+    CHAR            shift and go to state 41
+    ID              shift and go to state 42
+
+    expression                     shift and go to state 62
+
+state 55
+
+    (29) expression -> expression DIVIDE . expression
+    (26) expression -> . expression PLUS expression
+    (27) expression -> . expression MINUS expression
+    (28) expression -> . expression TIMES expression
+    (29) expression -> . expression DIVIDE expression
+    (30) expression -> . STRING
+    (31) expression -> . NUMBER
+    (32) expression -> . CHAR
+    (33) expression -> . ID
+
+    STRING          shift and go to state 39
+    NUMBER          shift and go to state 40
+    CHAR            shift and go to state 41
+    ID              shift and go to state 42
+
+    expression                     shift and go to state 63
+
+state 56
+
+    (8) var_decl_line -> id_list COLON type SEMICOLON .
+
+    ID              reduce using rule 8 (var_decl_line -> id_list COLON type SEMICOLON .)
+    BEGIN           reduce using rule 8 (var_decl_line -> id_list COLON type SEMICOLON .)
+
+
+state 57
+
+    (21) simple_statement -> WRITEFUNC LPAREN expression RPAREN .
+
+    SEMICOLON       reduce using rule 21 (simple_statement -> WRITEFUNC LPAREN expression RPAREN .)
+
+
+state 58
+
+    (22) simple_statement -> WRITEFUNCLN LPAREN expression RPAREN .
+
+    SEMICOLON       reduce using rule 22 (simple_statement -> WRITEFUNCLN LPAREN expression RPAREN .)
+
+
+state 59
+
+    (23) selection_statement -> IF expression THEN statement .
+    (24) selection_statement -> IF expression THEN statement . ELSE statement
+
+    SEMICOLON       reduce using rule 23 (selection_statement -> IF expression THEN statement .)
+    ELSE            shift and go to state 64
+
+
+state 60
+
+    (26) expression -> expression PLUS expression .
+    (26) expression -> expression . PLUS expression
+    (27) expression -> expression . MINUS expression
+    (28) expression -> expression . TIMES expression
+    (29) expression -> expression . DIVIDE expression
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+    THEN            reduce using rule 26 (expression -> expression PLUS expression .)
+    SEMICOLON       reduce using rule 26 (expression -> expression PLUS expression .)
+    RPAREN          reduce using rule 26 (expression -> expression PLUS expression .)
+    PLUS            shift and go to state 52
+    MINUS           shift and go to state 53
+    TIMES           shift and go to state 54
+    DIVIDE          shift and go to state 55
+
+  ! PLUS            [ reduce using rule 26 (expression -> expression PLUS expression .) ]
+  ! MINUS           [ reduce using rule 26 (expression -> expression PLUS expression .) ]
+  ! TIMES           [ reduce using rule 26 (expression -> expression PLUS expression .) ]
+  ! DIVIDE          [ reduce using rule 26 (expression -> expression PLUS expression .) ]
+
+
+state 61
+
+    (27) expression -> expression MINUS expression .
+    (26) expression -> expression . PLUS expression
+    (27) expression -> expression . MINUS expression
+    (28) expression -> expression . TIMES expression
+    (29) expression -> expression . DIVIDE expression
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+    THEN            reduce using rule 27 (expression -> expression MINUS expression .)
+    SEMICOLON       reduce using rule 27 (expression -> expression MINUS expression .)
+    RPAREN          reduce using rule 27 (expression -> expression MINUS expression .)
+    PLUS            shift and go to state 52
+    MINUS           shift and go to state 53
+    TIMES           shift and go to state 54
+    DIVIDE          shift and go to state 55
+
+  ! PLUS            [ reduce using rule 27 (expression -> expression MINUS expression .) ]
+  ! MINUS           [ reduce using rule 27 (expression -> expression MINUS expression .) ]
+  ! TIMES           [ reduce using rule 27 (expression -> expression MINUS expression .) ]
+  ! DIVIDE          [ reduce using rule 27 (expression -> expression MINUS expression .) ]
+
+
+state 62
+
+    (28) expression -> expression TIMES expression .
+    (26) expression -> expression . PLUS expression
+    (27) expression -> expression . MINUS expression
+    (28) expression -> expression . TIMES expression
+    (29) expression -> expression . DIVIDE expression
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+    THEN            reduce using rule 28 (expression -> expression TIMES expression .)
+    SEMICOLON       reduce using rule 28 (expression -> expression TIMES expression .)
+    RPAREN          reduce using rule 28 (expression -> expression TIMES expression .)
+    PLUS            shift and go to state 52
+    MINUS           shift and go to state 53
+    TIMES           shift and go to state 54
+    DIVIDE          shift and go to state 55
+
+  ! PLUS            [ reduce using rule 28 (expression -> expression TIMES expression .) ]
+  ! MINUS           [ reduce using rule 28 (expression -> expression TIMES expression .) ]
+  ! TIMES           [ reduce using rule 28 (expression -> expression TIMES expression .) ]
+  ! DIVIDE          [ reduce using rule 28 (expression -> expression TIMES expression .) ]
+
+
+state 63
+
+    (29) expression -> expression DIVIDE expression .
+    (26) expression -> expression . PLUS expression
+    (27) expression -> expression . MINUS expression
+    (28) expression -> expression . TIMES expression
+    (29) expression -> expression . DIVIDE expression
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+    THEN            reduce using rule 29 (expression -> expression DIVIDE expression .)
+    SEMICOLON       reduce using rule 29 (expression -> expression DIVIDE expression .)
+    RPAREN          reduce using rule 29 (expression -> expression DIVIDE expression .)
+    PLUS            shift and go to state 52
+    MINUS           shift and go to state 53
+    TIMES           shift and go to state 54
+    DIVIDE          shift and go to state 55
+
+  ! PLUS            [ reduce using rule 29 (expression -> expression DIVIDE expression .) ]
+  ! MINUS           [ reduce using rule 29 (expression -> expression DIVIDE expression .) ]
+  ! TIMES           [ reduce using rule 29 (expression -> expression DIVIDE expression .) ]
+  ! DIVIDE          [ reduce using rule 29 (expression -> expression DIVIDE expression .) ]
+
+
+state 64
+
+    (24) selection_statement -> IF expression THEN statement ELSE . statement
+    (17) statement -> . simple_statement SEMICOLON
+    (18) statement -> . compound_statement SEMICOLON
+    (19) statement -> . selection_statement SEMICOLON
+    (20) simple_statement -> . ID ASSIGN expression
+    (21) simple_statement -> . WRITEFUNC LPAREN expression RPAREN
+    (22) simple_statement -> . WRITEFUNCLN LPAREN expression RPAREN
+    (25) compound_statement -> . BEGIN statement_list END
+    (23) selection_statement -> . IF expression THEN statement
+    (24) selection_statement -> . IF expression THEN statement ELSE statement
+
+    ID              shift and go to state 23
+    WRITEFUNC       shift and go to state 24
+    WRITEFUNCLN     shift and go to state 25
+    BEGIN           shift and go to state 11
+    IF              shift and go to state 26
+
+    statement                      shift and go to state 65
+    simple_statement               shift and go to state 20
+    compound_statement             shift and go to state 21
+    selection_statement            shift and go to state 22
+
+state 65
+
+    (24) selection_statement -> IF expression THEN statement ELSE statement .
+
+    SEMICOLON       reduce using rule 24 (selection_statement -> IF expression THEN statement ELSE statement .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for PLUS in state 60 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 60 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 60 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 60 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 61 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 61 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 61 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 61 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 62 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 62 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 62 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 62 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 63 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 63 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 63 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 63 resolved as shift

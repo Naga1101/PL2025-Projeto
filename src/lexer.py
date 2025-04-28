@@ -27,6 +27,16 @@ tokens = (
     # --- Funções Predefinidas --- 
     'WRITEFUNC',
     'READFUNC',
+    'WRITEFUNCLN',
+    'READFUNCLN',
+    # --- Simbolos ---
+    'LPAREN',     # (
+    'RPAREN',     # )
+    'COMMA',      # ,
+    'COLON',      # :
+    'SEMICOLON',  # ;
+    'DOT',        # .
+    'ASSIGN',     # :=
     # --- Operators --- 
     'PLUS',
     'MINUS',
@@ -41,14 +51,6 @@ tokens = (
     'AND',
     'OR',
     'NOT', 
-    # --- Simbolos ---
-    'LPAREN',     # (
-    'RPAREN',     # )
-    'COMMA',      # ,
-    'COLON',      # :
-    'SEMICOLON',  # ;
-    'DOT',        # .
-    'ASSIGN',     # :=
     # --- Tipos ---
     'INTEGERTYPE',
     'BOOLEANTYPE',
@@ -173,11 +175,19 @@ def t_NOT(t):
 ## Funções Predefinidas
 
 def t_WRITEFUNC(t):
-    r'\bWrite\b'
+    r'\bWrite|write\b'
     return t
 
 def t_READFUNC(t):
-    r'\bReadLn\b'
+    r'\bRead|read\b'
+    return t
+
+def t_WRITEFUNCLN(t):
+    r'\bWriteln|writeln\b'
+    return t
+
+def t_READFUNCLN(t):
+    r'\bReadLn|readLn\b'
     return t
 
 ## Simbolos
@@ -305,7 +315,8 @@ def main():
     var1, var2: integer;
     begin
     var1 := 10;
-    var2 := 'a';
+    var2 := 'Ola, Mundo!';
+    Writeln writeln
     end.
     """
 

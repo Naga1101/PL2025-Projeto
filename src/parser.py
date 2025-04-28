@@ -2,9 +2,9 @@ from ply import yacc
 from lexer import tokens, lexer
 
 """
-P1: init → PROGRAM func_name
+P1: init → PROGRAM program_name
 
-P2: func_name → ID ';' var_decl_or_func
+P2: program_name → ID ';' var_decl_or_func
 
 P3: var_decl_or_func → var_decl begin_func
                      | begin_func
@@ -33,6 +33,7 @@ P11: statement → simple_statement SEMICOLON
                | selection_statement SEMICOLON
 
 P12: simple_statement → ID EQUALS expression
+                      | WRITEFUNC LPAREN expression RPAREN SEMICOLON
 
 P13: selection_statement → IF expression THEN statement
                          | IF expression THEN statement ELSE statement
@@ -43,25 +44,27 @@ P15: expression → expression PLUS expression
                 | expression MINUS expression
                 | expression TIMES expression
                 | expression DIVIDE expression
+                | STRING
                 | NUMBER
+                | CHAR
                 | ID
 """
 
 def p_init(p):
-    'init : PROGRAM func_name'
+    'init : PROGRAM program_name'
     p[0] = ("program", p[2])
 
-def p_func_name(p):
-    'func_name : ID SEMICOLON var_decl_or_func'
-    p[0] = ("functionName", p[1], p[3])
+def p_program_name(p):
+    'program_name : ID SEMICOLON var_decl_or_func'
+    p[0] = ("program_name", p[1], p[3])
 
 def p_var_decl_or_func(p):
     '''var_decl_or_func : var_decl begin_func
                         | begin_func'''
     if len(p) == 3:
-        p[0] = ("var_declaration", [p[1]] + [p[2]])
+        p[0] = (("var_declaration", p[1]), p[2])
     else:
-        p[0] = ("begin_function", p[1])
+        p[0] = (p[1])
 
 def p_var_decl(p):
     'var_decl : VAR var_decl_lines'
@@ -95,8 +98,58 @@ def p_type(p):
     p[0] = p[1]
 
 def p_begin_func(p):
-    'begin_func : BEGIN'
-    p[0] = "BEGIN_BLOCK"  # Falta a parte dos statements
+    'begin_func : compound_statement DOT'
+    p[0] = ("begin_block", p[1]) 
+
+
+
+def p_statement_list(p):
+    '''statement_list : statement
+                      | statement_list statement'''
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        p[0] = p[1] + [p[2]]
+
+def p_statement(p):
+    '''statement : simple_statement SEMICOLON
+                 | compound_statement SEMICOLON
+                 | selection_statement SEMICOLON'''
+    p[0] = p[1]
+
+def p_simple_statement(p):
+    '''simple_statement : ID ASSIGN expression
+                        | WRITEFUNC LPAREN expression RPAREN
+                        | WRITEFUNCLN LPAREN expression RPAREN'''
+    if p.slice[1].type == 'WRITEFUNC':
+        p[0] = (p[1], p[3])
+    elif p.slice[1].type == 'WRITEFUNCLN':
+        p[0] = (p[1], p[3])
+    else:
+        p[0] = ("Equals", p[1], p[3])
+
+def p_selection_statement(p):
+    '''selection_statement : IF expression THEN statement
+                           | IF expression THEN statement ELSE statement'''
+    p[0] = "reached selection statement"
+
+def p_compound_statement(p):
+    '''compound_statement : BEGIN statement_list END'''
+    p[0] = ("compound", p[2])
+
+def p_expression_binop(p):
+    '''expression : expression PLUS expression
+                  | expression MINUS expression
+                  | expression TIMES expression
+                  | expression DIVIDE expression'''
+    p[0] = ('binop', p[2], p[1], p[3])
+
+def p_expression_value(p):
+    '''expression : STRING
+                  | NUMBER
+                  | CHAR
+                  | ID'''
+    p[0] = p[1]
 
 def p_error(p):
     print(f"Syntax error at {p.value if p else 'EOF'}")
@@ -114,6 +167,9 @@ def test_parser(data):
 data0 = """
 program Maior3;
 begin
+    writeln('Ola, Mundo!');
+    write('Ola, Mundo!');
+end.
 """
 
 data1 = """
@@ -121,6 +177,9 @@ program Maior3;
 var
     num1, num2, num3, maior: Integer;
 begin
+    writeln('Ola, Mundo!');
+    write('Ola, Mundo!');
+end.
 """
 
 data2 = """
@@ -129,12 +188,14 @@ var
     num1, num2, num3, maior: Integer;
     bol1, bol2: Boolean;
 begin
+    write('Ola, Mundo!');
+end.
 """
 
 if __name__ == "__main__":
-    print("Primeiro teste:")
-    test_parser(data0)
-    print("Segundo teste:")
-    test_parser(data1)
-    print("Terceiro teste:")
+    #print("Primeiro teste:")
+    #test_parser(data0)
+    #print("Segundo teste:")
+    #test_parser(data1)
+    #print("Terceiro teste:")
     test_parser(data2)
