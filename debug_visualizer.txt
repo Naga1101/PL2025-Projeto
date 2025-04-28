@@ -1,0 +1,68 @@
+data0 output:
+('program', 
+    ('program_name', 'Maior3', 
+        ('begin_block', 
+            ('compound', 
+                [   
+                    ('writeln', 'Ola, Mundo!'), 
+                    ('write', 'Ola, Mundo!')
+                ]
+            )
+        )
+    )
+)
+
+data1 output:
+('program',
+    ('program_name', 'Maior3', 
+        (
+            ('var_declaration', 
+                ('var_decl_lines', 
+                    [
+                        (
+                            ('vars', ['num1', 'num2', 'num3', 'maior']), 
+                            ('type', 'Integer')
+                        )
+                    ]
+                )
+            ), 
+            ('begin_block', 
+                ('compound', 
+                    [
+                        ('writeln', 'Ola, Mundo!'), 
+                        ('write', 'Ola, Mundo!')
+                    ]
+                )
+            )
+        )
+    )
+)
+
+data2 output:
+('program', 
+    ('program_name', 'Maior3', 
+        (
+            ('var_declaration', 
+                ('var_decl_lines', 
+                    [
+                        (
+                            ('vars', ['num1', 'num2', 'num3', 'maior']), 
+                            ('type', 'Integer')
+                        ), 
+                        (
+                            ('vars', ['bol1', 'bol2']), 
+                            ('type', 'Boolean')
+                        )
+                    ]
+                )
+            ), 
+            ('begin_block', 
+                ('compound', 
+                    [
+                        ('write', 'Ola, Mundo!')
+                    ]
+                )
+            )
+        )
+    )
+)
