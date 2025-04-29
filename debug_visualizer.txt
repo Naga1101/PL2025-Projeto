@@ -1,68 +1,259 @@
 data0 output:
-('program', 
-    ('program_name', 'Maior3', 
-        ('begin_block', 
-            ('compound', 
-                [   
-                    ('writeln', 'Ola, Mundo!'), 
+(
+    'program',
+    {
+        'program_name': 'Maior3',
+        'program_body': {
+            'program_code': (
+                'compound',
+                [
+                    ('comment', '{ ISTO É UM COMENTARIO}'),
+                    ('writeln', 'Ola, Mundo!'),
                     ('write', 'Ola, Mundo!')
                 ]
             )
-        )
-    )
+        }
+    }
 )
 
 data1 output:
-('program',
-    ('program_name', 'Maior3', 
-        (
-            ('var_declaration', 
-                ('var_decl_lines', 
-                    [
-                        (
-                            ('vars', ['num1', 'num2', 'num3', 'maior']), 
-                            ('type', 'Integer')
-                        )
-                    ]
-                )
-            ), 
-            ('begin_block', 
-                ('compound', 
-                    [
-                        ('writeln', 'Ola, Mundo!'), 
-                        ('write', 'Ola, Mundo!')
-                    ]
-                )
+(
+    'program',
+    {
+        'program_name': 'Maior3',
+        'program_body': {
+            'var_declaration': (
+                'var_decl_lines',
+                [
+                    (
+                        ('vars', ['num1', 'num2', 'num3', 'maior']),
+                        ('type', 'Integer')
+                    )
+                ]
+            ),
+            'program_code': (
+                'compound',
+                [
+                    ('writeln', 'Ola, Mundo!'),
+                    ('write', 'Ola, Mundo!')
+                ]
             )
-        )
-    )
+        }
+    }
 )
 
 data2 output:
-('program', 
-    ('program_name', 'Maior3', 
-        (
-            ('var_declaration', 
-                ('var_decl_lines', 
-                    [
-                        (
-                            ('vars', ['num1', 'num2', 'num3', 'maior']), 
-                            ('type', 'Integer')
-                        ), 
-                        (
-                            ('vars', ['bol1', 'bol2']), 
-                            ('type', 'Boolean')
-                        )
-                    ]
-                )
-            ), 
-            ('begin_block', 
-                ('compound', 
-                    [
-                        ('write', 'Ola, Mundo!')
-                    ]
-                )
+(
+    'program',
+    {
+        'program_name': 'Maior3',
+        'program_body': {
+            'var_declaration': (
+                'var_decl_lines',
+                [
+                    (
+                        ('vars', ['num1', 'num2', 'num3', 'maior']),
+                        ('type', 'Integer')
+                    ),
+                    (
+                        ('vars', ['bol1', 'bol2']),
+                        ('type', 'Boolean')
+                    )
+                ]
+            ),
+            'program_code': (
+                'compound',
+                [
+                    ('write', 'Ola, Mundo!')
+                ]
             )
-        )
-    )
+        }
+    }
+)
+
+data3 output:
+('program', 
+    {
+        'program_name': 'Maior3', 
+        'program_body': 
+            {
+                'var_declaration': 
+                    ('var_decl_lines', 
+                        [
+                            (
+                                ('vars', ['num1', 'num2', 'num3', 'maior']), 
+                                ('type', 'Integer')
+                            )
+                        ]
+                    ), 
+                'program_code': 
+                    ('compound', 
+                        [
+                            ('writeln', 'Ola, Mundo!'), 
+                            ('write', 'Ola, Mundo!'), 
+                            ('if', 
+                                {
+                                    'case': ('binop', '>', 'num1', 0), 
+                                    'do': ('writeln', 'num1 is positive')
+                                }
+                            ), 
+                            ('if', 
+                                {
+                                    'case': ('binop', '>', 'num1', 0), 
+                                    'do': (
+                                        'compound', 
+                                        [
+                                            ('writeln', 'num1 is positive'), 
+                                            ('Assign', 'num2', ('binop', '+', 'num2', 1)), 
+                                            ('Assign', 'num3', ('binop', '*', 'num3', 2))
+                                        ]
+                                    ),
+                                    'else': ('writeln', 'num1 is negative')
+                                }
+                            ), 
+                            ('for', 
+                                {
+                                    'var': 'num2', 
+                                    'start': 1, 
+                                    'end': 5, 
+                                    'direction': 'to', 
+                                    'body': ('write', 'num2')
+                                }
+                            )
+                        ]
+                    )
+            }
+    }
+)
+
+data4 output:
+(
+    'program',
+    {
+        'program_name': 'SumExample',
+        'program_body': {
+            'functions': [
+                (
+                    'function',
+                    {
+                        'name': 'Add',
+                        'parameters': [
+                            (('vars', ['a']), ('type', 'integer')),
+                            (('vars', ['b']), ('type', 'integer'))
+                        ],
+                        'return_type': 'integer',
+                        'body': (
+                            'compound',
+                            [
+                                ('writeln', 'num1 is positive')
+                            ]
+                        )
+                    }
+                )
+            ],
+            'var_declaration': (
+                'var_decl_lines',
+                [
+                    (
+                        ('vars', ['num1', 'num2', 'result']),
+                        ('type', 'integer')
+                    )
+                ]
+            ),
+            'program_code': (
+                'compound',
+                [
+                    ('Assign', 'num1', 5),
+                    ('Assign', 'num2', 3),
+                    (
+                        'Assign',
+                        'result',
+                        (
+                            'Function_call',
+                            {
+                                'name': 'Add',
+                                'args': ['num1', 'num2']
+                            }
+                        )
+                    ),
+                    ('writeln', 'The sum is: ')
+                ]
+            )
+        }
+    }
+)
+
+data5 output:
+(
+    'program',
+    {
+        'program_name': 'SumExample',
+        'program_body': {
+            'functions': [
+                (
+                    'function',
+                    {
+                        'name': 'Add',
+                        'parameters': [
+                            (('vars', ['a']), ('type', 'integer')),
+                            (('vars', ['b']), ('type', 'integer'))
+                        ],
+                        'return_type': 'integer',
+                        'body': (
+                            'compound',
+                            [
+                                ('writeln', 'num1 is positive')
+                            ]
+                        )
+                    }
+                ),
+                (
+                    'function',
+                    {
+                        'name': 'Add',
+                        'parameters': [
+                            (('vars', ['a']), ('type', 'integer')),
+                            (('vars', ['b']), ('type', 'integer'))
+                        ],
+                        'return_type': 'integer',
+                        'body': (
+                            'compound',
+                            [
+                                (
+                                    'Assign','x',('binop', '+', 'a', 'b')
+                                )
+                            ]
+                        )
+                    }
+                )
+            ],
+            'var_declaration': (
+                'var_decl_lines',
+                [
+                    (
+                        ('vars', ['num1', 'num2', 'result']),
+                        ('type', 'integer')
+                    )
+                ]
+            ),
+            'program_code': (
+                'compound',
+                [
+                    ('Assign', 'num1', 5),
+                    ('Assign', 'num2', 3),
+                    (
+                        'Assign',
+                        'result',
+                        ('Function_call',
+                            {
+                                'name': 'Add',
+                                'args': ['num1', 'num2']
+                            }
+                        )
+                    ),
+                    ('writeln', 'The sum is: ')
+                ]
+            )
+        }
+    }
 )
