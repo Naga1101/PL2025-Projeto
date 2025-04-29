@@ -59,6 +59,8 @@ tokens = (
     'STRING',     # 'string'
     'CHAR',
     'NUMBER',     # 123
+    # --- Comentario ---
+    'COMMENT',
     # --- Identificadores ---
     'ID' 
 )
@@ -293,6 +295,11 @@ def t_STRING(t):
     t.value = value
     return t
 
+## Comentarios
+
+def t_COMMENT(t):
+    r'\{[^}]*\}'
+    return t
 
 ## Identifiers
 
@@ -317,6 +324,9 @@ def main():
     var1 := 10;
     var2 := 'Ola, Mundo!';
     Writeln writeln
+    { Ler 3 números }
+    { Ler 4 
+    números }
     end.
     """
 

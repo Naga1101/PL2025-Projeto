@@ -112,10 +112,14 @@ def p_statement_list(p):
         p[0] = p[1] + [p[2]]
 
 def p_statement(p):
-    '''statement : simple_statement SEMICOLON
+    '''statement : COMMENT
+                 | simple_statement SEMICOLON
                  | compound_statement SEMICOLON
                  | selection_statement SEMICOLON'''
-    p[0] = p[1]
+    if p.slice[1].type == 'COMMENT':
+        p[0] = ("comment", p[1])
+    else:
+        p[0] = p[1]
 
 def p_simple_statement(p):
     '''simple_statement : ID ASSIGN expression
@@ -126,7 +130,7 @@ def p_simple_statement(p):
     elif p.slice[1].type == 'WRITEFUNCLN':
         p[0] = (p[1], p[3])
     else:
-        p[0] = ("Equals", p[1], p[3])
+        p[0] = ("Assign", p[1], p[3])
 
 def p_selection_statement(p):
     '''selection_statement : IF expression THEN statement
@@ -167,6 +171,7 @@ def test_parser(data):
 data0 = """
 program Maior3;
 begin
+    { ISTO É UM COMENTARIO}
     writeln('Ola, Mundo!');
     write('Ola, Mundo!');
 end.
@@ -194,8 +199,8 @@ end.
 
 if __name__ == "__main__":
     #print("Primeiro teste:")
-    #test_parser(data0)
+    test_parser(data0)
     #print("Segundo teste:")
     #test_parser(data1)
     #print("Terceiro teste:")
-    test_parser(data2)
+    #test_parser(data2)
