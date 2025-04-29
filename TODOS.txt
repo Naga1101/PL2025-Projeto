@@ -1,30 +1,7 @@
 - criar um ficheiro output que colo os comandos na vm
-- bloco statements com todos os caminhos possiveis
 - criar mais testes no futuro
-- fazer funções para todas as keywords e meter o ID no fim
 
 -- Passar do de cima para o de baixo
-
-P9 - statements --> writeln | read | + | - | var | comentarios | ... | end
-P10 writeln --> writeln (  String ) ; statements
-.
-.
-.
-Pxx end --> end
-
-program : statement_list
-
-statement_list : statement | statement_list
-
-statement : ID EQUALS expression SEMICOLON 
-          | PRINT LPAREN expression RPAREN SEMICOLON
-
-expression : expression PLUS expression
-           | expression MINUS expression
-           | expression TIMES expression
-           | expression DIVIDE expression
-           | NUMBER
-           | ID
 
 statement_list
   └── statement
@@ -35,4 +12,4 @@ statement_list
               └── if expression then statement else statement
 
 
-Data de entrega -
+Data de entrega - 26/5
