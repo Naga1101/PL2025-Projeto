@@ -22,6 +22,7 @@ tokens = (
     'DOWNTO',
     'REPEAT',
     'UNTIL',
+    'BREAK',
     'CASE',
     'OF',
     # --- Funções Predefinidas --- 
@@ -29,6 +30,7 @@ tokens = (
     'READFUNC',
     'WRITEFUNCLN',
     'READFUNCLN',
+    'LENGTHFUNC',
     # --- Simbolos ---
     'LPAREN',     # (
     'RPAREN',     # )
@@ -86,92 +88,95 @@ def t_END(t):
     return t
 
 def t_FUNCTION(t):
-    r"\bfunction\b"
+    r'\bfunction\b'
     return t
 
 def t_PROCEDURE(t):
-    r"\bprocedure\b"
+    r'\bprocedure\b'
     return t
 
 def t_CONST(t):
-    r"\bconst\b"
+    r'\bconst\b'
     return t
 
 def t_TYPE(t):
-    r"\btype\b"
+    r'\btype\b'
     return t
 
 def t_IF(t):
-    r"\bif\b"
+    r'\bif\b'
     return t
 
 
 def t_THEN(t):
-    r"\bthen\b"
+    r'\bthen\b'
     return t
 
 
 def t_ELSE(t):
-    r"\belse\b"
+    r'\belse\b'
     return t
 
 
 def t_WHILE(t):
-    r"\bwhile\b"
+    r'\bwhile\b'
     return t
 
 
 def t_DO(t):
-    r"\bdo\b"
+    r'\bdo\b'
     return t
 
 
 def t_FOR(t):
-    r"\bfor\b"
+    r'\bfor\b'
     return t
 
 
 def t_TO(t):
-    r"\bto\b"
+    r'\bto\b'
     return t
 
 
 def t_DOWNTO(t):
-    r"\bdownto\b"
+    r'\bdownto\b'
     return t
 
 
 def t_REPEAT(t):
-    r"\brepeat\b"
+    r'\brepeat\b'
     return t
 
 
 def t_UNTIL(t):
-    r"\buntil\b"
+    r'\buntil\b'
     return t
 
+def t_BREAK(t):
+    r'\bbreak\b'
+    return t
 
 def t_CASE(t):
-    r"\bcase\b"
+    r'\bcase\b'
     return t
 
 
 def t_OF(t):
-    r"\bof\b"
+    r'\bof\b'
     return t
 
 def t_AND(t):
-    r"\band\b"
+    r'\band\b'
     return t
 
 
 def t_OR(t):
-    r"\bor\b"
+    r'\bor\b'
     return t
 
 
 def t_NOT(t):
-    r"\bnot\b"
+    r'\bnot\b'
     return t
 
 ## Funções Predefinidas
@@ -190,6 +195,10 @@ def t_WRITEFUNCLN(t):
 
 def t_READFUNCLN(t):
     r'\bReadLn|readLn\b'
+    return t
+
+def t_LENGTHFUNC(t):
+    r'\bLength\b|\blength\b'
     return t
 
 ## Simbolos
@@ -225,57 +234,57 @@ def t_DOT(t):
 ## Operadores
 
 def t_PLUS(t):
-    r"\+"
+    r'\+'
     return t
 
 def t_MINUS(t):
-    r"-"
+    r'-'
     return t
 
 def t_TIMES(t):
-    r"\*"
+    r'\*'
     return t
 
 def t_DIVIDE(t):
-    r"/"
+    r'/'
     return t
 
 def t_EQ(t):
-    r"="
+    r'='
     return t
 
 def t_NE(t): 
-    r"<>"
+    r'<>'
     return t
 
 def t_LE(t): 
-    r"<="
+    r'<='
     return t
 
 def t_LT(t): 
-    r"<"
+    r'<'
     return t
 
 def t_GE(t): 
-    r">="
+    r'>='
     return t
 
 def t_GT(t): 
-    r">"
+    r'>'
     return t
 
 ## Tipos de variáveis
 
 def t_INTEGERTYPE(t):
-    r'\bInteger\b'
+    r'\bInteger\b|\binteger\b'
     return t
 
 def t_BOOLEANTYPE(t):
-    r'\bBoolean\b'
+    r'\bBoolean\b|\bboolean\b'
     return t
 
 def t_STRINGTYPE(t):
-    r'\bString\b'
+    r'\bString\b|\bstring\b'
     return t
 
 ## Literais
@@ -322,7 +331,7 @@ def main():
     var1, var2: integer;
     begin
     var1 := 10;
-    var2 := 'Ola, Mundo!';
+    var2 := "Ola, Mundo!";
     Writeln writeln
     { Ler 3 números }
     { Ler 4 
@@ -336,5 +345,5 @@ def main():
     for tok in lexer:
         print(f"{tok.type}({tok.value}) at line {tok.lineno}, position {tok.lexpos}")
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
