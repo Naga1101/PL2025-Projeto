@@ -32,6 +32,9 @@ tokens = (
     'READFUNCLN',
     'LENGTHFUNC',
     'ARRAY',
+    'ORDFUNC',
+    'PREDFUNC',
+    'SUCCFUNC',
     # --- Simbolos ---
     'LBRACKET',   # [
     'RBRACKET',   # ]
@@ -203,6 +206,18 @@ def t_READFUNCLN(t):
 
 def t_LENGTHFUNC(t):
     r'\bLength\b|\blength\b'
+    return t
+
+def t_ORDFUNC(t):
+    r'\b[oO]rd\b'
+    return t
+
+def t_PREDFUNC(t):
+    r'\b[pP]red\b'
+    return t
+
+def t_SUCCFUNC(t):
+    r'\b[sS]ucc\b'
     return t
 
 def t_ARRAY(t):
