@@ -154,9 +154,13 @@ def p_id_list(p):
 
 def p_type(p):
     '''type : INTEGERTYPE
-                      | BOOLEANTYPE
-                      | STRINGTYPE'''
-    p[0] = p[1]
+            | BOOLEANTYPE
+            | STRINGTYPE
+            | ARRAY LBRACKET NUMBER DOTDOT NUMBER RBRACKET OF type'''
+    if p.slice[1].type == 'ARRAY':
+        p[0] = ('array', {'low': p[3], 'high': p[5], 'elem_type': p[8]})
+    else:
+        p[0] = p[1]
 
 def p_begin_progr(p):
     'begin_progr : compound_statement DOT'
@@ -184,13 +188,16 @@ def p_statement(p):
 def p_simple_statement(p):
     '''simple_statement : ID ASSIGN expression
                         | WRITEFUNC LPAREN expression RPAREN
-                        | WRITEFUNCLN LPAREN expression RPAREN'''
-    if p.slice[1].type == 'WRITEFUNC':
-        p[0] = (p[1], p[3])
-    elif p.slice[1].type == 'WRITEFUNCLN':
-        p[0] = (p[1], p[3])
+                        | WRITEFUNCLN LPAREN expression RPAREN
+                        | READFUNC LPAREN ID RPAREN
+                        | READFUNCLN LPAREN ID RPAREN'''
+    kind = p.slice[1].type
+    if kind in ('WRITEFUNC', 'WRITEFUNCLN'):
+        p[0] = ('write', p[3])
+    elif kind in ('READFUNC', 'READFUNCLN'):
+        p[0] = ('read', p[3])
     else:
-        p[0] = ("Assign", p[1], p[3])
+        p[0] = ("assign", p[1], p[3])
 
 def p_compound_statement(p):
     '''compound_statement : BEGIN statement_list END'''

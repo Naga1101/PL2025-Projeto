@@ -31,7 +31,11 @@ tokens = (
     'WRITEFUNCLN',
     'READFUNCLN',
     'LENGTHFUNC',
+    'ARRAY',
     # --- Simbolos ---
+    'LBRACKET',   # [
+    'RBRACKET',   # ]
+    'DOTDOT',     # ..
     'LPAREN',     # (
     'RPAREN',     # )
     'COMMA',      # ,
@@ -201,7 +205,23 @@ def t_LENGTHFUNC(t):
     r'\bLength\b|\blength\b'
     return t
 
+def t_ARRAY(t):
+    r'\barray\b'
+    return t
+
 ## Simbolos
+
+def t_DOTDOT(t):
+    r'\.\.'
+    return t
+
+def t_LBRACKET(t): 
+    r'\['
+    return t
+
+def t_RBRACKET(t): 
+    r'\]'
+    return t
 
 def t_LPAREN(t): 
     r'\('
