@@ -187,15 +187,15 @@ def p_statement(p):
 
 def p_simple_statement(p):
     '''simple_statement : ID ASSIGN expression
-                        | WRITEFUNC LPAREN expression RPAREN
-                        | WRITEFUNCLN LPAREN expression RPAREN
-                        | READFUNC LPAREN ID RPAREN
-                        | READFUNCLN LPAREN ID RPAREN'''
-    kind = p.slice[1].type
-    if kind in ('WRITEFUNC', 'WRITEFUNCLN'):
-        p[0] = ('write', p[3])
-    elif kind in ('READFUNC', 'READFUNCLN'):
-        p[0] = ('read', p[3])
+                        | WRITEFUNC expression
+                        | WRITEFUNCLN expression
+                        | READFUNC expression
+                        | READFUNCLN expression'''
+    function = p.slice[1].type
+    if function in ('WRITEFUNC', 'WRITEFUNCLN'):
+        p[0] = ('write', p[2])
+    elif function in ('READFUNC', 'READFUNCLN'):
+        p[0] = ('read', p[2])
     else:
         p[0] = ("assign", p[1], p[3])
 
@@ -235,15 +235,20 @@ def p_expression_binop(p):
                   | expression MINUS expression
                   | expression TIMES expression
                   | expression DIVIDE expression
+                  | expression AND expression
                   | expression GT expression
                   | expression LT expression
                   | expression GE expression
                   | expression LE expression
-                  | expression EQUALS expression
-                  | expression NOTEQUAL expression
-                  | expression AND expression
+                  | expression EQ expression
+                  | expression NE expression
                   | expression OR expression'''
     p[0] = ('binop', p[2], p[1], p[3])
+    p[0] = ('binop', {
+        'type': p[2],
+        'left': p[1],
+        'right': p[3],
+    })
 
 def p_expression_value(p):
     '''expression : STRING
@@ -269,11 +274,15 @@ def p_expression_list(p):
 
 def p_expression_not(p):
     'expression : NOT expression'
-    p[0] = ('unop', 'NOT', p[2])
+    p[0] = ('NOT', p[2])
+
+def p_expression_builtinfunction(p): ###
+    'expression : LENGTHFUNC expression'
+    p[0] = ("length", p[2])
     
 def p_expression_group(p):
     'expression : LPAREN expression RPAREN'
-    p[0] = ("expression_group", p[2])
+    p[0] = p[2]
 
 def p_error(p):
     print(f"Syntax error at {p.value if p else 'EOF'}")
@@ -301,9 +310,12 @@ data1 = """
 program Maior3;
 var
     num1, num2, num3, maior: Integer;
+    numeros: array[1..5] of integer;
 begin
+    read(num1);
     writeln('Ola, Mundo!');
     write('Ola, Mundo!');
+    num2 := length(numeros);
 end.
 """
 
@@ -392,14 +404,14 @@ begin
     x := 1 + 2 * 3;
     y := (1 + 2) * 3;
     z := x - y;
-    b := x > y or y = z and not b;
 end.
 """
 
 if __name__ == "__main__":
-    #test_parser(data0)
+    test_parser(data0)
     #test_parser(data1)
     #test_parser(data2)
-    test_parser(data3)
+    #test_parser(data3)
     #test_parser(data4)
     #test_parser(data5)
+    #test_parser(data6)

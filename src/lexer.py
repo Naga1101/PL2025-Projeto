@@ -186,7 +186,7 @@ def t_NOT(t):
 ## Funções Predefinidas
 
 def t_WRITEFUNC(t):
-    r'\bWrite|write\b'
+    r'Write|write\b'
     return t
 
 def t_READFUNC(t):

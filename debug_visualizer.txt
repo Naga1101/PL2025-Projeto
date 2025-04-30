@@ -28,14 +28,27 @@ data1 output:
                     (
                         ('vars', ['num1', 'num2', 'num3', 'maior']),
                         ('type', 'Integer')
+                    ),
+                    (
+                        ('vars', ['numeros']),
+                        ('type', (
+                            'array',
+                            {
+                                'low': 1,
+                                'high': 5,
+                                'elem_type': 'integer'
+                            }
+                        ))
                     )
                 ]
             ),
             'program_code': (
                 'compound',
                 [
-                    ('writeln', 'Ola, Mundo!'),
-                    ('write', 'Ola, Mundo!')
+                    ('read', 'num1'),
+                    ('write', 'Ola, Mundo!'),
+                    ('write', 'Ola, Mundo!'),
+                    ('assign', 'num2', ('length', 'numeros'))
                 ]
             )
         }
