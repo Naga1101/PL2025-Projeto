@@ -235,7 +235,14 @@ def p_expression_binop(p):
                   | expression MINUS expression
                   | expression TIMES expression
                   | expression DIVIDE expression
-                  | expression GT expression'''
+                  | expression GT expression
+                  | expression LT expression
+                  | expression GE expression
+                  | expression LE expression
+                  | expression EQUALS expression
+                  | expression NOTEQUAL expression
+                  | expression AND expression
+                  | expression OR expression'''
     p[0] = ('binop', p[2], p[1], p[3])
 
 def p_expression_value(p):
@@ -259,6 +266,14 @@ def p_expression_list(p):
         p[0] = [p[1]]
     else:
         p[0] = p[1] + [p[3]]
+
+def p_expression_not(p):
+    'expression : NOT expression'
+    p[0] = ('unop', 'NOT', p[2])
+    
+def p_expression_group(p):
+    'expression : LPAREN expression RPAREN'
+    p[0] = ("expression_group", p[2])
 
 def p_error(p):
     print(f"Syntax error at {p.value if p else 'EOF'}")
@@ -365,6 +380,19 @@ begin
     num2 := 3;
     result := Add(num1, num2);
     writeln('The sum is: ');
+end.
+"""
+
+data6 = """
+program OpTest;
+var
+    x, y, z: integer;
+    b: boolean;
+begin
+    x := 1 + 2 * 3;
+    y := (1 + 2) * 3;
+    z := x - y;
+    b := x > y or y = z and not b;
 end.
 """
 
