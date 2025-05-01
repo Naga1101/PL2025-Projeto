@@ -277,19 +277,19 @@ def p_expression_not(p):
     p[0] = ('NOT', p[2])
 
 def p_expression_builtinfunction(p): ###
-    '''expression : LENGTHFUNC LPAREN expression RPAREN
-                  | ORDFUNC    LPAREN expression RPAREN
-                  | PREDFUNC   LPAREN expression RPAREN
-                  | SUCCFUNC   LPAREN expression RPAREN'''
+    '''expression : ORDFUNC    expression
+                  | PREDFUNC   expression
+                  | SUCCFUNC   expression
+                  | LENGTHFUNC expression'''
     function = p.slice[1].type
     if function == 'LENGTHFUNC':
-        p[0] = ('length', p[3])
+        p[0] = ('length', p[2])
     elif function == 'ORDFUNC':
-        p[0] = ('ord', p[3])
+        p[0] = ('ord', p[2])
     elif function == 'PREDFUNC':
-        p[0] = ('pred', p[3])
+        p[0] = ('pred', p[2])
     else:
-        p[0] = ('succ', p[3])
+        p[0] = ('succ', p[2])
     
 def p_expression_group(p):
     'expression : LPAREN expression RPAREN'
