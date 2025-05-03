@@ -68,6 +68,7 @@ tokens = (
     'STRING',     # 'string'
     'CHAR',
     'NUMBER',     # 123
+    'FLOAT',
     # --- Comentario ---
     'COMMENT',
     # --- Identificadores ---
@@ -325,6 +326,11 @@ def t_STRINGTYPE(t):
 ## Literais
 
 ### Literais numéricos
+def t_FLOAT(t):
+    r'\d+\.\d+'
+    t.value = float(t.value)
+    return t
+
 def t_NUMBER(t):
     r'\d+'
     t.value = int(t.value)

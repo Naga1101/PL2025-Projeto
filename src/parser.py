@@ -75,16 +75,44 @@ def p_program_name(p):
             'program_body': p[3],
         })
 
-def p_program_body(p):
-    '''program_body : func_decls var_decl begin_progr
-                    | func_decls  begin_progr
+def p_program_body(p):  # Assumir que vem sempre na ordem correta ou fazer uma lista de declarations para apanahr qualquer ordem
+    '''program_body : const_decls func_decls var_decl begin_progr
+                    | func_decls var_decl begin_progr
+                    | const_decls var_decl begin_progr
+                    | const_decls func_decls begin_progr
+                    | const_decls begin_progr
+                    | func_decls begin_progr
                     | var_decl begin_progr
                     | begin_progr'''
-    if len(p) == 4:
+    if len(p) == 5:
+        p[0] = ({
+            'consts': p[1],
+            'functions': p[2],
+            'var_declaration': p[3],
+            'program_code': p[4],
+        })
+    elif len(p) == 4 and p.slice[1].type == 'func_decls':
         p[0] = ({
             'functions': p[1],
             'var_declaration': p[2],
             'program_code': p[3],
+        })
+    elif len(p) == 4 and p.slice[1].type == 'const_decls' and p.slice[2].type == 'var_decl':
+        p[0] = ({
+            'consts': p[1],
+            'var_declaration': p[2],
+            'program_code': p[3],
+        })
+    elif len(p) == 4 and p.slice[1].type == 'const_decls' and p.slice[2].type == 'func_decls':
+        p[0] = ({
+            'consts': p[1],
+            'functions': p[2],
+            'program_code': p[3],
+        })
+    elif  len(p) == 3 and p.slice[1].type == 'const_decls':
+        p[0] = ({
+            'consts': p[1],
+            'program_code': p[2],
         })
     elif  len(p) == 3 and p.slice[1].type == 'func_decls':
         p[0] = ({
@@ -100,6 +128,25 @@ def p_program_body(p):
         p[0] = ({
             'program_code': p[1],
         })
+
+def p_const_decls(p):
+    '''const_decls : CONST const_decl_list'''
+    p[0] = p[2]
+
+def p_const_decl_list(p):
+    '''const_decl_list : const_decl 
+                       | const_decl_list const_decl'''
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        p[0] = p[1] + [p[2]]
+
+def p_const_decl(p):
+    'const_decl : ID EQ expression SEMICOLON'
+    p[0] = ('const', {
+        'name': p[1],
+        'value': p[3]
+    })
 
 def p_func_decls(p):
     '''func_decls : func_decl 
@@ -179,6 +226,7 @@ def p_statement(p):
                  | simple_statement SEMICOLON
                  | compound_statement SEMICOLON
                  | selection_statement
+                 | while_statement
                  | for_statement'''
     if p.slice[1].type == 'COMMENT':
         p[0] = ("comment", p[1])
@@ -190,12 +238,15 @@ def p_simple_statement(p):
                         | WRITEFUNC expression
                         | WRITEFUNCLN expression
                         | READFUNC expression
-                        | READFUNCLN expression'''
+                        | READFUNCLN expression
+                        | BREAK'''
     function = p.slice[1].type
     if function in ('WRITEFUNC', 'WRITEFUNCLN'):
         p[0] = ('write', p[2])
     elif function in ('READFUNC', 'READFUNCLN'):
         p[0] = ('read', p[2])
+    elif function == 'BREAK':
+        p[0] = ('break')
     else:
         p[0] = ("assign", p[1], p[3])
 
@@ -230,6 +281,13 @@ def p_for_statement(p):
         'body': p[8]
     })
 
+def p_while_statement(p):
+    'while_statement : WHILE expression DO statement'
+    p[0] = ('while', {
+        'condition': p[2],
+        'body': p[4]
+    })
+
 def p_expression_binop(p):
     '''expression : expression PLUS expression
                   | expression MINUS expression
@@ -253,6 +311,7 @@ def p_expression_binop(p):
 def p_expression_value(p):
     '''expression : STRING
                   | NUMBER
+                  | FLOAT
                   | CHAR
                   | ID'''
     p[0] = p[1]
@@ -418,11 +477,41 @@ begin
 end.
 """
 
+# dar fix ao write para funcionar com ("texto", 1)
+data7 = """
+program MultiConstExample;
+
+const
+  Pi = 3.14159;
+  MaxValue = 100;
+  Greeting = 'Hello, Pascal!';
+  NewLine = #10;
+
+var
+  counter: integer;
+
+begin
+  writeln(Greeting);
+  writeln('Pi');
+  writeln('Max');
+
+  counter := 0;
+  while counter < MaxValue do
+  begin
+    writeln('Counter is: counter');
+    if counter = 5 then
+      break;
+    counter := counter + 1;
+  end;
+end.
+"""
+
 if __name__ == "__main__":
     # test_parser(data0)
     #test_parser(data1)
     #test_parser(data2)
     #test_parser(data3)
     #test_parser(data4)
-    test_parser(data5)
+    # test_parser(data5)
     # test_parser(data6)
+    test_parser(data7)
