@@ -312,6 +312,8 @@ def p_expression_value(p):
     '''expression : STRING
                   | NUMBER
                   | FLOAT
+                  | FALSE
+                  | TRUE
                   | CHAR
                   | ID'''
     p[0] = p[1]

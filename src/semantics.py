@@ -1,5 +1,13 @@
 import ast
 
+conversor_tipos = {
+    'int': 'integer',
+    'float': 'float',
+    'str': 'string',
+    'bool': 'boolean',
+    'NoneType': 'void',
+}
+
 def test_parser(data):
     ast_tree = ast.literal_eval(data)
 
@@ -9,6 +17,18 @@ def test_parser(data):
     tabela_simbolos_global = {}
     tabela_funcoes = {}
 
+    consts = program_body.get('consts')
+    if consts:
+        for kind, const_content in consts:
+            if kind == 'const':
+                const_name = const_content['name']
+                const_value = const_content['value']
+                tabela_simbolos_global[const_name] = {
+                    'kind': 'const',
+                    'type': conversor_tipos.get(type(const_value).__name__, type(const_value).__name__),
+                    'value': const_value
+                }
+
     var_decl = program_body.get('var_declaration')
     if var_decl and var_decl[0] == 'var_decl_lines':
         for decl in var_decl[1]:
@@ -17,7 +37,8 @@ def test_parser(data):
             for var in vars_list:
                 tabela_simbolos_global[var] = {
                     'kind': 'var',
-                    'type': var_type
+                    'type': var_type,
+                    'value': ''
                 }
 
     functions = program_body.get('functions')
@@ -38,7 +59,8 @@ def test_parser(data):
 
             tabela_simbolos_global[func_name] = {
                 'kind': kind,
-                'type': return_type
+                'type': return_type,
+                'value': ''
             }
 
             tabela_funcoes[func_name] = {
@@ -47,17 +69,17 @@ def test_parser(data):
                 'func_body': body
             }
 
-
     label1 = "Nome"
     label2 = "Kind"
     label3 = "Tipo"
     label4 = "Valor de Retorno"
     label5 = "Parametros de entrada"
     label6 = "Corpo da Função"
+    label7 = "Valor"
     print("Tabela de Simbolos:")
-    print(f"{label1:10} | {label2:8} | {label3}")
+    print(f"{label1:10} | {label2:8} | {label3:7} | {label7}")
     for name, info in tabela_simbolos_global.items():
-        print(f"{name:10} | {info['kind']:8} | {info['type']}")
+        print(f"{name:10} | {info['kind']:8} | {info['type']:7} | {info['value']}")
     
     print()
     print("Tabela de Funções:")
@@ -68,7 +90,7 @@ def test_parser(data):
     
 
 data5 = """
-('program',{'program_name':'SumExample','program_body':{'functions':[('function',{'name':'Add','parameters':[(('vars', ['a']), ('type', 'integer')),(('vars', ['b']), ('type', 'integer'))],'return_type':'integer','body':('compound',[('writeln', 'num1 is positive')])}),('function',{'name': 'Add','parameters':[(('vars', ['a']), ('type', 'integer')),(('vars', ['b']), ('type', 'integer'))],'return_type': 'integer','body':('compound',[('Assign','x',('binop', '+', 'a', 'b'))])})],'var_declaration':('var_decl_lines',[(('vars', ['num1', 'num2', 'result']),('type', 'integer'))]),'program_code':('compound',[('Assign', 'num1', 5),('Assign', 'num2', 3),('Assign','result',('Function_call',{'name': 'Add','args': ['num1', 'num2']})),('writeln', 'The sum is: ')])}})
+('program',{'program_name':'SumExample','program_body':{'consts': [('const', {'name': 'Pi', 'value': 3.14159}), ('const', {'name': 'MaxValue', 'value': 100}), ('const', {'name': 'Greeting', 'value': 'Hello, Pascal!'}), ('const', {'name': 'NewLine', 'value': 10})], 'functions':[('function',{'name':'Add','parameters':[(('vars', ['a']), ('type', 'integer')),(('vars', ['b']), ('type', 'integer'))],'return_type':'integer','body':('compound',[('writeln', 'num1 is positive')])}),('function',{'name': 'Add','parameters':[(('vars', ['a']), ('type', 'integer')),(('vars', ['b']), ('type', 'integer'))],'return_type': 'integer','body':('compound',[('Assign','x',('binop', '+', 'a', 'b'))])})],'var_declaration':('var_decl_lines',[(('vars', ['num1', 'num2', 'result']),('type', 'integer'))]),'program_code':('compound',[('Assign', 'num1', 5),('Assign', 'num2', 3),('Assign','result',('Function_call',{'name': 'Add','args': ['num1', 'num2']})),('writeln', 'The sum is: ')])}})
 """
 
 test_parser(data5)

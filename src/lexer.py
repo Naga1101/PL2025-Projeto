@@ -69,6 +69,8 @@ tokens = (
     'CHAR',
     'NUMBER',     # 123
     'FLOAT',
+    'TRUE',
+    'FALSE',
     # --- Comentario ---
     'COMMENT',
     # --- Identificadores ---
@@ -189,20 +191,20 @@ def t_NOT(t):
 
 ## Funções Predefinidas
 
-def t_WRITEFUNC(t):
-    r'Write|write\b'
-    return t
-
-def t_READFUNC(t):
-    r'\bRead|read\b'
-    return t
-
 def t_WRITEFUNCLN(t):
     r'\bWriteln|writeln\b'
     return t
 
 def t_READFUNCLN(t):
     r'\bReadLn|readLn\b'
+    return t
+
+def t_WRITEFUNC(t):
+    r'Write|write\b'
+    return t
+
+def t_READFUNC(t):
+    r'\bRead|read\b'
     return t
 
 def t_LENGTHFUNC(t):
@@ -345,6 +347,16 @@ def t_STRING(t):
     t.value = value
     return t
 
+## True e False
+
+def t_TRUE(t):
+    r'true'
+    return t
+
+def t_FALSE(t):
+    r'false'
+    return t
+
 ## Comentarios
 
 def t_COMMENT(t):
@@ -372,12 +384,14 @@ def main():
     var1, var2: integer;
     begin
     var1 := 10;
-    var2 := "Ola, Mundo!";
+    var2 := 'Ola, Mundo!'
+    write;
     Writeln writeln
     { Ler 3 números }
     { Ler 4 
     números }
     end.
+    x := false
     """
 
     lexer.input(data)
