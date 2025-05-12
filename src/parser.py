@@ -446,7 +446,8 @@ end.
 
 data5="""
 program SumExample;
-
+const
+  Pi = 3.14159;
 function Add(a: integer; b: integer): integer;
 begin
     writeln('num1 is positive');
@@ -508,12 +509,25 @@ begin
 end.
 """
 
+data8 = """
+program Maior3;
+var
+    num1, num2, num3, maior: Integer;
+    bol1, bol2: Boolean;
+begin
+    num1 := 5;
+    num2 := 7;
+    write(num1 + num2);
+end.
+"""
+
 if __name__ == "__main__":
     # test_parser(data0)
     #test_parser(data1)
     #test_parser(data2)
     #test_parser(data3)
     #test_parser(data4)
-    # test_parser(data5)
-    # test_parser(data6)
-    test_parser(data7)
+    #test_parser(data5)
+    #test_parser(data6)
+    #test_parser(data7)
+    test_parser(data8)

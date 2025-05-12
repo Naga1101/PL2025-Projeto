@@ -1,0 +1,19 @@
+START
+
+// assign 5 to num1
+PUSHI 5
+STOREL 0
+
+// assign 7 to num2
+PUSHI 7
+STOREL 1
+
+// binop +
+PUSHL 0
+PUSHL 1
+ADD
+
+// write
+WRITEI
+
+STOP
