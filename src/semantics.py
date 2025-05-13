@@ -16,7 +16,7 @@ conversor_tipos = {
 tipo_de_push = {
     'Integer': 'PUSHI',
     'integer': 'PUSHI',
-    'float': 'PUSHL',
+    'float': 'PUSHF',
     'string': 'PUSHS'
 }
 free_fp = 0
@@ -48,54 +48,63 @@ def print_tables():
 ### Handlers
 
 def handle_writeln(output):
-    if isinstance(output, tuple):
-        print(output)
-        # TODO estou a assumir que é um binop não vai dar caso não seja
-        lines = handle_binop(output[1])
-        lines.append('// write\nWRITEI\n') 
-    else:  # senão for tuple é sinal que é uma string
-        lines = [
-            '// write',
-            f'PUSHS "{output}"',
-            'WRITES',
-            'WRITELN\n'
-        ]
+    lines = evaluate_expression(output)
+    lines.append('// writeln')
+    print("aqui" ,output)
+    # TODO forma de descobrir o tipo de write que é preciso
+    if isinstance(output, str) and output in tabela_simbolos_global:
+        var_type = tabela_simbolos_global[output].get('type', 'string')
+    elif isinstance(output, (int, float)):
+        var_type = 'integer' if isinstance(output, int) else 'float'
+    else:
+        var_type = 'integer'  # assume literal string or fallback
+
+    if var_type.lower() == 'string':
+        lines.append('WRITES')
+    else:
+        lines.append('WRITEI')  # default for numeric values (you can customize for float)
+    
+    lines.append('WRITELN\n')
     return lines
 
 def handle_write(output):
-    if isinstance(output, tuple):
-        print(output)
-        # TODO estou a assumir que é um binop não vai dar caso não seja
-        lines = handle_binop(output[1])
-        lines.append('// write\nWRITEI\n') 
+    lines = evaluate_expression(output)
+    lines.append('// write')
+    print("aqui" ,output)
+    # TODO forma de descobrir o tipo de write que é preciso
+    if isinstance(output, str) and output in tabela_simbolos_global:
+        var_type = tabela_simbolos_global[output].get('type', 'string')
+    elif isinstance(output, (int, float)):
+        var_type = 'integer' if isinstance(output, int) else 'float'
     else:
-        lines = [
-            '// write',
-            f'PUSHS "{output}"',
-            'WRITES',
-            'WRITELN\n'
-        ]
+        var_type = 'integer'  # assume literal string or fallback
+
+    if var_type.lower() == 'string':
+        lines.append('WRITES')
+    else:
+        lines.append('WRITEI')  # default for numeric values (you can customize for float)
+    
+    lines.append('WRITELN\n')
     return lines
 
 def handle_assign(var, value):
     global free_fp
     my_fp = free_fp
     free_fp += 1
+
     tabela_simbolos_global[var]['value'] = value
     tabela_simbolos_global[var]['fp'] = my_fp
-    
-    # print_tables()
-    # print(tabela_simbolos_global[var]['fp'])
 
-    push = tipo_de_push[tabela_simbolos_global[var]['type']]
+    expr_lines = evaluate_expression(value)
 
     lines = [
         f'// assign {value} to {var}',
-        f'{push} {value}',
+        *expr_lines,
         f'STOREL {my_fp}\n'
     ]
 
     return lines
+
 
 def handle_binop(binop):
     op_type = binop['type']
@@ -103,34 +112,83 @@ def handle_binop(binop):
     right_operand = binop['right']
 
     lines = []
-    # TODO por enquanto está a assumir que os binops só vao ter numeros e estão na tabela vai ter de se mudar
     if op_type == '+':
-        lines = [
-            f'// binop +',
-            f'PUSHL {tabela_simbolos_global[left_operand]['fp']}', 
-            f'PUSHL {tabela_simbolos_global[right_operand]['fp']}\nADD\n'
-        ]
+        print(op_type)
+        lines.append(f'// binop +')
+        print("lines", lines)
     elif op_type == '-':
-        lines = [
-            f'// binop -',
-            f'PUSHL {tabela_simbolos_global[left_operand]['fp']}',
-            f'PUSHL {tabela_simbolos_global[right_operand]['fp']}\nSUB\n'
-        ]
+        lines.append(f'// binop -')
     elif op_type == '*':
-        lines = [
-            f'// binop *',
-            f'PUSHL {tabela_simbolos_global[left_operand]['fp']}',
-            f'PUSHL {tabela_simbolos_global[right_operand]['fp']}\nMUL\n'
-        ]
+        lines.append(f'// binop *')
     elif op_type == '/':
-        lines = [	
-            f'// binop /',
-            f'PUSHL {tabela_simbolos_global[left_operand]['fp']}',
-            f'PUSHL {tabela_simbolos_global[right_operand]['fp']}\nDIV\n'
-        ]
+        lines.append(f'// binop /')
     else:
         return f"; Unsupported operation: {op_type}"
     
+    left_push = None
+    left_type = None
+    if left_operand in tabela_simbolos_global:
+        left_push = tabela_simbolos_global[left_operand]['fp']
+        left_type = 'PUSHL'
+    else:
+        if isinstance(left_operand, int): 
+            left_push = left_operand
+            left_type = tipo_de_push['integer']
+        elif isinstance(left_operand, float):  
+            left_push = left_operand
+            left_type = tipo_de_push['float']
+        elif isinstance(left_operand, str):  
+            if left_operand.isdigit():  
+                left_push = int(left_operand)
+                left_type = tipo_de_push['integer']
+            else:
+                try:
+                    float_value = float(left_operand)  
+                    left_push = float_value
+                    left_type = tipo_de_push['float']
+                except ValueError:
+                    left_push = left_operand
+                    left_type = tipo_de_push['string']
+
+    right_push = None
+    right_type = None
+    if right_operand in tabela_simbolos_global:
+        right_push = tabela_simbolos_global[right_operand]['fp']
+        right_type = 'PUSHL'
+    else:
+        if isinstance(right_operand, int):  
+            right_push = right_operand
+            right_type = tipo_de_push['integer']
+        elif isinstance(right_operand, float): 
+            right_push = right_operand
+            right_type = tipo_de_push['float']
+        elif isinstance(right_operand, str):  
+            if right_operand.isdigit(): 
+                right_push = int(right_operand)
+                right_type = tipo_de_push['integer']
+            else:
+                try:
+                    float_value = float(right_operand)  
+                    right_push = float_value
+                    right_type = tipo_de_push['float']
+                except ValueError:
+                    right_push = right_operand
+                    right_type = tipo_de_push['string']
+        
+    lines.append(f'{left_type} {left_push}')
+    lines.append(f'{right_type} {right_push}')
+
+    if op_type == '+':
+        lines.append('ADD\n')
+    elif op_type == '-':
+        lines.append('SUB\n')
+    elif op_type == '*':
+        lines.append('MUL\n')
+    elif op_type == '/':
+        lines.append('DIV\n')
+    else:
+        return f"; Unsupported operation: {op_type}"
+    print("lines", lines)
     return lines
 
 
@@ -141,6 +199,30 @@ instruction_handlers = {
     'binop': handle_binop,
     # Add other instruction types here
 }
+
+def evaluate_expression(expr):
+    if isinstance(expr, tuple):
+        instr_type = expr[0]
+        handler = instruction_handlers.get(instr_type)
+        return handler(*expr[1:]) if handler else [f"; Unsupported expression: {instr_type}"]
+
+    # If expr is a known variable in the symbol table
+    if isinstance(expr, str) and expr in tabela_simbolos_global:
+        var_info = tabela_simbolos_global[expr]
+        var_type = var_info.get('type', 'string')
+        push_instr = tipo_de_push.get(var_type, 'PUSHS')
+        return [f'{push_instr} {expr}'] if push_instr == 'PUSHS' else [f'{push_instr}L {var_info["fp"]}']
+
+    # Literal values
+    if isinstance(expr, int):
+        return ['PUSHI ' + str(expr)]
+    elif isinstance(expr, float):
+        return ['PUSHL ' + str(expr)]
+    elif isinstance(expr, str):
+        return [f'PUSHS "{expr}"']
+
+    return [f"; Unhandled expression type: {expr}"]
+
 
 ### Basic structure functions
 
@@ -209,10 +291,13 @@ def read_main_code(instructions):
 
         for instr in instructions:
             instr_type = instr[0]
+            args = instr[1:]
+            print(instr_type)
+            print(args)
             handler = instruction_handlers.get(instr_type)
 
             if handler:
-                lines = handler(*instr[1:])  # Should return a list of strings
+                lines = handler(*args)  # Should return a list of strings
                 for line in lines:
                     print(line)
                     f.write(line + '\n')
@@ -231,8 +316,11 @@ data1 = """
 data5 = """
 ('program', {'program_name': 'Maior3', 'program_body': {'var_declaration': ('var_decl_lines', [(('vars', ['num1', 'num2', 'num3', 'maior']), ('type', 'Integer')), (('vars', ['bol1', 'bol2']), ('type', 'Boolean'))]), 'program_code': ('compound', [('assign', 'num1', 5), ('assign', 'num2', 7), ('write', ('binop', {'type': '+', 'left': 'num1', 'right': 'num2'}))])}})"""
 
+data6 = """
+('program', {'program_name': 'Maior3', 'program_body': {'var_declaration': ('var_decl_lines', [(('vars', ['num1', 'num2', 'num3', 'maior']), ('type', 'Integer')), (('vars', ['bol1', 'bol2']), ('type', 'Boolean'))]), 'program_code': ('compound', [('assign', 'num2', 7), ('assign', 'num1', ('binop', {'type': '+', 'left': 5, 'right': 'num2'})), ('write', ('binop', {'type': '+', 'left': 'num1', 'right': 'num2'}))])}})
+"""
 def main():
-    ast_tree = ast.literal_eval(data5)
+    ast_tree = ast.literal_eval(data6)
 
     _, program_data = ast_tree
     body = program_data["program_body"]

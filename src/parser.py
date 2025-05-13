@@ -515,8 +515,8 @@ var
     num1, num2, num3, maior: Integer;
     bol1, bol2: Boolean;
 begin
-    num1 := 5;
     num2 := 7;
+    num1 := 5+num2;
     write(num1 + num2);
 end.
 """
