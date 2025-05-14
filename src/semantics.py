@@ -49,7 +49,7 @@ def print_tables():
 ### Handlers
 
 def handle_writeln(output):
-    lines = evaluate_expression(output)
+    lines = evaluate_expression(output, None)
     lines.append('\t// writeln')
     print("aqui" ,output)
     # TODO forma de descobrir o tipo de write que é preciso
@@ -69,7 +69,7 @@ def handle_writeln(output):
     return lines
 
 def handle_write(output):
-    lines = evaluate_expression(output)
+    lines = evaluate_expression(output, None)
     lines.append('\t// write')
     print("aqui" ,output)
     print_tables()
@@ -79,7 +79,7 @@ def handle_write(output):
     elif isinstance(output, (int, float)):
         var_type = 'integer' if isinstance(output, int) else 'float'
     else:
-        var_type = 'string'  # assume literal string or fallback
+        var_type = 'integer'  # assume literal string or fallback
 
     if var_type.lower() == 'string':
         lines.append('\tWRITES')
@@ -96,9 +96,8 @@ def handle_assign(var, value):
 
     tabela_simbolos_global[var]['value'] = value
     tabela_simbolos_global[var]['gp'] = my_gp
-
-    expr_lines = evaluate_expression(value)
-    print(expr_lines)
+    
+    expr_lines = evaluate_expression(value, var)
 
     lines = [
         f'\t// assign {value} to {var}',
@@ -108,7 +107,22 @@ def handle_assign(var, value):
 
     return lines
 
-def handle_binop(binop):
+def handle_binop(input):
+    print(input)
+    update_value = None
+    left_value = None
+    right_value = None
+    if(isinstance(input, tuple)):
+        print(input[0])
+        print(input[1]) # value where it is going to be assigned
+        binop = input[0]
+        update_value = input[1]
+    else:
+        binop = input
+
+    expr_lines = evaluate_expression(binop, None)
+    print(expr_lines)
+
     op_type = binop['type']
     left_operand = binop['left']
     right_operand = binop['right']
@@ -130,7 +144,9 @@ def handle_binop(binop):
     left_push = None
     left_type = None
     if left_operand in tabela_simbolos_global:
-        left_push = tabela_simbolos_global[left_operand]['fp']
+        if update_value is not None: 
+            left_value = tabela_simbolos_global[left_operand]['value']
+        left_push = tabela_simbolos_global[left_operand]['gp']
         left_type = 'PUSHL'
     else:
         if isinstance(left_operand, int): 
@@ -155,7 +171,9 @@ def handle_binop(binop):
     right_push = None
     right_type = None
     if right_operand in tabela_simbolos_global:
-        right_push = tabela_simbolos_global[right_operand]['fp']
+        if update_value is not None: 
+            right_value = tabela_simbolos_global[right_operand]['value']
+        right_push = tabela_simbolos_global[right_operand]['gp']
         right_type = 'PUSHL'
     else:
         if isinstance(right_operand, int):  
@@ -180,25 +198,57 @@ def handle_binop(binop):
     lines.append(f'\t{left_type} {left_push}')
     lines.append(f'\t{right_type} {right_push}')
 
+    if left_value is None:
+        left_value = left_push
+    if right_value is None:
+        right_value = right_push
+
     if op_type == '+':
+        if update_value is not None: 
+            tabela_simbolos_global[update_value]['value'] = left_value + right_value
         lines.append('\tADD\n')
     elif op_type == '-':
+        if update_value is not None: 
+            tabela_simbolos_global[update_value]['value'] = left_value - right_value
         lines.append('\tSUB\n')
-    elif op_type == '*':
+    elif op_type == '*':        
+        if update_value is not None: 
+            tabela_simbolos_global[update_value]['value'] = left_value * right_value
         lines.append('\tMUL\n')
-    elif op_type == '/':
+    elif op_type == '/':        
+        if update_value is not None: 
+            tabela_simbolos_global[update_value]['value'] = left_value / right_value
         lines.append('\tDIV\n')
     else:
         return f"; Unsupported operation: {op_type}"
-    print("lines", lines)
+
+    # print_tables()
     return lines
 
-# TODO incompleto
-def handle_ord(ord):
-    lines.append('\t// ord')
-    # chamara a func evaluate_expression
-    value = ord(1)
-    lines = f'\tPUSHI {value}'
+# TODO assumir que ord vai ser sempre um char ou uma var
+def handle_ord(ord_input):
+    lines = ['\t// ord']
+    input_value = None
+    update_value = None
+    if(isinstance(ord_input, tuple)):
+        #print(ord_input[0])
+        #print(ord_input[1]) value where it is going to be assigned
+        input_value = ord_input[0]
+        update_value = ord_input[1]
+        if ord_input[0] in tabela_simbolos_global:
+            input_value = tabela_simbolos_global[ord_input[0]]['value']
+    else:
+        input_value = ord_input
+        if ord_input in tabela_simbolos_global:
+            input_value = tabela_simbolos_global[ord_input]['value']
+
+    output = ord(input_value)
+
+    if update_value is not None:
+        tabela_simbolos_global[update_value]['value'] = output
+
+    lines.append(f'\tPUSHI {output}')
+    # print_tables()
     return lines
 
 instruction_handlers = {
@@ -210,13 +260,18 @@ instruction_handlers = {
     # Add other instruction types here
 }
 
-def evaluate_expression(expr):
+def evaluate_expression(expr, isAssign):
     if isinstance(expr, tuple):
         instr_type = expr[0]
+        args = expr[1:]
+        if(isAssign is not None and instr_type in ['binop', 'ord']):
+            args = (*args, isAssign)
+        elif len(expr[1:]) == 1:
+            args = args[0]
         handler = instruction_handlers.get(instr_type)
-        return handler(*expr[1:]) if handler else [f"; Unsupported expression: {instr_type}"]
+        print(len(expr[1:]))
+        return handler(args) if handler else [f"// Unsupported expression: {instr_type}"]
 
-    # If expr is a known variable in the symbol table
     if isinstance(expr, str) and expr in tabela_simbolos_global:
         var_info = tabela_simbolos_global[expr]
         var_type = var_info.get('type', 'string')
@@ -231,8 +286,7 @@ def evaluate_expression(expr):
     elif isinstance(expr, str):
         return [f'\tPUSHS "{expr}"']
 
-    return [f"; Unhandled expression type: {expr}"]
-
+    return [f"// Unhandled expression type: {expr}"]
 
 ### Basic structure functions
 
@@ -328,6 +382,10 @@ data5 = """
 
 data6 = """
 ('program', {'program_name': 'Maior3', 'program_body': {'var_declaration': ('var_decl_lines', [(('vars', ['num1', 'num2', 'num3', 'maior']), ('type', 'Integer')), (('vars', ['bol1', 'bol2']), ('type', 'Boolean'))]), 'program_code': ('compound', [('assign', 'num2', 7), ('assign', 'num1', ('binop', {'type': '+', 'left': 5, 'right': 'num2'})), ('write', ('binop', {'type': '+', 'left': 'num1', 'right': 'num2'}))])}})
+"""
+
+data7 = """
+('program', {'program_name': 'OrdCharExample', 'program_body': {'var_declaration': ('var_decl_lines', [(('vars', ['ch']), ('type', 'string')), (('vars', ['code']), ('type', 'integer'))]), 'program_code': ('compound', [('assign', 'ch', 'A'), ('assign', 'code', ('ord', 'ch')), ('write', ['The ASCII code of ', 'ch', ' is ', 'code'])])}})
 """
 def main():
     ast_tree = ast.literal_eval(data6)

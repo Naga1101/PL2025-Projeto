@@ -10,18 +10,18 @@ main:
 	// assign ('binop', {'type': '+', 'left': 5, 'right': 'num2'}) to num1
 	// binop +
 	PUSHI 5
-	PUSHL 
+	PUSHL 0
 	ADD
 
 	STOREL 1
 
 	// binop +
-	PUSHL 
-	PUSHL 
+	PUSHL 1
+	PUSHL 0
 	ADD
 
 	// write
-	WRITES
+	WRITEI
 	WRITELN
 
 	STOP

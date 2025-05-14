@@ -235,14 +235,14 @@ def p_statement(p):
 
 def p_simple_statement(p):
     '''simple_statement : ID ASSIGN expression
-                        | WRITEFUNC expression
-                        | WRITEFUNCLN expression
+                        | WRITEFUNC LPAREN expression_list RPAREN
+                        | WRITEFUNCLN LPAREN expression_list RPAREN
                         | READFUNC expression
                         | READFUNCLN expression
                         | BREAK'''
     function = p.slice[1].type
     if function in ('WRITEFUNC', 'WRITEFUNCLN'):
-        p[0] = ('write', p[2])
+        p[0] = ('write', p[3])
     elif function in ('READFUNC', 'READFUNCLN'):
         p[0] = ('read', p[2])
     elif function == 'BREAK':
@@ -521,6 +521,18 @@ begin
 end.
 """
 
+data9 = """
+program OrdCharExample;
+var
+  ch: string;
+  code: integer;
+begin
+  ch := 'A';
+  code := ord(ch); 
+  writeln('The ASCII code of ', ch, ' is ', code);
+end.
+"""
+
 if __name__ == "__main__":
     # test_parser(data0)
     #test_parser(data1)
@@ -530,4 +542,5 @@ if __name__ == "__main__":
     #test_parser(data5)
     #test_parser(data6)
     #test_parser(data7)
-    test_parser(data8)
+    #test_parser(data8)
+    test_parser(data9)
