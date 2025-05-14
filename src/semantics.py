@@ -19,6 +19,7 @@ tipo_de_push = {
     'float': 'PUSHF',
     'string': 'PUSHS'
 }
+
 free_fp = 0
 free_gp = 0
 
@@ -52,8 +53,8 @@ def handle_writeln(output):
     lines.append('\t// writeln')
     print("aqui" ,output)
     # TODO forma de descobrir o tipo de write que é preciso
-    if isinstance(output, str) and output in tabela_simbolos_global:
-        var_type = tabela_simbolos_global[output].get('type', 'string')
+    if isinstance(output, str):
+        var_type = 'string'
     elif isinstance(output, (int, float)):
         var_type = 'integer' if isinstance(output, int) else 'float'
     else:
@@ -71,13 +72,14 @@ def handle_write(output):
     lines = evaluate_expression(output)
     lines.append('\t// write')
     print("aqui" ,output)
+    print_tables()
     # TODO forma de descobrir o tipo de write que é preciso
     if isinstance(output, str) and output in tabela_simbolos_global:
         var_type = tabela_simbolos_global[output].get('type', 'string')
     elif isinstance(output, (int, float)):
         var_type = 'integer' if isinstance(output, int) else 'float'
     else:
-        var_type = 'integer'  # assume literal string or fallback
+        var_type = 'string'  # assume literal string or fallback
 
     if var_type.lower() == 'string':
         lines.append('\tWRITES')
@@ -88,19 +90,20 @@ def handle_write(output):
     return lines
 
 def handle_assign(var, value):
-    global free_fp
-    my_fp = free_fp
-    free_fp += 1
+    global free_gp
+    my_gp = free_gp
+    free_gp += 1
 
     tabela_simbolos_global[var]['value'] = value
-    tabela_simbolos_global[var]['fp'] = my_fp
+    tabela_simbolos_global[var]['gp'] = my_gp
 
     expr_lines = evaluate_expression(value)
+    print(expr_lines)
 
     lines = [
         f'\t// assign {value} to {var}',
         *expr_lines,
-        f'\tSTOREL {my_fp}\n'
+        f'\tSTOREL {my_gp}\n'
     ]
 
     return lines
@@ -190,12 +193,20 @@ def handle_binop(binop):
     print("lines", lines)
     return lines
 
+# TODO incompleto
+def handle_ord(ord):
+    lines.append('\t// ord')
+    # chamara a func evaluate_expression
+    value = ord(1)
+    lines = f'\tPUSHI {value}'
+    return lines
 
 instruction_handlers = {
     'writeln': handle_writeln,
     'write': handle_write,
     'assign': handle_assign,
     'binop': handle_binop,
+    'ord': handle_ord,
     # Add other instruction types here
 }
 

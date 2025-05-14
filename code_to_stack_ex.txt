@@ -67,3 +67,37 @@ begin
 end.
 
 
+JUMP main                // Jump over function
+
+// ————— FUNCTION: Add —————
+Add:
+    PUSHL -2              // Load a
+    PUSHL -1              // Load b
+    ADD
+    RETURN
+
+// ————— MAIN —————
+main:
+    START
+
+    PUSHI 5              // num1 := 5
+    STOREG 0             // Store num1 in g[n]
+
+    PUSHI 3              // num2 := 3
+    STOREG 1             // Store num2 in g[n]
+
+    PUSHL 0              // Push num1 (a)
+    PUSHL 1              // Push num2 (b)
+    PUSHA Add            // Push function address
+    CALL
+
+    STOREG 2             // result := returned value
+    PUSHS "The sum is: "
+    WRITES
+    WRITELN
+
+    PUSHG 2              // Print result
+    WRITEI
+    WRITELN
+
+    STOP
