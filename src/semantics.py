@@ -49,7 +49,7 @@ def print_tables():
 
 def handle_writeln(output):
     lines = evaluate_expression(output)
-    lines.append('// writeln')
+    lines.append('\t// writeln')
     print("aqui" ,output)
     # TODO forma de descobrir o tipo de write que é preciso
     if isinstance(output, str) and output in tabela_simbolos_global:
@@ -60,16 +60,16 @@ def handle_writeln(output):
         var_type = 'integer'  # assume literal string or fallback
 
     if var_type.lower() == 'string':
-        lines.append('WRITES')
+        lines.append('\tWRITES')
     else:
-        lines.append('WRITEI')  # default for numeric values (you can customize for float)
+        lines.append('\tWRITEI')  # default for numeric values (you can customize for float)
     
-    lines.append('WRITELN\n')
+    lines.append('\tWRITELN\n')
     return lines
 
 def handle_write(output):
     lines = evaluate_expression(output)
-    lines.append('// write')
+    lines.append('\t// write')
     print("aqui" ,output)
     # TODO forma de descobrir o tipo de write que é preciso
     if isinstance(output, str) and output in tabela_simbolos_global:
@@ -80,11 +80,11 @@ def handle_write(output):
         var_type = 'integer'  # assume literal string or fallback
 
     if var_type.lower() == 'string':
-        lines.append('WRITES')
+        lines.append('\tWRITES')
     else:
-        lines.append('WRITEI')  # default for numeric values (you can customize for float)
+        lines.append('\tWRITEI')  # default for numeric values (you can customize for float)
     
-    lines.append('WRITELN\n')
+    lines.append('\tWRITELN\n')
     return lines
 
 def handle_assign(var, value):
@@ -98,13 +98,12 @@ def handle_assign(var, value):
     expr_lines = evaluate_expression(value)
 
     lines = [
-        f'// assign {value} to {var}',
+        f'\t// assign {value} to {var}',
         *expr_lines,
-        f'STOREL {my_fp}\n'
+        f'\tSTOREL {my_fp}\n'
     ]
 
     return lines
-
 
 def handle_binop(binop):
     op_type = binop['type']
@@ -114,14 +113,14 @@ def handle_binop(binop):
     lines = []
     if op_type == '+':
         print(op_type)
-        lines.append(f'// binop +')
+        lines.append(f'\t// binop +')
         print("lines", lines)
     elif op_type == '-':
-        lines.append(f'// binop -')
+        lines.append(f'\t// binop -')
     elif op_type == '*':
-        lines.append(f'// binop *')
+        lines.append(f'\t// binop *')
     elif op_type == '/':
-        lines.append(f'// binop /')
+        lines.append(f'\t// binop /')
     else:
         return f"; Unsupported operation: {op_type}"
     
@@ -175,17 +174,17 @@ def handle_binop(binop):
                     right_push = right_operand
                     right_type = tipo_de_push['string']
         
-    lines.append(f'{left_type} {left_push}')
-    lines.append(f'{right_type} {right_push}')
+    lines.append(f'\t{left_type} {left_push}')
+    lines.append(f'\t{right_type} {right_push}')
 
     if op_type == '+':
-        lines.append('ADD\n')
+        lines.append('\tADD\n')
     elif op_type == '-':
-        lines.append('SUB\n')
+        lines.append('\tSUB\n')
     elif op_type == '*':
-        lines.append('MUL\n')
+        lines.append('\tMUL\n')
     elif op_type == '/':
-        lines.append('DIV\n')
+        lines.append('\tDIV\n')
     else:
         return f"; Unsupported operation: {op_type}"
     print("lines", lines)
@@ -215,11 +214,11 @@ def evaluate_expression(expr):
 
     # Literal values
     if isinstance(expr, int):
-        return ['PUSHI ' + str(expr)]
+        return ['\tPUSHI ' + str(expr)]
     elif isinstance(expr, float):
-        return ['PUSHL ' + str(expr)]
+        return ['\tPUSHL ' + str(expr)]
     elif isinstance(expr, str):
-        return [f'PUSHS "{expr}"']
+        return [f'\tPUSHS "{expr}"']
 
     return [f"; Unhandled expression type: {expr}"]
 
@@ -285,7 +284,7 @@ def create_symbol_table(consts, functions, var_decl):
 def read_main_code(instructions):
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
     with open(output_file, 'w') as f:
-        f.write("START\n\n")
+        f.write("JUMP main\n\nmain:\n\tSTART\n\n")
         print("Converter Pascal para Assembly:")
         print(instructions)
 
@@ -305,7 +304,7 @@ def read_main_code(instructions):
                 msg = f"; Unsupported instruction: {instr_type}"
                 print(msg)
 
-        f.write("STOP\n")
+        f.write("\tSTOP\n")
 
 ################################################################
 

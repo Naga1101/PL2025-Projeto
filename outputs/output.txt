@@ -1,24 +1,27 @@
-START
+JUMP main
 
-// assign 7 to num2
-PUSHI 7
-STOREL 0
+main:
+	START
 
-// assign ('binop', {'type': '+', 'left': 5, 'right': 'num2'}) to num1
-// binop +
-PUSHI 5
-PUSHL 0
-ADD
+	// assign 7 to num2
+	PUSHI 7
+	STOREL 0
 
-STOREL 1
+	// assign ('binop', {'type': '+', 'left': 5, 'right': 'num2'}) to num1
+	// binop +
+	PUSHI 5
+	PUSHL 0
+	ADD
 
-// binop +
-PUSHL 1
-PUSHL 0
-ADD
+	STOREL 1
 
-// write
-WRITEI
-WRITELN
+	// binop +
+	PUSHL 1
+	PUSHL 0
+	ADD
 
-STOP
+	// write
+	WRITEI
+	WRITELN
+
+	STOP
