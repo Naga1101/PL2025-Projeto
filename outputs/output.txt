@@ -1,25 +1,34 @@
 JUMP main
 
+add:
+	// binop +
+	PUSHL -2
+	PUSHL -1
+	ADD
+
+	RETURN
+
+
 main:
 	START
 
-	// assign 7 to num2
-	PUSHI 7
+	// assign 5 to num1
+	PUSHI 5
 	STOREL 0
 
-	// assign ('binop', {'type': '+', 'left': 5, 'right': 'num2'}) to num1
-	// binop +
-	PUSHI 5
-	PUSHL 0
-	ADD
-
+	// assign 3 to num2
+	PUSHI 3
 	STOREL 1
 
-	// binop +
-	PUSHL 1
+	// assign ('Function_call', {'name': 'Add', 'args': ['num1', 'num2']}) to result
+	// Call da add com os parametros ['num1', 'num2']
 	PUSHL 0
-	ADD
+	PUSHL 1
+	PUSHA add
+	CALL
+	STOREL 2
 
+// Unhandled expression type: ['result']
 	// write
 	WRITEI
 	WRITELN

@@ -54,7 +54,7 @@ program SumExample;
 
 function Add(a: integer; b: integer): integer;
 begin
-    x := a + b;
+    Add := a + b;
 end;
 
 var
@@ -63,7 +63,7 @@ begin
     num1 := 5;
     num2 := 3;
     result := Add(num1, num2);
-    writeln('The sum is: ');
+    writeln(result);
 end.
 
 

@@ -480,7 +480,6 @@ begin
 end.
 """
 
-# dar fix ao write para funcionar com ("texto", 1)
 data7 = """
 program MultiConstExample;
 
@@ -510,14 +509,20 @@ end.
 """
 
 data8 = """
-program Maior3;
-var
-    num1, num2, num3, maior: Integer;
-    bol1, bol2: Boolean;
+program SumExample;
+
+function Add(a: integer; b: integer): integer;
 begin
-    num2 := 7;
-    num1 := 5+num2;
-    write(num1 + num2);
+    Add := a + b;
+end;
+
+var
+    num1, num2, result: integer;
+begin
+    num1 := 5;
+    num2 := 3;
+    result := Add(num1, num2);
+    writeln(result);
 end.
 """
 
@@ -542,5 +547,5 @@ if __name__ == "__main__":
     #test_parser(data5)
     #test_parser(data6)
     #test_parser(data7)
-    #test_parser(data8)
-    test_parser(data9)
+    test_parser(data8)
+    #test_parser(data9)

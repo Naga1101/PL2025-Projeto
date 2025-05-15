@@ -49,7 +49,7 @@ def print_tables():
 ### Handlers
 
 def handle_writeln(output):
-    lines = evaluate_expression(output, None)
+    lines = evaluate_expression(output)
     lines.append('\t// writeln')
     print("aqui" ,output)
     # TODO forma de descobrir o tipo de write que é preciso
@@ -69,7 +69,7 @@ def handle_writeln(output):
     return lines
 
 def handle_write(output):
-    lines = evaluate_expression(output, None)
+    lines = evaluate_expression(output)
     lines.append('\t// write')
     print("aqui" ,output)
     print_tables()
@@ -89,7 +89,7 @@ def handle_write(output):
     lines.append('\tWRITELN\n')
     return lines
 
-def handle_assign(var, value):
+def handle_assign(var, value):  # passar o atributo que diz se é main ou func
     global free_gp
     my_gp = free_gp
     free_gp += 1
@@ -108,19 +108,18 @@ def handle_assign(var, value):
     return lines
 
 def handle_binop(input):
-    print(input)
     update_value = None
     left_value = None
     right_value = None
     if(isinstance(input, tuple)):
-        print(input[0])
-        print(input[1]) # value where it is going to be assigned
+        #print(input[0])
+        #print(input[1]) # value where it is going to be assigned
         binop = input[0]
         update_value = input[1]
     else:
         binop = input
 
-    expr_lines = evaluate_expression(binop, None)
+    expr_lines = evaluate_expression(binop)
     print(expr_lines)
 
     op_type = binop['type']
@@ -148,6 +147,12 @@ def handle_binop(input):
             left_value = tabela_simbolos_global[left_operand]['value']
         left_push = tabela_simbolos_global[left_operand]['gp']
         left_type = 'PUSHL'
+    elif tabela_simbolos_global[update_value]['kind'] == 'function':
+        func_params = tabela_funcoes[update_value]['parameters']
+        for param in func_params:
+            if left_operand == param[0]:
+                left_push = param[2]
+            left_type = 'PUSHL'
     else:
         if isinstance(left_operand, int): 
             left_push = left_operand
@@ -175,6 +180,13 @@ def handle_binop(input):
             right_value = tabela_simbolos_global[right_operand]['value']
         right_push = tabela_simbolos_global[right_operand]['gp']
         right_type = 'PUSHL'
+    elif tabela_simbolos_global[update_value]['kind'] == 'function':
+        func_params = tabela_funcoes[update_value]['parameters']
+        for param in func_params:
+            if right_operand == param[0]:
+                right_push = param[2]
+            right_type = 'PUSHL'
+        update_value = None
     else:
         if isinstance(right_operand, int):  
             right_push = right_operand
@@ -251,21 +263,51 @@ def handle_ord(ord_input):
     # print_tables()
     return lines
 
+def handle_function_call(input):
+    func_name = input["name"].lower()
+    params = input["args"]
+    lines = [f'\t// Call da {func_name} com os parametros {params}']
+
+
+    for param in params:
+        if param in tabela_simbolos_global:
+            mygp = tabela_simbolos_global[param]['gp']
+            lines.append(f'\tPUSHL {mygp}')
+        elif isinstance(param, int): 
+            lines.append(f'\tPUSHI {param}')
+        elif isinstance(param, float): 
+            lines.append(f'\tPUSHF {param}')
+        else:
+            lines.append(f'\tPUSHS {param}')
+
+    lines.append(f'\tPUSHA {func_name}\n\tCALL')
+    return lines
+
+def handle_return(func_name, return_input):
+    expr_lines = evaluate_expression(return_input, None, func_name)
+    lines = expr_lines
+    lines.append(f'\tRETURN\n')
+    return lines
+
 instruction_handlers = {
     'writeln': handle_writeln,
     'write': handle_write,
     'assign': handle_assign,
     'binop': handle_binop,
     'ord': handle_ord,
+    'return': handle_return,
+    'Function_call': handle_function_call,
     # Add other instruction types here
 }
 
-def evaluate_expression(expr, isAssign):
+def evaluate_expression(expr, isAssign=None, isFunc=None):
     if isinstance(expr, tuple):
         instr_type = expr[0]
         args = expr[1:]
         if(isAssign is not None and instr_type in ['binop', 'ord']):
             args = (*args, isAssign)
+        elif(isFunc is not None):
+            args = (*args, isFunc)
         elif len(expr[1:]) == 1:
             args = args[0]
         handler = instruction_handlers.get(instr_type)
@@ -326,11 +368,14 @@ def create_symbol_table(consts, functions, var_decl):
             body = func_content['body'][1]
 
             parameters = []
+            fp = -len(raw_parameters)
             for (vars_tuple, type_tuple) in raw_parameters:
                 var_names = vars_tuple[1]
                 var_type = type_tuple[1]
+                myfp = fp
+                fp += 1 
                 for var in var_names:
-                    parameters.append((var, var_type))
+                    parameters.append((var, var_type, myfp))
 
             tabela_simbolos_global[func_name] = {
                 'kind': kind,
@@ -346,18 +391,52 @@ def create_symbol_table(consts, functions, var_decl):
 
     print_tables()
 
-def read_main_code(instructions):
+def convert_func(func):
+    func_name = func[0]
+    func_lines = [f'{func_name.lower()}:']
+
+    func_instructions = func[1]
+    for instr in func_instructions:
+        instr_type = instr[0]
+        args = instr[1:]
+        if(instr_type == 'assign' and args[0] == func_name):
+            instr_type = 'return'
+
+        handler = instruction_handlers.get(instr_type)
+
+        if handler:
+            lines = handler(*args)  # Should return a list of strings
+            for line in lines:
+                print(line)
+                func_lines.append(line)
+        else:
+            msg = f"; Unsupported instruction: {instr_type}"
+            print(msg)
+    return func_lines
+
+def read_code(func_instructions, main_instructions):
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
     with open(output_file, 'w') as f:
-        f.write("JUMP main\n\nmain:\n\tSTART\n\n")
-        print("Converter Pascal para Assembly:")
-        print(instructions)
+        f.write("JUMP main\n\n")
+        print(func_instructions)
+        if len(func_instructions) > 0:
+            for func in func_instructions:
+                lines = convert_func(func)
+                if len(lines) > 0:
+                    for line in lines:
+                        print(line)
+                        f.write(line + '\n')
+                else:
+                    msg = f"; Unsupported instruction: {instr_type}"
+                    print(msg)
 
-        for instr in instructions:
+        f.write("\nmain:\n\tSTART\n\n")
+        print("Converter Pascal para Assembly:")
+        print(main_instructions)
+
+        for instr in main_instructions:
             instr_type = instr[0]
             args = instr[1:]
-            print(instr_type)
-            print(args)
             handler = instruction_handlers.get(instr_type)
 
             if handler:
@@ -387,8 +466,13 @@ data6 = """
 data7 = """
 ('program', {'program_name': 'OrdCharExample', 'program_body': {'var_declaration': ('var_decl_lines', [(('vars', ['ch']), ('type', 'string')), (('vars', ['code']), ('type', 'integer'))]), 'program_code': ('compound', [('assign', 'ch', 'A'), ('assign', 'code', ('ord', 'ch')), ('write', ['The ASCII code of ', 'ch', ' is ', 'code'])])}})
 """
+
+data8 = """
+('program', {'program_name': 'SumExample', 'program_body': {'functions': [('function', {'name': 'Add', 'parameters': [(('vars', ['a']), ('type', 'integer')), (('vars', ['b']), ('type', 'integer'))], 'return_type': 'integer', 'body': ('compound', [('assign', 'Add', ('binop', {'type': '+', 'left': 'a', 'right': 'b'}))])})], 'var_declaration': ('var_decl_lines', [(('vars', ['num1', 'num2', 'result']), ('type', 'integer'))]), 'program_code': ('compound', [('assign', 'num1', 5), ('assign', 'num2', 3), ('assign', 'result', ('Function_call', {'name': 'Add', 'args': ['num1', 'num2']})), ('write', ['result'])])}})
+"""
+
 def main():
-    ast_tree = ast.literal_eval(data6)
+    ast_tree = ast.literal_eval(data8)
 
     _, program_data = ast_tree
     body = program_data["program_body"]
@@ -399,8 +483,13 @@ def main():
 
     create_symbol_table(consts, functions, var_decl)
 
-    read_main_code(code_tuple[1])
+    functions_body = []
+    for function in functions:
+        func_name = function[1]['name']
+        func_body = function[1]['body'][1]
+        functions_body.append((func_name, func_body))
 
-    
+    read_code(functions_body, code_tuple[1])
+
 if __name__ == "__main__":
     main()
