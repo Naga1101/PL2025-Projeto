@@ -26,6 +26,7 @@ P9: id_list → ID
             | id_list ',' ID
 
 P10: type → INTEGERTYPE
+         | FLOATTYPE
          | BOOLEANTYPE
          | STRINGTYPE
 
@@ -201,6 +202,7 @@ def p_id_list(p):
 
 def p_type(p):
     '''type : INTEGERTYPE
+            | FLOATTYPE
             | BOOLEANTYPE
             | STRINGTYPE
             | ARRAY LBRACKET NUMBER DOTDOT NUMBER RBRACKET OF type'''
@@ -538,6 +540,33 @@ begin
 end.
 """
 
+data10 = """
+program TesteBinOp;
+
+var
+    soma, sub, mult, divi: integer;
+    somaFloat, subFloat, multFloat, diviFloat: float;
+    igual, diferente, menor, maior, menorIgual, maiorIgual: boolean;
+    conjuncao, disjuncao: boolean;
+begin
+    somaFloat := 10 + 2.3;
+    subFloat := 23 - somaFloat;
+    multFloat := 3 * 7.6;
+    diviFloat := 2.754 / 3.5;
+
+    igual := 12 = 21;
+    diferente := 32 <> 2;
+    menor := 90 < 110;
+    maior := 1 > 0;
+    menorIgual := 0.0 <= 0.0;
+    maiorIgual := 12 >= 9;
+
+    conjuncao := 0 and 1;
+    disjuncao := 0 or 1;
+
+end.
+"""
+
 if __name__ == "__main__":
     # test_parser(data0)
     #test_parser(data1)
@@ -547,5 +576,6 @@ if __name__ == "__main__":
     #test_parser(data5)
     #test_parser(data6)
     #test_parser(data7)
-    test_parser(data8)
+    #test_parser(data8)
     #test_parser(data9)
+    test_parser(data10)

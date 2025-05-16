@@ -111,7 +111,6 @@ def handle_binop(input):
     update_value = None
     left_value = None
     right_value = None
-    type = None
     if(isinstance(input, tuple)):
         #print(input[0])
         #print(input[1]) # value where it is going to be assigned
@@ -138,6 +137,22 @@ def handle_binop(input):
         lines.append(f'\t// binop *')
     elif op_type == '/':
         lines.append(f'\t// binop /')
+    elif op_type == 'and':
+        lines.append(f'\t// binop and')
+    elif op_type == 'or':
+        lines.append(f'\t// binop or')
+    elif op_type == '>':
+        lines.append(f'\t// binop >')
+    elif op_type == '<':
+        lines.append(f'\t// binop <')
+    elif op_type == '>=':
+        lines.append(f'\t// binop >=')
+    elif op_type == '<=':
+        lines.append(f'\t// binop <=')
+    elif op_type == '=':
+        lines.append(f'\t// binop =')
+    elif op_type == '<>':
+        lines.append(f'\t// binop <>')
     else:
         return f"; Unsupported operation: {op_type}"
     
@@ -184,18 +199,19 @@ def handle_binop(input):
     right_push = None
     right_type = None
     if right_operand in tabela_simbolos_global:
+        print(tabela_simbolos_global[right_operand])
         if update_value is not None: 
             right_value = tabela_simbolos_global[right_operand]['value']
         right_push = tabela_simbolos_global[right_operand]['gp']
         right_type = 'PUSHL'
-        if type is not 'float':
-            type =  tabela_simbolos_global[left_operand]['type']
+        if type != 'float' and tabela_simbolos_global[right_operand]['type'] == 'float':
+            type =  'float'
     elif tabela_simbolos_global[update_value]['kind'] == 'function':
         func_params = tabela_funcoes[update_value]['parameters']
         for param in func_params:
             if right_operand == param[0]:
                 right_push = param[2]
-            if type is not 'float':
+            if type != 'float':
                 type =  param[1]
             right_type = 'PUSHL'
         update_value = None
@@ -204,8 +220,8 @@ def handle_binop(input):
             right_push = right_operand
             right_type = tipo_de_push['integer']
         elif isinstance(right_operand, float):
-            if type is not 'float':
-                type =  param[1]
+            if type != 'float':
+                type =  'float'
             right_push = right_operand
             right_type = tipo_de_push['float']
         elif isinstance(right_operand, str):  
@@ -217,7 +233,7 @@ def handle_binop(input):
                     float_value = float(right_operand)  
                     right_push = float_value
                     right_type = tipo_de_push['float']
-                    if type is not 'float':
+                    if type != 'float':
                         type =  param[1]
                 except ValueError:
                     right_push = right_operand
@@ -234,35 +250,79 @@ def handle_binop(input):
     if op_type == '+':
         if update_value is not None: 
             tabela_simbolos_global[update_value]['value'] = left_value + right_value
-        if type is 'integer': 
+        if type == 'integer': 
             lines.append('\tADD\n')
-        elif type is 'float':
+        elif type == 'float':
             lines.append('\tFADD\n')
     elif op_type == '-':
         if update_value is not None: 
             tabela_simbolos_global[update_value]['value'] = left_value - right_value
-        if type is 'integer': 
+        if type == 'integer': 
             lines.append('\tSUB\n')
-        elif type is 'float':
+        elif type == 'float':
             lines.append('\tFSUB\n')
     elif op_type == '*':        
         if update_value is not None: 
             tabela_simbolos_global[update_value]['value'] = left_value * right_value
-        if type is 'integer': 
+        if type == 'integer': 
             lines.append('\tMUL\n')
-        elif type is 'float':
+        elif type == 'float':
             lines.append('\tFMUL\n')
     elif op_type == '/':        
         if update_value is not None: 
             tabela_simbolos_global[update_value]['value'] = left_value / right_value
-        if type is 'integer': 
+        if type == 'integer': 
             lines.append('\tDIV\n')
-        elif type is 'float':
+        elif type == 'float':
             lines.append('\tFDIV\n')
+    elif op_type == 'and':
+        if update_value is not None: 
+            tabela_simbolos_global[update_value]['value'] = left_value and right_value
+        lines.append('\tAND\n')
+    elif op_type == 'or':
+        if update_value is not None: 
+            tabela_simbolos_global[update_value]['value'] = left_value or right_value
+        lines.append('\tOR\n')
+    elif op_type == '>':
+        if update_value is not None: 
+            tabela_simbolos_global[update_value]['value'] = left_value > right_value
+        if type == 'integer':
+            lines.append('\tSUP\n')
+        elif type == 'float':
+            lines.append('\tFSUP\n')
+    elif op_type == '<':
+        if update_value is not None: 
+            tabela_simbolos_global[update_value]['value'] = left_value < right_value
+        if type == 'integer':
+            lines.append('\tINF\n')
+        elif type == 'float':
+            lines.append('\tFINF\n')
+    elif op_type == '>=':
+        if update_value is not None: 
+            tabela_simbolos_global[update_value]['value'] = left_value >= right_value
+        if type == 'integer':
+            lines.append('\tSUPEQ\n')
+        elif type == 'float':
+            lines.append('\tFSUPEQ\n')
+    elif op_type == '<=':
+        if update_value is not None: 
+            tabela_simbolos_global[update_value]['value'] = left_value <= right_value
+        if type == 'integer':
+            lines.append('\tINFEQ\n')
+        elif type == 'float':
+            lines.append('\tFINFEQ\n')
+    elif op_type == '=':
+        if update_value is not None: 
+            tabela_simbolos_global[update_value]['value'] = left_value == right_value
+        lines.append('\tEQUAL\n')
+    elif op_type == '<>':
+        if update_value is not None: 
+            tabela_simbolos_global[update_value]['value'] = left_value != right_value
+        lines.append('\tNEQUAL\n')
     else:
         return f"; Unsupported operation: {op_type}"
 
-    # print_tables()
+    print_tables()
     return lines
 
 # TODO assumir que ord vai ser sempre um char ou uma var
@@ -499,8 +559,12 @@ data8 = """
 ('program', {'program_name': 'SumExample', 'program_body': {'functions': [('function', {'name': 'Add', 'parameters': [(('vars', ['a']), ('type', 'integer')), (('vars', ['b']), ('type', 'integer'))], 'return_type': 'integer', 'body': ('compound', [('assign', 'Add', ('binop', {'type': '+', 'left': 'a', 'right': 'b'}))])})], 'var_declaration': ('var_decl_lines', [(('vars', ['num1', 'num2', 'result']), ('type', 'integer'))]), 'program_code': ('compound', [('assign', 'num1', 5), ('assign', 'num2', 3), ('assign', 'result', ('Function_call', {'name': 'Add', 'args': ['num1', 'num2']})), ('write', ['result'])])}})
 """
 
+data10 = """
+('program', {'program_name': 'TesteBinOp', 'program_body': {'var_declaration': ('var_decl_lines', [(('vars', ['soma', 'sub', 'mult', 'divi']), ('type', 'integer')), (('vars', ['somaFloat', 'subFloat', 'multFloat', 'diviFloat']), ('type', 'float')), (('vars', ['igual', 'diferente', 'menor', 'maior', 'menorIgual', 'maiorIgual']), ('type', 'boolean')), (('vars', ['conjuncao', 'disjuncao']), ('type', 'boolean'))]), 'program_code': ('compound', [('assign', 'somaFloat', ('binop', {'type': '+', 'left': 10, 'right': 2.3})), ('assign', 'subFloat', ('binop', {'type': '-', 'left': 23, 'right': 'somaFloat'})), ('assign', 'multFloat', ('binop', {'type': '*', 'left': 3, 'right': 7.6})), ('assign', 'diviFloat', ('binop', {'type': '/', 'left': 2.754, 'right': 3.5})), ('assign', 'igual', ('binop', {'type': '=', 'left': 12, 'right': 21})), ('assign', 'diferente', ('binop', {'type': '<>', 'left': 32, 'right': 2})), ('assign', 'menor', ('binop', {'type': '<', 'left': 90, 'right': 110})), ('assign', 'maior', ('binop', {'type': '>', 'left': 1, 'right': 0})), ('assign', 'menorIgual', ('binop', {'type': '<=', 'left': 0.0, 'right': 0.0})), ('assign', 'maiorIgual', ('binop', {'type': '>=', 'left': 12, 'right': 9})), ('assign', 'conjuncao', ('binop', {'type': 'and', 'left': 0, 'right': 1})), ('assign', 'disjuncao', ('binop', {'type': 'or', 'left': 0, 'right': 1}))])}})
+"""
+
 def main():
-    ast_tree = ast.literal_eval(data8)
+    ast_tree = ast.literal_eval(data10)
 
     _, program_data = ast_tree
     body = program_data["program_body"]

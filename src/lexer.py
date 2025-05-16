@@ -62,6 +62,7 @@ tokens = (
     'NOT', 
     # --- Tipos ---
     'INTEGERTYPE',
+    'FLOATTYPE',
     'BOOLEANTYPE',
     'STRINGTYPE',
     # --- Literais ---
@@ -315,6 +316,10 @@ def t_GT(t):
 
 def t_INTEGERTYPE(t):
     r'\bInteger\b|\binteger\b'
+    return t
+
+def t_FLOATTYPE(t):
+    r'\bFloat\b|\bfloat\b'
     return t
 
 def t_BOOLEANTYPE(t):
