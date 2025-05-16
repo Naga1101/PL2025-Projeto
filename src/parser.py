@@ -563,7 +563,6 @@ begin
 
     conjuncao := 0 and 1;
     disjuncao := 0 or 1;
-
 end.
 """
 

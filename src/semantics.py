@@ -3,8 +3,6 @@ import ast
 import os
 ## Global vars
 
-output_file = "outputs/output.txt"
-
 conversor_tipos = {
     'int': 'integer',
     'float': 'float',
@@ -506,7 +504,7 @@ def convert_func(func):
             print(msg)
     return func_lines
 
-def read_code(func_instructions, main_instructions):
+def read_code(func_instructions, main_instructions, output_file):
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
     with open(output_file, 'w') as f:
         f.write("JUMP main\n\n")
@@ -567,6 +565,26 @@ data10 = """
 ('program', {'program_name': 'TesteBinOp', 'program_body': {'var_declaration': ('var_decl_lines', [(('vars', ['soma', 'sub', 'mult', 'divi']), ('type', 'integer')), (('vars', ['somaFloat', 'subFloat', 'multFloat', 'diviFloat']), ('type', 'float')), (('vars', ['igual', 'diferente', 'menor', 'maior', 'menorIgual', 'maiorIgual']), ('type', 'boolean')), (('vars', ['conjuncao', 'disjuncao']), ('type', 'boolean'))]), 'program_code': ('compound', [('assign', 'somaFloat', ('binop', {'type': '+', 'left': 10, 'right': 2.3})), ('assign', 'subFloat', ('binop', {'type': '-', 'left': 23, 'right': 'somaFloat'})), ('assign', 'multFloat', ('binop', {'type': '*', 'left': 3, 'right': 7.6})), ('assign', 'diviFloat', ('binop', {'type': '/', 'left': 2.754, 'right': 3.5})), ('assign', 'igual', ('binop', {'type': '=', 'left': 12, 'right': 21})), ('assign', 'diferente', ('binop', {'type': '<>', 'left': 32, 'right': 2})), ('assign', 'menor', ('binop', {'type': '<', 'left': 90, 'right': 110})), ('assign', 'maior', ('binop', {'type': '>', 'left': 1, 'right': 0})), ('assign', 'menorIgual', ('binop', {'type': '<=', 'left': 0.0, 'right': 0.0})), ('assign', 'maiorIgual', ('binop', {'type': '>=', 'left': 12, 'right': 9})), ('assign', 'conjuncao', ('binop', {'type': 'and', 'left': 0, 'right': 1})), ('assign', 'disjuncao', ('binop', {'type': 'or', 'left': 0, 'right': 1}))])}})
 """
 
+def runSemantics(input, outputFileName):
+    ast_tree = input
+
+    _, program_data = ast_tree
+    body = program_data["program_body"]
+    consts = body.get("consts", [])
+    functions = body.get("functions", [])
+    var_decl = body.get("var_declaration", ())
+    code_tuple = body.get("program_code", ())
+
+    create_symbol_table(consts, functions, var_decl)
+
+    functions_body = []
+    for function in functions:
+        func_name = function[1]['name']
+        func_body = function[1]['body'][1]
+        functions_body.append((func_name, func_body))
+
+    read_code(functions_body, code_tuple[1], outputFileName)
+
 def main():
     ast_tree = ast.literal_eval(data10)
 
@@ -585,7 +603,7 @@ def main():
         func_body = function[1]['body'][1]
         functions_body.append((func_name, func_body))
 
-    read_code(functions_body, code_tuple[1])
+    read_code(functions_body, code_tuple[1], "outputsSemantics/output.txt")
 
 if __name__ == "__main__":
     main()

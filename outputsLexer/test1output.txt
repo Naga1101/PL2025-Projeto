@@ -1,0 +1,11 @@
+PROGRAM(program) at line 1, position 0
+ID(HelloWorld) at line 1, position 8
+SEMICOLON(;) at line 1, position 18
+BEGIN(begin) at line 1, position 20
+WRITEFUNCLN(writeln) at line 1, position 30
+LPAREN(() at line 1, position 37
+STRING(Ola, Mundo!) at line 1, position 38
+RPAREN()) at line 1, position 51
+SEMICOLON(;) at line 1, position 52
+END(end) at line 1, position 54
+DOT(.) at line 1, position 57
