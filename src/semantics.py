@@ -111,6 +111,7 @@ def handle_binop(input):
     update_value = None
     left_value = None
     right_value = None
+    type = None
     if(isinstance(input, tuple)):
         #print(input[0])
         #print(input[1]) # value where it is going to be assigned
@@ -145,6 +146,7 @@ def handle_binop(input):
     if left_operand in tabela_simbolos_global:
         if update_value is not None: 
             left_value = tabela_simbolos_global[left_operand]['value']
+        type =  tabela_simbolos_global[left_operand]['type']
         left_push = tabela_simbolos_global[left_operand]['gp']
         left_type = 'PUSHL'
     elif tabela_simbolos_global[update_value]['kind'] == 'function':
@@ -152,26 +154,32 @@ def handle_binop(input):
         for param in func_params:
             if left_operand == param[0]:
                 left_push = param[2]
+            type =  param[1]
             left_type = 'PUSHL'
     else:
         if isinstance(left_operand, int): 
             left_push = left_operand
+            type = 'integer'
             left_type = tipo_de_push['integer']
         elif isinstance(left_operand, float):  
             left_push = left_operand
+            type = 'float'
             left_type = tipo_de_push['float']
         elif isinstance(left_operand, str):  
             if left_operand.isdigit():  
                 left_push = int(left_operand)
                 left_type = tipo_de_push['integer']
+                type = 'integer'
             else:
                 try:
                     float_value = float(left_operand)  
                     left_push = float_value
                     left_type = tipo_de_push['float']
+                    type = 'float'
                 except ValueError:
                     left_push = left_operand
                     left_type = tipo_de_push['string']
+                    type = 'string'
 
     right_push = None
     right_type = None
@@ -180,18 +188,24 @@ def handle_binop(input):
             right_value = tabela_simbolos_global[right_operand]['value']
         right_push = tabela_simbolos_global[right_operand]['gp']
         right_type = 'PUSHL'
+        if type is not 'float':
+            type =  tabela_simbolos_global[left_operand]['type']
     elif tabela_simbolos_global[update_value]['kind'] == 'function':
         func_params = tabela_funcoes[update_value]['parameters']
         for param in func_params:
             if right_operand == param[0]:
                 right_push = param[2]
+            if type is not 'float':
+                type =  param[1]
             right_type = 'PUSHL'
         update_value = None
     else:
         if isinstance(right_operand, int):  
             right_push = right_operand
             right_type = tipo_de_push['integer']
-        elif isinstance(right_operand, float): 
+        elif isinstance(right_operand, float):
+            if type is not 'float':
+                type =  param[1]
             right_push = right_operand
             right_type = tipo_de_push['float']
         elif isinstance(right_operand, str):  
@@ -203,6 +217,8 @@ def handle_binop(input):
                     float_value = float(right_operand)  
                     right_push = float_value
                     right_type = tipo_de_push['float']
+                    if type is not 'float':
+                        type =  param[1]
                 except ValueError:
                     right_push = right_operand
                     right_type = tipo_de_push['string']
@@ -218,19 +234,31 @@ def handle_binop(input):
     if op_type == '+':
         if update_value is not None: 
             tabela_simbolos_global[update_value]['value'] = left_value + right_value
-        lines.append('\tADD\n')
+        if type is 'integer': 
+            lines.append('\tADD\n')
+        elif type is 'float':
+            lines.append('\tFADD\n')
     elif op_type == '-':
         if update_value is not None: 
             tabela_simbolos_global[update_value]['value'] = left_value - right_value
-        lines.append('\tSUB\n')
+        if type is 'integer': 
+            lines.append('\tSUB\n')
+        elif type is 'float':
+            lines.append('\tFSUB\n')
     elif op_type == '*':        
         if update_value is not None: 
             tabela_simbolos_global[update_value]['value'] = left_value * right_value
-        lines.append('\tMUL\n')
+        if type is 'integer': 
+            lines.append('\tMUL\n')
+        elif type is 'float':
+            lines.append('\tFMUL\n')
     elif op_type == '/':        
         if update_value is not None: 
             tabela_simbolos_global[update_value]['value'] = left_value / right_value
-        lines.append('\tDIV\n')
+        if type is 'integer': 
+            lines.append('\tDIV\n')
+        elif type is 'float':
+            lines.append('\tFDIV\n')
     else:
         return f"; Unsupported operation: {op_type}"
 

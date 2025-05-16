@@ -17,7 +17,7 @@ main:
 	STOREL 0
 
 	// assign 3 to num2
-	PUSHI 3
+	PUSHI 3 
 	STOREL 1
 
 	// assign ('Function_call', {'name': 'Add', 'args': ['num1', 'num2']}) to result
