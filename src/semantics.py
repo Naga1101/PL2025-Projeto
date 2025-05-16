@@ -48,6 +48,10 @@ def print_tables():
 
 ### Handlers
 
+# se write for var verifica o seu tipo na tabela_simbolos_global e usa o tipo de right apropriado
+# ser uma string, inteiro ou float e usa o write apropriado
+# write de boolean é uma string
+# se write(4 + 5) os writes so funceminam se forem coisas concretas x:+ 3 + 4 write(x)
 def handle_writeln(output):
     lines = evaluate_expression(output)
     lines.append('\t// writeln')
