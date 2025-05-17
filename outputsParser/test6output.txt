@@ -1,1 +1,131 @@
-('program', {'program_name': 'BinarioParaInteiro', 'program_body': {'var_declaration': ('var_decl_lines', [(('vars', ['bin']), ('type', 'string')), (('vars', ['i', 'valor', 'potencia']), ('type', 'integer'))]), 'program_code': ('compound', [('writeln', ['Introduza uma string binÃ¡ria:']), ('readln', 'bin'), ('assign', 'valor', 0), ('assign', 'potencia', 1), ('for', {'var': 'i', 'start': ('length', 'bin'), 'end': 1, 'direction': 'downto', 'body': ('compound', [('if', {'case': ('binop', {'type': '=', 'left': ('array', {'name': 'bin', 'index': 'i'}), 'right': '1'}), 'do': ('assign', 'valor', ('binop', {'type': '+', 'left': 'valor', 'right': 'potencia'}))}), ('assign', 'potencia', ('binop', {'type': '*', 'left': 'potencia', 'right': 2}))])}), ('writeln', ['O valor inteiro correspondente Ã©: ', 'valor'])])}})
+[
+  "program",
+  {
+    "program_name": "BinarioParaInteiro",
+    "program_body": {
+      "var_declaration": [
+        "var_decl_lines",
+        [
+          [
+            [
+              "vars",
+              [
+                "bin"
+              ]
+            ],
+            [
+              "type",
+              "string"
+            ]
+          ],
+          [
+            [
+              "vars",
+              [
+                "i",
+                "valor",
+                "potencia"
+              ]
+            ],
+            [
+              "type",
+              "integer"
+            ]
+          ]
+        ]
+      ],
+      "program_code": [
+        "compound",
+        [
+          [
+            "writeln",
+            [
+              "Introduza uma string binÃ¡ria:"
+            ]
+          ],
+          [
+            "readln",
+            "bin"
+          ],
+          [
+            "assign",
+            "valor",
+            0
+          ],
+          [
+            "assign",
+            "potencia",
+            1
+          ],
+          [
+            "for",
+            {
+              "var": "i",
+              "start": [
+                "length",
+                "bin"
+              ],
+              "end": 1,
+              "direction": "downto",
+              "body": [
+                "compound",
+                [
+                  [
+                    "if",
+                    {
+                      "case": [
+                        "binop",
+                        {
+                          "type": "=",
+                          "left": [
+                            "array",
+                            {
+                              "name": "bin",
+                              "index": "i"
+                            }
+                          ],
+                          "right": "1"
+                        }
+                      ],
+                      "do": [
+                        "assign",
+                        "valor",
+                        [
+                          "binop",
+                          {
+                            "type": "+",
+                            "left": "valor",
+                            "right": "potencia"
+                          }
+                        ]
+                      ]
+                    }
+                  ],
+                  [
+                    "assign",
+                    "potencia",
+                    [
+                      "binop",
+                      {
+                        "type": "*",
+                        "left": "potencia",
+                        "right": 2
+                      }
+                    ]
+                  ]
+                ]
+              ]
+            }
+          ],
+          [
+            "writeln",
+            [
+              "O valor inteiro correspondente Ã©: ",
+              "valor"
+            ]
+          ]
+        ]
+      ]
+    }
+  }
+]

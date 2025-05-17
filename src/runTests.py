@@ -1,4 +1,5 @@
 import subprocess
+import json
 import sys
 import os
 
@@ -21,6 +22,16 @@ lexer_dir = "outputsLexer"
 parser_dir = "outputsParser"
 semantics_dir = "outputsSemantics"
 
+def convert(obj):
+    if isinstance(obj, tuple):
+        return [convert(i) for i in obj]
+    elif isinstance(obj, list):
+        return [convert(i) for i in obj]
+    elif isinstance(obj, dict):
+        return {k: convert(v) for k, v in obj.items()}
+    else:
+        return obj
+    
 def main():
     #text = "Menu to run the tests provided"  
     exit = startTests = False
@@ -81,11 +92,12 @@ def main():
                         f.write('\n'.join(tokens))
 
                 parser_output = parser.parse(lexer=lexer, debug=True)
+                json_compatible_ast = convert(parser_output)
 
                 parser_output_file = f'{parser_dir}/test{i+1}output.txt'
                 os.makedirs(os.path.dirname(parser_output_file), exist_ok=True)
                 with open(parser_output_file, 'w', encoding='utf-8') as f:
-                        f.write(str(parser_output))
+                        json.dump(json_compatible_ast, f, indent=2, ensure_ascii=False)
 
                 semantics_output_file = f'{semantics_dir}/test{i+1}output.txt'
                 runSemantics(parser_output, semantics_output_file)
