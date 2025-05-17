@@ -326,7 +326,8 @@ def handle_binop(input):
     elif op_type == '<>':
         if update_value is not None: 
             tabela_simbolos_global[update_value]['value'] = left_value != right_value
-        lines.append('\tNEQUAL\n')
+        lines.append('\tEQUAL')
+        lines.append('\tNOT\n')
     else:
         return f"; Unsupported operation: {op_type}"
 

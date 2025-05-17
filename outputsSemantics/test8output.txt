@@ -48,7 +48,8 @@ main:
 	// binop <>
 	PUSHI 32
 	PUSHI 2
-	NEQUAL
+	EQUAL
+	NOT
 
 	STOREL 5
 
