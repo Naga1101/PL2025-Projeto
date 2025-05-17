@@ -77,11 +77,12 @@ ASSIGN(:=) at line 1, position 470
 ID(num3) at line 1, position 473
 SEMICOLON(;) at line 1, position 477
 COMMENT({ Escrever o resultado }) at line 1, position 484
-WRITEFUNC(Write) at line 1, position 513
+WRITEFUNCLN(WriteLn) at line 1, position 513
 LPAREN(() at line 1, position 520
 STRING(O maior Ã©: ) at line 1, position 521
 COMMA(,) at line 1, position 535
 ID(maior) at line 1, position 537
 RPAREN()) at line 1, position 542
-END(end) at line 1, position 544
-DOT(.) at line 1, position 547
+SEMICOLON(;) at line 1, position 543
+END(end) at line 1, position 545
+DOT(.) at line 1, position 548

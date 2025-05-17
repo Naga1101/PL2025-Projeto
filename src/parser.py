@@ -191,7 +191,6 @@ def p_var_decl_line(p):
                      | id_list COLON type'''
     p[0] = (("vars", p[1]), ("type", p[3]))
 
-
 def p_id_list(p):
     '''id_list : ID
                | id_list COMMA ID'''
@@ -243,10 +242,14 @@ def p_simple_statement(p):
                         | READFUNCLN expression
                         | BREAK'''
     function = p.slice[1].type
-    if function in ('WRITEFUNC', 'WRITEFUNCLN'):
+    if function in 'WRITEFUNC':
         p[0] = ('write', p[3])
-    elif function in ('READFUNC', 'READFUNCLN'):
+    elif function in 'WRITEFUNCLN':
+        p[0] = ('writeln', p[3])
+    elif function in 'READFUNC':
         p[0] = ('read', p[2])
+    elif function in 'READFUNCLN':
+        p[0] = ('readln', p[2])
     elif function == 'BREAK':
         p[0] = ('break')
     else:
@@ -258,7 +261,28 @@ def p_compound_statement(p):
 
 def p_selection_statement(p):
     '''selection_statement : IF expression THEN statement
-                           | IF expression THEN statement ELSE statement'''
+                           | IF expression THEN inside_statement ELSE statement'''
+    if len(p) == 5:
+        p[0] = ('if', {
+            'case': p[2],
+            'do': p[4]
+        })
+    else:
+        p[0] = ('if', {
+            'case': p[2],
+            'do': p[4],
+            'else': p[6]
+        })
+
+def p_inside_statement(p):
+    '''inside_statement : simple_statement
+                        | compound_statement
+                        | inside_selection_statement'''
+    p[0] = p[1]
+
+def p_inside_selection_statement(p):
+    '''inside_selection_statement : IF expression THEN inside_statement
+                                  | IF expression THEN inside_statement ELSE inside_statement'''
     if len(p) == 5:
         p[0] = ('if', {
             'case': p[2],
@@ -294,7 +318,8 @@ def p_expression_binop(p):
     '''expression : expression PLUS expression
                   | expression MINUS expression
                   | expression TIMES expression
-                  | expression DIVIDE expression
+                  | expression DIV expression
+                  | expression MOD expression
                   | expression AND expression
                   | expression GT expression
                   | expression LT expression
@@ -317,8 +342,15 @@ def p_expression_value(p):
                   | FALSE
                   | TRUE
                   | CHAR
-                  | ID'''
-    p[0] = p[1]
+                  | ID
+                  | ID LBRACKET expression RBRACKET'''
+    if len(p) > 2:
+        p[0] = ('array', {
+        'name': p[1],
+        'index': p[3]
+    })
+    else:
+        p[0] = p[1]
     
 def p_expression_function_call(p):
     'expression : ID LPAREN expression_list RPAREN'
@@ -566,6 +598,24 @@ begin
 end.
 """
 
+data11 = """
+program SomaArray;
+var
+    numeros: array[1..5] of integer;
+    i, soma: integer;
+begin
+    soma := 0;
+    writeln('Introduza 5 números inteiros:');
+    for i := 1 to 5 do
+    begin
+        readln(numeros[i]);
+        soma := soma + numeros[i];
+    end;
+
+    writeln('A soma dos números é: ', soma);
+end.
+"""
+
 if __name__ == "__main__":
     # test_parser(data0)
     #test_parser(data1)
@@ -577,4 +627,5 @@ if __name__ == "__main__":
     #test_parser(data7)
     #test_parser(data8)
     #test_parser(data9)
-    test_parser(data10)
+    #test_parser(data10)
+    test_parser(data11)

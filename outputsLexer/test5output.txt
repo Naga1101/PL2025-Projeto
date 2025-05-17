@@ -37,7 +37,7 @@ TO(to) at line 1, position 165
 NUMBER(5) at line 1, position 168
 DO(do) at line 1, position 170
 BEGIN(begin) at line 1, position 177
-ID(readln) at line 1, position 191
+READFUNCLN(readln) at line 1, position 191
 LPAREN(() at line 1, position 197
 ID(numeros) at line 1, position 198
 LBRACKET([) at line 1, position 205

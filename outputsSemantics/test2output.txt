@@ -1,0 +1,27 @@
+JUMP main
+
+
+main:
+	START
+
+// Unhandled expression type: ['Introduza o primeiro número: ']
+	// write
+	WRITEI
+	WRITELN
+
+// Unhandled expression type: ['Introduza o segundo número: ']
+	// write
+	WRITEI
+	WRITELN
+
+// Unhandled expression type: ['Introduza o terceiro número: ']
+	// write
+	WRITEI
+	WRITELN
+
+// Unhandled expression type: ['O maior é: ', 'maior']
+	// writeln
+	WRITEI
+	WRITELN
+
+	STOP

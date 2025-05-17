@@ -21,5 +21,5 @@ begin
         else maior := num3;
 
     { Escrever o resultado }
-    WriteLn('O maior é: ', maior)
+    WriteLn('O maior é: ', maior);
 end.

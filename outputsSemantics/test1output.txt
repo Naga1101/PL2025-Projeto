@@ -1,0 +1,12 @@
+JUMP main
+
+
+main:
+	START
+
+// Unhandled expression type: ['Ola, Mundo!']
+	// writeln
+	WRITEI
+	WRITELN
+
+	STOP

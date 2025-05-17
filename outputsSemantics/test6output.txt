@@ -1,0 +1,25 @@
+JUMP main
+
+
+main:
+	START
+
+// Unhandled expression type: ['Introduza uma string binária:']
+	// writeln
+	WRITEI
+	WRITELN
+
+	// assign 0 to valor
+	PUSHI 0
+	STOREL 5
+
+	// assign 1 to potencia
+	PUSHI 1
+	STOREL 6
+
+// Unhandled expression type: ['O valor inteiro correspondente é: ', 'valor']
+	// writeln
+	WRITEI
+	WRITELN
+
+	STOP

@@ -20,7 +20,7 @@ LPAREN(() at line 1, position 99
 STRING(Introduza uma string binÃ¡ria:) at line 1, position 100
 RPAREN()) at line 1, position 132
 SEMICOLON(;) at line 1, position 133
-ID(readln) at line 1, position 139
+READFUNCLN(readln) at line 1, position 139
 LPAREN(() at line 1, position 145
 ID(bin) at line 1, position 146
 RPAREN()) at line 1, position 149

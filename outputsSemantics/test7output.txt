@@ -1,0 +1,25 @@
+JUMP main
+
+bintoint:
+
+main:
+	START
+
+// Unhandled expression type: ['Introduza uma string binária:']
+	// writeln
+	WRITEI
+	WRITELN
+
+	// assign ('Function_call', {'name': 'BinToInt', 'args': ['bin']}) to valor
+	// Call da bintoint com os parametros ['bin']
+	PUSHL 
+	PUSHA bintoint
+	CALL
+	STOREL 7
+
+// Unhandled expression type: ['O valor inteiro correspondente é: ', 'valor']
+	// writeln
+	WRITEI
+	WRITELN
+
+	STOP

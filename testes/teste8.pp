@@ -9,7 +9,7 @@ begin
     somaFloat := 10 + 2.3;
     subFloat := 23 - somaFloat;
     multFloat := 3 * 7.6;
-    diviFloat := 2.754 / 3.5;
+    diviFloat := 2.754 div 3.5;
 
     igual := 12 = 21;
     diferente := 32 <> 2;

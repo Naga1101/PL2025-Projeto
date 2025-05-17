@@ -137,8 +137,10 @@ def handle_binop(input):
         lines.append(f'\t// binop -')
     elif op_type == '*':
         lines.append(f'\t// binop *')
-    elif op_type == '/':
-        lines.append(f'\t// binop /')
+    elif op_type == 'div':
+        lines.append(f'\t// binop div')
+    elif op_type == 'mod':
+        lines.append(f'\t// binop mod')
     elif op_type == 'and':
         lines.append(f'\t// binop and')
     elif op_type == 'or':
@@ -270,13 +272,17 @@ def handle_binop(input):
             lines.append('\tMUL\n')
         elif type == 'float':
             lines.append('\tFMUL\n')
-    elif op_type == '/':        
+    elif op_type == 'div':        
         if update_value is not None: 
             tabela_simbolos_global[update_value]['value'] = left_value / right_value
         if type == 'integer': 
             lines.append('\tDIV\n')
         elif type == 'float':
             lines.append('\tFDIV\n')
+    elif op_type == 'mod':        
+        if update_value is not None: 
+            tabela_simbolos_global[update_value]['value'] = left_value % right_value
+        lines.append('\tMOD\n')
     elif op_type == 'and':
         if update_value is not None: 
             tabela_simbolos_global[update_value]['value'] = left_value and right_value

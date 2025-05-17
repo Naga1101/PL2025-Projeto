@@ -1,0 +1,21 @@
+JUMP main
+
+
+main:
+	START
+
+// Unhandled expression type: ['Introduza um número inteiro positivo:']
+	// writeln
+	WRITEI
+	WRITELN
+
+	// assign 1 to fat
+	PUSHI 1
+	STOREL 1
+
+// Unhandled expression type: ['Fatorial de ', 'n', ': ', 'fat']
+	// writeln
+	WRITEI
+	WRITELN
+
+	STOP

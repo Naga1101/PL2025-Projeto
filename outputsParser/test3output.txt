@@ -1,1 +1,1 @@
-None
+('program', {'program_name': 'Fatorial', 'program_body': {'var_declaration': ('var_decl_lines', [(('vars', ['n', 'i', 'fat']), ('type', 'integer'))]), 'program_code': ('compound', [('writeln', ['Introduza um nÃºmero inteiro positivo:']), ('readln', 'n'), ('assign', 'fat', 1), ('for', {'var': 'i', 'start': 1, 'end': 'n', 'direction': 'to', 'body': ('assign', 'fat', ('binop', {'type': '*', 'left': 'fat', 'right': 'i'}))}), ('writeln', ['Fatorial de ', 'n', ': ', 'fat'])])}})

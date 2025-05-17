@@ -28,8 +28,8 @@ main:
 
 	STOREL 2
 
-	// assign ('binop', {'type': '/', 'left': 2.754, 'right': 3.5}) to diviFloat
-	// binop /
+	// assign ('binop', {'type': 'div', 'left': 2.754, 'right': 3.5}) to diviFloat
+	// binop div
 	PUSHF 2.754
 	PUSHF 3.5
 	FDIV

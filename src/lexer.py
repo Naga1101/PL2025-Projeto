@@ -50,7 +50,8 @@ tokens = (
     'PLUS',
     'MINUS',
     'TIMES',
-    'DIVIDE',
+    'DIV',
+    'MOD',
     'EQ',
     'NE',
     'LT',
@@ -193,11 +194,11 @@ def t_NOT(t):
 ## Funções Predefinidas
 
 def t_WRITEFUNCLN(t):
-    r'\bWriteln|writeln\b'
+    r'\b[Ww]rite[Ll]n\b'
     return t
 
 def t_READFUNCLN(t):
-    r'\bReadLn|readLn\b'
+    r'\b[Rr]ead[Ll]n\b'
     return t
 
 def t_WRITEFUNC(t):
@@ -284,8 +285,12 @@ def t_TIMES(t):
     r'\*'
     return t
 
-def t_DIVIDE(t):
-    r'/'
+def t_DIV(t):
+    r'\bdiv\b'
+    return t
+
+def t_MOD(t):
+    r'\bmod\b'
     return t
 
 def t_EQ(t):
@@ -387,6 +392,7 @@ def main():
     program funcaoTeste
     var
     var1, var2: integer;
+    readln(x)
     begin
     var1 := 10;
     var2 := 'Ola, Mundo!'

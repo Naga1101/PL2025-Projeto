@@ -16,7 +16,7 @@ LPAREN(() at line 1, position 63
 STRING(Introduza um nÃºmero inteiro positivo:) at line 1, position 64
 RPAREN()) at line 1, position 104
 SEMICOLON(;) at line 1, position 105
-ID(readln) at line 1, position 111
+READFUNCLN(readln) at line 1, position 111
 LPAREN(() at line 1, position 117
 ID(n) at line 1, position 118
 RPAREN()) at line 1, position 119
