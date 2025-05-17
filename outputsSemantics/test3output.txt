@@ -11,7 +11,7 @@ main:
 
 	// assign 1 to fat
 	PUSHI 1
-	STOREL 1
+	STOREL 0
 
 // Unhandled expression type: ['Fatorial de ', 'n', ': ', 'fat']
 	// writeln

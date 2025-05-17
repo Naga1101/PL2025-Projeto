@@ -572,24 +572,32 @@ data10 = """
 """
 
 def runSemantics(input, outputFileName):
-    ast_tree = input
+    try:
+        ast_tree = input
 
-    _, program_data = ast_tree
-    body = program_data["program_body"]
-    consts = body.get("consts", [])
-    functions = body.get("functions", [])
-    var_decl = body.get("var_declaration", ())
-    code_tuple = body.get("program_code", ())
+        _, program_data = ast_tree
+        body = program_data["program_body"]
+        consts = body.get("consts", [])
+        functions = body.get("functions", [])
+        var_decl = body.get("var_declaration", ())
+        code_tuple = body.get("program_code", ())
 
-    create_symbol_table(consts, functions, var_decl)
+        create_symbol_table(consts, functions, var_decl)
 
-    functions_body = []
-    for function in functions:
-        func_name = function[1]['name']
-        func_body = function[1]['body'][1]
-        functions_body.append((func_name, func_body))
+        functions_body = []
+        for function in functions:
+            func_name = function[1]['name']
+            func_body = function[1]['body'][1]
+            functions_body.append((func_name, func_body))
 
-    read_code(functions_body, code_tuple[1], outputFileName)
+        read_code(functions_body, code_tuple[1], outputFileName)
+
+        global free_fp
+        global free_gp
+        free_fp = 0
+        free_gp = 0
+    except Exception as e:
+        print("Erro na criação do ficheiro ", outputFileName)
 
 def main():
     ast_tree = ast.literal_eval(data10)
