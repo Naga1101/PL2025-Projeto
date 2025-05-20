@@ -7,6 +7,10 @@
         "compound",
         [
           [
+            "comment",
+            "{ ISTO Ã‰ UM COMENTARIO }"
+          ],
+          [
             "writeln",
             [
               "Ola, Mundo!"

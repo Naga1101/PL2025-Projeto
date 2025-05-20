@@ -1,0 +1,114 @@
+[
+  "program",
+  {
+    "program_name": "SumExample",
+    "program_body": {
+      "functions": [
+        [
+          "function",
+          {
+            "name": "Add",
+            "parameters": [
+              [
+                [
+                  "vars",
+                  [
+                    "a"
+                  ]
+                ],
+                [
+                  "type",
+                  "integer"
+                ]
+              ],
+              [
+                [
+                  "vars",
+                  [
+                    "b"
+                  ]
+                ],
+                [
+                  "type",
+                  "integer"
+                ]
+              ]
+            ],
+            "return_type": "integer",
+            "body": [
+              "compound",
+              [
+                [
+                  "assign",
+                  "Add",
+                  [
+                    "binop",
+                    {
+                      "type": "+",
+                      "left": "a",
+                      "right": "b"
+                    }
+                  ]
+                ]
+              ]
+            ]
+          }
+        ]
+      ],
+      "var_declaration": [
+        "var_decl_lines",
+        [
+          [
+            [
+              "vars",
+              [
+                "num1",
+                "num2",
+                "result"
+              ]
+            ],
+            [
+              "type",
+              "integer"
+            ]
+          ]
+        ]
+      ],
+      "program_code": [
+        "compound",
+        [
+          [
+            "assign",
+            "num1",
+            5
+          ],
+          [
+            "assign",
+            "num2",
+            3
+          ],
+          [
+            "assign",
+            "result",
+            [
+              "Function_call",
+              {
+                "name": "Add",
+                "args": [
+                  "num1",
+                  "num2"
+                ]
+              }
+            ]
+          ],
+          [
+            "writeln",
+            [
+              "result"
+            ]
+          ]
+        ]
+      ]
+    }
+  }
+]

@@ -1,0 +1,36 @@
+JUMP main
+
+add:
+	// binop +
+	PUSHL -2
+	PUSHL -1
+	ADD
+
+	RETURN
+
+
+main:
+	START
+
+	// assign 5 to num1
+	PUSHI 5
+	STOREL 0
+
+	// assign 3 to num2
+	PUSHI 3
+	STOREL 1
+
+	// assign ('Function_call', {'name': 'Add', 'args': ['num1', 'num2']}) to result
+	// Call da add com os parametros ['num1', 'num2']
+	PUSHL 0
+	PUSHL 1
+	PUSHA add
+	CALL
+	STOREL 2
+
+// Unhandled expression type: ['result']
+	// writeln
+	WRITEI
+	WRITELN
+
+	STOP

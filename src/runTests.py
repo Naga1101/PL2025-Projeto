@@ -16,6 +16,8 @@ test_files = [
     "./testes/teste6.pp",
     "./testes/teste7.pp",
     "./testes/teste8.pp",
+    "./testes/teste9.pp",
+    "./testes/teste10.pp",
 ]
 
 lexer_dir = "outputsLexer"
@@ -35,34 +37,34 @@ def convert(obj):
 def main():
     #text = "Menu to run the tests provided"  
     exit = startTests = False
-    runTests = [False, False, False, False, False, False, False, False]
+    runTests = [False, False, False, False, False, False, False, False, False, False]
 
     while not exit:
         while not startTests:
             print("Selecione os testes pretende correr:")
-            for i in range(8):
+            for i in range(10):
                 if runTests[i]:
                     print(f" {i+1}: O teste {i+1} está selecionado;")
                 else:
                     print(f" {i+1}: O teste {i+1} não está selecionado;")
-            print(" 9: Selecionar todos os testes;")
-            print(" 10: Desselecionar todos os testes;")
-            print("11: Correr os testes selecionados.")
+            print(" 11: Selecionar todos os testes;")
+            print(" 12: Desselecionar todos os testes;")
+            print(" 13: Correr os testes selecionados.")
             option = input("> ")
 
             try:
                 option = int(option)
 
-                if 0 <= option < 9:
+                if 0 <= option < 11:
                     option -= 1
                     runTests[option] = not runTests[option] 
-                elif option == 9:
-                    for i in range(8):
+                elif option == 11:
+                    for i in range(10):
                         runTests[i] = True
-                elif option == 10:
+                elif option == 12:
                     for i in range(8):
                         runTests[i] = False
-                elif option == 11:
+                elif option == 13:
                     if any(runTests):
                         startTests = True
                     else:
@@ -74,7 +76,7 @@ def main():
 
             print()
         
-        for i in range(8): 
+        for i in range(10): 
             if runTests[i]:
                 print(f"Teste {i+1}...")
                 input_file = open(test_files[i], 'r')
