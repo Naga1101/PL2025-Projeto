@@ -25,48 +25,40 @@ tabela_simbolos_global = {}
 tabela_funcoes = {}
 
 def print_tables():
-    label1 = "Nome"
-    label2 = "Kind"
-    label3 = "Tipo"
-    label4 = "Valor de Retorno"
-    label5 = "Parametros de entrada"
-    label6 = "Corpo da Função"
-    label7 = "Valor"
-    print("Tabela de Simbolos:")
-    print(f"{label1:10} | {label2:8} | {label3:7} | {label7}")
-    for name, info in tabela_simbolos_global.items():
-        print(f"{name:10} | {info['kind']:8} | {info['type']:7} | {info['value']}")
-    
-    print()
-    print("Tabela de Funções:")
-    print(f"{label1:10} | {label4:14} | {label5:38} | {label6}")
-    for name, info in tabela_funcoes.items():
-        print(f"{name:10} | {info['return_type']:16} | {str(info['parameters']):38} | {info['func_body']}")
-    print()
+    try:
+        label1 = "Nome"
+        label2 = "Kind"
+        label3 = "Tipo"
+        label4 = "Valor de Retorno"
+        label5 = "Parametros de entrada"
+        label6 = "Corpo da Função"
+        label7 = "Valor"
+        print("Tabela de Simbolos:")
+        print(f"{label1:10} | {label2:8} | {label3:7} | {label7}")
+        for name, info in tabela_simbolos_global.items():
+            print(f"{name:10} | {info['kind']:8} | {info['type']:7} | {info['value']}")
+        
+        print()
+        print("Tabela de Funções:")
+        print(f"{label1:10} | {label4:14} | {label5:38} | {label6}")
+        for name, info in tabela_funcoes.items():
+            print(f"{name:10} | {info['return_type']:16} | {str(info['parameters']):38} | {info['func_body']}")
+        print()
+    except Exception as e:
+        print("Erro ao imprimir as tabelas de simbolos e funcoes:", e)
 
 ### Handlers
 
-# se write for var verifica o seu tipo na tabela_simbolos_global e usa o tipo de right apropriado
-# ser uma string, inteiro ou float e usa o write apropriado
-# write de boolean é uma string
-# se write(4 + 5) os writes so funceminam se forem coisas concretas x:+ 3 + 4 write(x)
 def handle_writeln(output):
     lines = evaluate_expression(output)
     lines.append('\t// writeln')
-    print("aqui" ,output)
-    # TODO forma de descobrir o tipo de write que é preciso
-    if isinstance(output, str):
-        var_type = 'string'
-    elif isinstance(output, (int, float)):
-        var_type = 'integer' if isinstance(output, int) else 'float'
-    else:
-        var_type = 'integer'  # assume literal string or fallback
 
-    if var_type.lower() == 'string':
-        lines.append('\tWRITES')
+    if isinstance(output, list):
+        for item in output:
+            lines.extend(process_write_item(item))
     else:
-        lines.append('\tWRITEI')  # default for numeric values (you can customize for float)
-    
+        lines.extend(process_write_item(output))
+
     lines.append('\tWRITELN\n')
     return lines
 
@@ -76,19 +68,74 @@ def handle_write(output):
     print("aqui" ,output)
     print_tables()
     # TODO forma de descobrir o tipo de write que é preciso
-    if isinstance(output, str) and output in tabela_simbolos_global:
-        var_type = tabela_simbolos_global[output].get('type', 'string')
-    elif isinstance(output, (int, float)):
-        var_type = 'integer' if isinstance(output, int) else 'float'
+    if isinstance(output, list):
+        for item in output:
+            lines.extend(process_write_item(item))
     else:
-        var_type = 'integer'  # assume literal string or fallback
+        lines.extend(process_write_item(output))
+    return lines
 
-    if var_type.lower() == 'string':
+def process_write_item(item):
+    lines = []
+
+    # Se for variável conhecida
+    if isinstance(item, str) and item in tabela_simbolos_global:
+        var_info = tabela_simbolos_global[item]
+        var_type = var_info['type']
+        gp = var_info.get('gp')
+
+        if var_type == 'boolean':
+            # Load valor booleano da memória
+            lines.append(f'\tPUSHL {gp}')
+            # Se for 0 escreve 'false', se for 1 escreve 'true'
+            lines.append('\tDUP 1')
+            lines.append('\tPUSHI 0')
+            lines.append('\tEQUAL')
+            lines.append('\tJZ label_true')
+            lines.append('\tPUSHS "false"')
+            lines.append('\tWRITES')
+            lines.append('\tJUMP label_endbool')
+            lines.append('label_true:')
+            lines.append('\tPUSHS "true"')
+            lines.append('\tWRITES')
+            lines.append('label_endbool:')
+        elif var_type == 'integer':
+            lines.append(f'\tPUSHL {gp}')
+            lines.append('\tWRITEI')
+        elif var_type == 'float':
+            lines.append(f'\tPUSHL {gp}')
+            lines.append('\tWRITEF')
+        elif var_type == 'string':
+            lines.append(f'\tPUSHL {gp}')
+            lines.append('\tWRITES')
+
+    # Literal booleano direto (True/False)
+    elif isinstance(item, bool):
+        str_val = 'true' if item else 'false'
+        lines.append(f'\tPUSHS "{str_val}"')
         lines.append('\tWRITES')
+
+    # Literal string
+    elif isinstance(item, str):
+        lines.append(f'\tPUSHS "{item}"')
+        lines.append('\tWRITES')
+
+    # Literal inteiro
+    elif isinstance(item, int):
+        lines.append(f'\tPUSHI {item}')
+        lines.append('\tWRITEI')
+
+    # Literal float
+    elif isinstance(item, float):
+        lines.append(f'\tPUSHF {item}')
+        lines.append('\tWRITEF')
+
+    # Expressão complexa (ex: binop, função, etc)
     else:
-        lines.append('\tWRITEI')  # default for numeric values (you can customize for float)
-    
-    lines.append('\tWRITELN\n')
+        expr_lines = evaluate_expression(item)
+        lines.extend(expr_lines)
+        lines.append('\tWRITEI')
+
     return lines
 
 def handle_assign(var, value):  # passar o atributo que diz se é main ou func
@@ -424,6 +471,8 @@ def evaluate_expression(expr, isAssign=None, isFunc=None):
         return ['\tPUSHL ' + str(expr)]
     elif isinstance(expr, str):
         return [f'\tPUSHS "{expr}"']
+    elif isinstance(expr, list):
+        return []
 
     return [f"// Unhandled expression type: {expr}"]
 
@@ -554,8 +603,768 @@ data1 = """
 """
 
 data5 = """
-('program', {'program_name': 'Maior3', 'program_body': {'var_declaration': ('var_decl_lines', [(('vars', ['num1', 'num2', 'num3', 'maior']), ('type', 'Integer')), (('vars', ['bol1', 'bol2']), ('type', 'Boolean'))]), 'program_code': ('compound', [('assign', 'num1', 5), ('assign', 'num2', 7), ('write', ('binop', {'type': '+', 'left': 'num1', 'right': 'num2'}))])}})"""
-
+[
+  "program",
+  {
+    "program_name": "TesteBinOp",
+    "program_body": {
+      "functions": [
+        [
+          "function",
+          {
+            "name": "SomaF",
+            "parameters": [
+              [
+                [
+                  "vars",
+                  [
+                    "soma"
+                  ]
+                ],
+                [
+                  "type",
+                  "float"
+                ]
+              ]
+            ],
+            "return_type": "float",
+            "body": [
+              "compound",
+              [
+                [
+                  "assign",
+                  "SomaF",
+                  [
+                    "binop",
+                    {
+                      "type": "+",
+                      "left": 10,
+                      "right": 2.3
+                    }
+                  ]
+                ]
+              ]
+            ]
+          }
+        ],
+        [
+          "function",
+          {
+            "name": "SubF",
+            "parameters": [
+              [
+                [
+                  "vars",
+                  [
+                    "soma"
+                  ]
+                ],
+                [
+                  "type",
+                  "float"
+                ]
+              ]
+            ],
+            "return_type": "float",
+            "body": [
+              "compound",
+              [
+                [
+                  "assign",
+                  "SubF",
+                  [
+                    "binop",
+                    {
+                      "type": "-",
+                      "left": 23,
+                      "right": "soma"
+                    }
+                  ]
+                ]
+              ]
+            ]
+          }
+        ],
+        [
+          "function",
+          {
+            "name": "MultF",
+            "parameters": [
+              [
+                [
+                  "vars",
+                  [
+                    "soma"
+                  ]
+                ],
+                [
+                  "type",
+                  "float"
+                ]
+              ]
+            ],
+            "return_type": "float",
+            "body": [
+              "compound",
+              [
+                [
+                  "assign",
+                  "MultF",
+                  [
+                    "binop",
+                    {
+                      "type": "*",
+                      "left": 3,
+                      "right": 7.6
+                    }
+                  ]
+                ]
+              ]
+            ]
+          }
+        ],
+        [
+          "function",
+          {
+            "name": "DivF",
+            "parameters": [
+              [
+                [
+                  "vars",
+                  [
+                    "soma"
+                  ]
+                ],
+                [
+                  "type",
+                  "float"
+                ]
+              ]
+            ],
+            "return_type": "float",
+            "body": [
+              "compound",
+              [
+                [
+                  "assign",
+                  "DivF",
+                  [
+                    "binop",
+                    {
+                      "type": "div",
+                      "left": 2.754,
+                      "right": 3.5
+                    }
+                  ]
+                ]
+              ]
+            ]
+          }
+        ],
+        [
+          "function",
+          {
+            "name": "Igual",
+            "parameters": [
+              [
+                [
+                  "vars",
+                  [
+                    "a"
+                  ]
+                ],
+                [
+                  "type",
+                  "boolean"
+                ]
+              ]
+            ],
+            "return_type": "boolean",
+            "body": [
+              "compound",
+              [
+                [
+                  "assign",
+                  "Igual",
+                  [
+                    "binop",
+                    {
+                      "type": "=",
+                      "left": 12,
+                      "right": 21
+                    }
+                  ]
+                ]
+              ]
+            ]
+          }
+        ],
+        [
+          "function",
+          {
+            "name": "Diferente",
+            "parameters": [
+              [
+                [
+                  "vars",
+                  [
+                    "a"
+                  ]
+                ],
+                [
+                  "type",
+                  "boolean"
+                ]
+              ]
+            ],
+            "return_type": "boolean",
+            "body": [
+              "compound",
+              [
+                [
+                  "assign",
+                  "Diferente",
+                  [
+                    "binop",
+                    {
+                      "type": "<>",
+                      "left": 32,
+                      "right": 2
+                    }
+                  ]
+                ]
+              ]
+            ]
+          }
+        ],
+        [
+          "function",
+          {
+            "name": "Menor",
+            "parameters": [
+              [
+                [
+                  "vars",
+                  [
+                    "a"
+                  ]
+                ],
+                [
+                  "type",
+                  "boolean"
+                ]
+              ]
+            ],
+            "return_type": "boolean",
+            "body": [
+              "compound",
+              [
+                [
+                  "assign",
+                  "Menor",
+                  [
+                    "binop",
+                    {
+                      "type": "<",
+                      "left": 90,
+                      "right": 110
+                    }
+                  ]
+                ]
+              ]
+            ]
+          }
+        ],
+        [
+          "function",
+          {
+            "name": "Maior",
+            "parameters": [
+              [
+                [
+                  "vars",
+                  [
+                    "a"
+                  ]
+                ],
+                [
+                  "type",
+                  "boolean"
+                ]
+              ]
+            ],
+            "return_type": "boolean",
+            "body": [
+              "compound",
+              [
+                [
+                  "assign",
+                  "Maior",
+                  [
+                    "binop",
+                    {
+                      "type": ">",
+                      "left": 1,
+                      "right": 0
+                    }
+                  ]
+                ]
+              ]
+            ]
+          }
+        ],
+        [
+          "function",
+          {
+            "name": "MenorIgual",
+            "parameters": [
+              [
+                [
+                  "vars",
+                  [
+                    "a"
+                  ]
+                ],
+                [
+                  "type",
+                  "boolean"
+                ]
+              ]
+            ],
+            "return_type": "boolean",
+            "body": [
+              "compound",
+              [
+                [
+                  "assign",
+                  "MenorIgual",
+                  [
+                    "binop",
+                    {
+                      "type": "<=",
+                      "left": 0.0,
+                      "right": 0.0
+                    }
+                  ]
+                ]
+              ]
+            ]
+          }
+        ],
+        [
+          "function",
+          {
+            "name": "MaiorIgual",
+            "parameters": [
+              [
+                [
+                  "vars",
+                  [
+                    "a"
+                  ]
+                ],
+                [
+                  "type",
+                  "boolean"
+                ]
+              ]
+            ],
+            "return_type": "boolean",
+            "body": [
+              "compound",
+              [
+                [
+                  "assign",
+                  "MaiorIgual",
+                  [
+                    "binop",
+                    {
+                      "type": ">=",
+                      "left": 12,
+                      "right": 9
+                    }
+                  ]
+                ]
+              ]
+            ]
+          }
+        ],
+        [
+          "function",
+          {
+            "name": "Conjuncao",
+            "parameters": [
+              [
+                [
+                  "vars",
+                  [
+                    "a"
+                  ]
+                ],
+                [
+                  "type",
+                  "boolean"
+                ]
+              ]
+            ],
+            "return_type": "boolean",
+            "body": [
+              "compound",
+              [
+                [
+                  "assign",
+                  "Conjuncao",
+                  [
+                    "binop",
+                    {
+                      "type": "and",
+                      "left": 0,
+                      "right": 1
+                    }
+                  ]
+                ]
+              ]
+            ]
+          }
+        ],
+        [
+          "function",
+          {
+            "name": "Disjuncao",
+            "parameters": [
+              [
+                [
+                  "vars",
+                  [
+                    "a"
+                  ]
+                ],
+                [
+                  "type",
+                  "boolean"
+                ]
+              ]
+            ],
+            "return_type": "boolean",
+            "body": [
+              "compound",
+              [
+                [
+                  "assign",
+                  "Disjuncao",
+                  [
+                    "binop",
+                    {
+                      "type": "or",
+                      "left": 0,
+                      "right": 1
+                    }
+                  ]
+                ]
+              ]
+            ]
+          }
+        ]
+      ],
+      "var_declaration": [
+        "var_decl_lines",
+        [
+          [
+            [
+              "vars",
+              [
+                "b",
+                "sF",
+                "suF",
+                "mF",
+                "dF"
+              ]
+            ],
+            [
+              "type",
+              "float"
+            ]
+          ],
+          [
+            [
+              "vars",
+              [
+                "a",
+                "b1",
+                "b2",
+                "b3",
+                "b4",
+                "b5",
+                "b6",
+                "b7",
+                "b8"
+              ]
+            ],
+            [
+              "type",
+              "boolean"
+            ]
+          ]
+        ]
+      ],
+      "program_code": [
+        "compound",
+        [
+          [
+            "assign",
+            "b",
+            1
+          ],
+          [
+            "assign",
+            "a",
+            1
+          ],
+          [
+            "assign",
+            "sF",
+            [
+              "Function_call",
+              {
+                "name": "SomaF",
+                "args": [
+                  "b"
+                ]
+              }
+            ]
+          ],
+          [
+            "assign",
+            "suF",
+            [
+              "Function_call",
+              {
+                "name": "SubF",
+                "args": [
+                  "sF"
+                ]
+              }
+            ]
+          ],
+          [
+            "assign",
+            "mF",
+            [
+              "Function_call",
+              {
+                "name": "MultF",
+                "args": [
+                  "b"
+                ]
+              }
+            ]
+          ],
+          [
+            "assign",
+            "dF",
+            [
+              "Function_call",
+              {
+                "name": "DivF",
+                "args": [
+                  "b"
+                ]
+              }
+            ]
+          ],
+          [
+            "writeln",
+            [
+              "Soma: ",
+              "sF"
+            ]
+          ],
+          [
+            "writeln",
+            [
+              "Subtracao: ",
+              "suF"
+            ]
+          ],
+          [
+            "writeln",
+            [
+              "Multiplicacao: ",
+              "mF"
+            ]
+          ],
+          [
+            "writeln",
+            [
+              "Divisao: ",
+              "dF"
+            ]
+          ],
+          [
+            "assign",
+            "b1",
+            [
+              "Function_call",
+              {
+                "name": "Igual",
+                "args": [
+                  "a"
+                ]
+              }
+            ]
+          ],
+          [
+            "assign",
+            "b2",
+            [
+              "Function_call",
+              {
+                "name": "Diferente",
+                "args": [
+                  "a"
+                ]
+              }
+            ]
+          ],
+          [
+            "assign",
+            "b3",
+            [
+              "Function_call",
+              {
+                "name": "Menor",
+                "args": [
+                  "a"
+                ]
+              }
+            ]
+          ],
+          [
+            "assign",
+            "b4",
+            [
+              "Function_call",
+              {
+                "name": "Maior",
+                "args": [
+                  "a"
+                ]
+              }
+            ]
+          ],
+          [
+            "assign",
+            "b5",
+            [
+              "Function_call",
+              {
+                "name": "MenorIgual",
+                "args": [
+                  "a"
+                ]
+              }
+            ]
+          ],
+          [
+            "assign",
+            "b6",
+            [
+              "Function_call",
+              {
+                "name": "MaiorIgual",
+                "args": [
+                  "a"
+                ]
+              }
+            ]
+          ],
+          [
+            "assign",
+            "b7",
+            [
+              "Function_call",
+              {
+                "name": "Conjuncao",
+                "args": [
+                  "a"
+                ]
+              }
+            ]
+          ],
+          [
+            "assign",
+            "b8",
+            [
+              "Function_call",
+              {
+                "name": "Disjuncao",
+                "args": [
+                  "a"
+                ]
+              }
+            ]
+          ],
+          [
+            "writeln",
+            [
+              "12 = 21? ",
+              "b1"
+            ]
+          ],
+          [
+            "writeln",
+            [
+              "32 <> 2? ",
+              "b2"
+            ]
+          ],
+          [
+            "writeln",
+            [
+              "90 < 110? ",
+              "b3"
+            ]
+          ],
+          [
+            "writeln",
+            [
+              "1 > 0? ",
+              "b4"
+            ]
+          ],
+          [
+            "writeln",
+            [
+              "0.0 <= 0.0? ",
+              "b5"
+            ]
+          ],
+          [
+            "writeln",
+            [
+              "12 >= 9? ",
+              "b6"
+            ]
+          ],
+          [
+            "writeln",
+            [
+              "0 and 1? ",
+              "b7"
+            ]
+          ],
+          [
+            "writeln",
+            [
+              "0 or 1? ",
+              "b8"
+            ]
+          ]
+        ]
+      ]
+    }
+  }
+]"""
 data6 = """
 ('program', {'program_name': 'Maior3', 'program_body': {'var_declaration': ('var_decl_lines', [(('vars', ['num1', 'num2', 'num3', 'maior']), ('type', 'Integer')), (('vars', ['bol1', 'bol2']), ('type', 'Boolean'))]), 'program_code': ('compound', [('assign', 'num2', 7), ('assign', 'num1', ('binop', {'type': '+', 'left': 5, 'right': 'num2'})), ('write', ('binop', {'type': '+', 'left': 'num1', 'right': 'num2'}))])}})
 """
@@ -598,10 +1407,11 @@ def runSemantics(input, outputFileName):
         free_fp = 0
         free_gp = 0
     except Exception as e:
+        print(e)
         print("Erro na criação do ficheiro ", outputFileName)
 
 def main():
-    ast_tree = ast.literal_eval(data10)
+    ast_tree = ast.literal_eval(data5)
 
     _, program_data = ast_tree
     body = program_data["program_body"]

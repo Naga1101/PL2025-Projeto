@@ -1,0 +1,64 @@
+[
+  "program",
+  {
+    "program_name": "OrdCharExample",
+    "program_body": {
+      "var_declaration": [
+        "var_decl_lines",
+        [
+          [
+            [
+              "vars",
+              [
+                "ch"
+              ]
+            ],
+            [
+              "type",
+              "string"
+            ]
+          ],
+          [
+            [
+              "vars",
+              [
+                "code"
+              ]
+            ],
+            [
+              "type",
+              "integer"
+            ]
+          ]
+        ]
+      ],
+      "program_code": [
+        "compound",
+        [
+          [
+            "assign",
+            "ch",
+            "A"
+          ],
+          [
+            "assign",
+            "code",
+            [
+              "ord",
+              "ch"
+            ]
+          ],
+          [
+            "writeln",
+            [
+              "The ASCII code of ",
+              "ch",
+              " is ",
+              "code"
+            ]
+          ]
+        ]
+      ]
+    }
+  }
+]

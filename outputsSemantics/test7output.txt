@@ -7,7 +7,8 @@ main:
 
 // Unhandled expression type: ['Introduza uma string binária:']
 	// writeln
-	WRITEI
+	PUSHS "Introduza uma string binária:"
+	WRITES
 	WRITELN
 
 	// assign ('Function_call', {'name': 'BinToInt', 'args': ['bin']}) to valor
@@ -15,10 +16,13 @@ main:
 	PUSHL 
 	PUSHA bintoint
 	CALL
-	STOREL 7
+	STOREL 0
 
 // Unhandled expression type: ['O valor inteiro correspondente é: ', 'valor']
 	// writeln
+	PUSHS "O valor inteiro correspondente é: "
+	WRITES
+	PUSHL 0
 	WRITEI
 	WRITELN
 

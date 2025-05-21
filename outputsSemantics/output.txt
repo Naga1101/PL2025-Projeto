@@ -1,103 +1,251 @@
 JUMP main
 
+somaf:
+	RETURN
+
+subf:
+	RETURN
+
+multf:
+	RETURN
+
+divf:
+	RETURN
+
+igual:
+	RETURN
+
+diferente:
+	RETURN
+
+menor:
+	RETURN
+
+maior:
+	RETURN
+
+menorigual:
+	RETURN
+
+maiorigual:
+	RETURN
+
+conjuncao:
+	RETURN
+
+disjuncao:
+	RETURN
+
 
 main:
 	START
 
-	// assign ('binop', {'type': '+', 'left': 10, 'right': 2.3}) to somaFloat
-	// binop +
-	PUSHI 10
-	PUSHF 2.3
-	FADD
-
+	// assign 1 to b
+	PUSHI 1
 	STOREL 0
 
-	// assign ('binop', {'type': '-', 'left': 23, 'right': 'somaFloat'}) to subFloat
-	// binop -
-	PUSHI 23
-	PUSHL 0
-	FSUB
-
+	// assign 1 to a
+	PUSHI 1
 	STOREL 1
 
-	// assign ('binop', {'type': '*', 'left': 3, 'right': 7.6}) to multFloat
-	// binop *
-	PUSHI 3
-	PUSHF 7.6
-	FMUL
-
+	// assign ['Function_call', {'name': 'SomaF', 'args': ['b']}] to sF
 	STOREL 2
 
-	// assign ('binop', {'type': '/', 'left': 2.754, 'right': 3.5}) to diviFloat
-	// binop /
-	PUSHF 2.754
-	PUSHF 3.5
-	FDIV
-
+	// assign ['Function_call', {'name': 'SubF', 'args': ['sF']}] to suF
 	STOREL 3
 
-	// assign ('binop', {'type': '=', 'left': 12, 'right': 21}) to igual
-	// binop =
-	PUSHI 12
-	PUSHI 21
-	EQUAL
-
+	// assign ['Function_call', {'name': 'MultF', 'args': ['b']}] to mF
 	STOREL 4
 
-	// assign ('binop', {'type': '<>', 'left': 32, 'right': 2}) to diferente
-	// binop <>
-	PUSHI 32
-	PUSHI 2
-	NEQUAL
-
+	// assign ['Function_call', {'name': 'DivF', 'args': ['b']}] to dF
 	STOREL 5
 
-	// assign ('binop', {'type': '<', 'left': 90, 'right': 110}) to menor
-	// binop <
-	PUSHI 90
-	PUSHI 110
-	INF
+	// writeln
+	PUSHS "Soma: "
+	WRITES
+	PUSHL 2
+	WRITEF
+	WRITELN
 
+	// writeln
+	PUSHS "Subtracao: "
+	WRITES
+	PUSHL 3
+	WRITEF
+	WRITELN
+
+	// writeln
+	PUSHS "Multiplicacao: "
+	WRITES
+	PUSHL 4
+	WRITEF
+	WRITELN
+
+	// writeln
+	PUSHS "Divisao: "
+	WRITES
+	PUSHL 5
+	WRITEF
+	WRITELN
+
+	// assign ['Function_call', {'name': 'Igual', 'args': ['a']}] to b1
 	STOREL 6
 
-	// assign ('binop', {'type': '>', 'left': 1, 'right': 0}) to maior
-	// binop >
-	PUSHI 1
-	PUSHI 0
-	SUP
-
+	// assign ['Function_call', {'name': 'Diferente', 'args': ['a']}] to b2
 	STOREL 7
 
-	// assign ('binop', {'type': '<=', 'left': 0.0, 'right': 0.0}) to menorIgual
-	// binop <=
-	PUSHF 0.0
-	PUSHF 0.0
-	FINFEQ
-
+	// assign ['Function_call', {'name': 'Menor', 'args': ['a']}] to b3
 	STOREL 8
 
-	// assign ('binop', {'type': '>=', 'left': 12, 'right': 9}) to maiorIgual
-	// binop >=
-	PUSHI 12
-	PUSHI 9
-	SUPEQ
-
+	// assign ['Function_call', {'name': 'Maior', 'args': ['a']}] to b4
 	STOREL 9
 
-	// assign ('binop', {'type': 'and', 'left': 0, 'right': 1}) to conjuncao
-	// binop and
-	PUSHI 0
-	PUSHI 1
-	AND
-
+	// assign ['Function_call', {'name': 'MenorIgual', 'args': ['a']}] to b5
 	STOREL 10
 
-	// assign ('binop', {'type': 'or', 'left': 0, 'right': 1}) to disjuncao
-	// binop or
-	PUSHI 0
-	PUSHI 1
-	OR
-
+	// assign ['Function_call', {'name': 'MaiorIgual', 'args': ['a']}] to b6
 	STOREL 11
+
+	// assign ['Function_call', {'name': 'Conjuncao', 'args': ['a']}] to b7
+	STOREL 12
+
+	// assign ['Function_call', {'name': 'Disjuncao', 'args': ['a']}] to b8
+	STOREL 13
+
+	// writeln
+	PUSHS "12 = 21? "
+	WRITES
+	PUSHL 6
+	DUP 1
+	PUSHI 0
+	EQUAL
+	JZ label_true
+	PUSHS "false"
+	WRITES
+	JUMP label_endbool
+label_true:
+	PUSHS "true"
+	WRITES
+label_endbool:
+	WRITELN
+
+	// writeln
+	PUSHS "32 <> 2? "
+	WRITES
+	PUSHL 7
+	DUP 1
+	PUSHI 0
+	EQUAL
+	JZ label_true
+	PUSHS "false"
+	WRITES
+	JUMP label_endbool
+label_true:
+	PUSHS "true"
+	WRITES
+label_endbool:
+	WRITELN
+
+	// writeln
+	PUSHS "90 < 110? "
+	WRITES
+	PUSHL 8
+	DUP 1
+	PUSHI 0
+	EQUAL
+	JZ label_true
+	PUSHS "false"
+	WRITES
+	JUMP label_endbool
+label_true:
+	PUSHS "true"
+	WRITES
+label_endbool:
+	WRITELN
+
+	// writeln
+	PUSHS "1 > 0? "
+	WRITES
+	PUSHL 9
+	DUP 1
+	PUSHI 0
+	EQUAL
+	JZ label_true
+	PUSHS "false"
+	WRITES
+	JUMP label_endbool
+label_true:
+	PUSHS "true"
+	WRITES
+label_endbool:
+	WRITELN
+
+	// writeln
+	PUSHS "0.0 <= 0.0? "
+	WRITES
+	PUSHL 10
+	DUP 1
+	PUSHI 0
+	EQUAL
+	JZ label_true
+	PUSHS "false"
+	WRITES
+	JUMP label_endbool
+label_true:
+	PUSHS "true"
+	WRITES
+label_endbool:
+	WRITELN
+
+	// writeln
+	PUSHS "12 >= 9? "
+	WRITES
+	PUSHL 11
+	DUP 1
+	PUSHI 0
+	EQUAL
+	JZ label_true
+	PUSHS "false"
+	WRITES
+	JUMP label_endbool
+label_true:
+	PUSHS "true"
+	WRITES
+label_endbool:
+	WRITELN
+
+	// writeln
+	PUSHS "0 and 1? "
+	WRITES
+	PUSHL 12
+	DUP 1
+	PUSHI 0
+	EQUAL
+	JZ label_true
+	PUSHS "false"
+	WRITES
+	JUMP label_endbool
+label_true:
+	PUSHS "true"
+	WRITES
+label_endbool:
+	WRITELN
+
+	// writeln
+	PUSHS "0 or 1? "
+	WRITES
+	PUSHL 13
+	DUP 1
+	PUSHI 0
+	EQUAL
+	JZ label_true
+	PUSHS "false"
+	WRITES
+	JUMP label_endbool
+label_true:
+	PUSHS "true"
+	WRITES
+label_endbool:
+	WRITELN
 
 	STOP

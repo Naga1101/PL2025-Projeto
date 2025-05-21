@@ -30,6 +30,7 @@ main:
 
 // Unhandled expression type: ['result']
 	// writeln
+	PUSHL 2
 	WRITEI
 	WRITELN
 

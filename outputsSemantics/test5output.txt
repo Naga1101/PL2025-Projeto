@@ -1,0 +1,25 @@
+JUMP main
+
+
+main:
+	START
+
+	// assign 0 to soma
+	PUSHI 0
+	STOREL 0
+
+// Unhandled expression type: ['Introduza 5 números inteiros:']
+	// writeln
+	PUSHS "Introduza 5 números inteiros:"
+	WRITES
+	WRITELN
+
+// Unhandled expression type: ['A soma dos números é: ', 'soma']
+	// writeln
+	PUSHS "A soma dos números é: "
+	WRITES
+	PUSHL 0
+	WRITEI
+	WRITELN
+
+	STOP

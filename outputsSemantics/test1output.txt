@@ -1,12 +1,352 @@
 JUMP main
 
+somaf:
+	// binop +
+	PUSHL None
+	PUSHL None
+	FADD
+
+	RETURN
+
+subf:
+	// binop -
+	PUSHL None
+	PUSHL -1
+	FSUB
+
+	RETURN
+
+multf:
+	// binop *
+	PUSHL None
+	PUSHL None
+	FMUL
+
+	RETURN
+
+divf:
+	// binop div
+	PUSHL None
+	PUSHL None
+	FDIV
+
+	RETURN
+
+igual:
+	// binop =
+	PUSHL None
+	PUSHL None
+	EQUAL
+
+	RETURN
+
+diferente:
+	// binop <>
+	PUSHL None
+	PUSHL None
+	EQUAL
+	NOT
+
+	RETURN
+
+menor:
+	// binop <
+	PUSHL None
+	PUSHL None
+	RETURN
+
+maior:
+	// binop >
+	PUSHL None
+	PUSHL None
+	RETURN
+
+menorigual:
+	// binop <=
+	PUSHL None
+	PUSHL None
+	RETURN
+
+maiorigual:
+	// binop >=
+	PUSHL None
+	PUSHL None
+	RETURN
+
+conjuncao:
+	// binop and
+	PUSHL None
+	PUSHL None
+	AND
+
+	RETURN
+
+disjuncao:
+	// binop or
+	PUSHL None
+	PUSHL None
+	OR
+
+	RETURN
+
 
 main:
 	START
 
-// Unhandled expression type: ['Ola, Mundo!']
+	// assign 1 to b
+	PUSHI 1
+	STOREL 0
+
+	// assign 1 to a
+	PUSHI 1
+	STOREL 1
+
+	// assign ('Function_call', {'name': 'SomaF', 'args': ['b']}) to sF
+	// Call da somaf com os parametros ['b']
+	PUSHL 0
+	PUSHA somaf
+	CALL
+	STOREL 2
+
+	// assign ('Function_call', {'name': 'SubF', 'args': ['sF']}) to suF
+	// Call da subf com os parametros ['sF']
+	PUSHL 2
+	PUSHA subf
+	CALL
+	STOREL 3
+
+	// assign ('Function_call', {'name': 'MultF', 'args': ['b']}) to mF
+	// Call da multf com os parametros ['b']
+	PUSHL 0
+	PUSHA multf
+	CALL
+	STOREL 4
+
+	// assign ('Function_call', {'name': 'DivF', 'args': ['b']}) to dF
+	// Call da divf com os parametros ['b']
+	PUSHL 0
+	PUSHA divf
+	CALL
+	STOREL 5
+
 	// writeln
-	WRITEI
+	PUSHS "Soma: "
+	WRITES
+	PUSHL 2
+	WRITEF
+	WRITELN
+
+	// writeln
+	PUSHS "Subtracao: "
+	WRITES
+	PUSHL 3
+	WRITEF
+	WRITELN
+
+	// writeln
+	PUSHS "Multiplicacao: "
+	WRITES
+	PUSHL 4
+	WRITEF
+	WRITELN
+
+	// writeln
+	PUSHS "Divisao: "
+	WRITES
+	PUSHL 5
+	WRITEF
+	WRITELN
+
+	// assign ('Function_call', {'name': 'Igual', 'args': ['a']}) to b1
+	// Call da igual com os parametros ['a']
+	PUSHL 1
+	PUSHA igual
+	CALL
+	STOREL 6
+
+	// assign ('Function_call', {'name': 'Diferente', 'args': ['a']}) to b2
+	// Call da diferente com os parametros ['a']
+	PUSHL 1
+	PUSHA diferente
+	CALL
+	STOREL 7
+
+	// assign ('Function_call', {'name': 'Menor', 'args': ['a']}) to b3
+	// Call da menor com os parametros ['a']
+	PUSHL 1
+	PUSHA menor
+	CALL
+	STOREL 8
+
+	// assign ('Function_call', {'name': 'Maior', 'args': ['a']}) to b4
+	// Call da maior com os parametros ['a']
+	PUSHL 1
+	PUSHA maior
+	CALL
+	STOREL 9
+
+	// assign ('Function_call', {'name': 'MenorIgual', 'args': ['a']}) to b5
+	// Call da menorigual com os parametros ['a']
+	PUSHL 1
+	PUSHA menorigual
+	CALL
+	STOREL 10
+
+	// assign ('Function_call', {'name': 'MaiorIgual', 'args': ['a']}) to b6
+	// Call da maiorigual com os parametros ['a']
+	PUSHL 1
+	PUSHA maiorigual
+	CALL
+	STOREL 11
+
+	// assign ('Function_call', {'name': 'Conjuncao', 'args': ['a']}) to b7
+	// Call da conjuncao com os parametros ['a']
+	PUSHL 1
+	PUSHA conjuncao
+	CALL
+	STOREL 12
+
+	// assign ('Function_call', {'name': 'Disjuncao', 'args': ['a']}) to b8
+	// Call da disjuncao com os parametros ['a']
+	PUSHL 1
+	PUSHA disjuncao
+	CALL
+	STOREL 13
+
+	// writeln
+	PUSHS "12 = 21? "
+	WRITES
+	PUSHL 6
+	DUP 1
+	PUSHI 0
+	EQUAL
+	JZ label_true
+	PUSHS "false"
+	WRITES
+	JUMP label_endbool
+label_true:
+	PUSHS "true"
+	WRITES
+label_endbool:
+	WRITELN
+
+	// writeln
+	PUSHS "32 <> 2? "
+	WRITES
+	PUSHL 7
+	DUP 1
+	PUSHI 0
+	EQUAL
+	JZ label_true
+	PUSHS "false"
+	WRITES
+	JUMP label_endbool
+label_true:
+	PUSHS "true"
+	WRITES
+label_endbool:
+	WRITELN
+
+	// writeln
+	PUSHS "90 < 110? "
+	WRITES
+	PUSHL 8
+	DUP 1
+	PUSHI 0
+	EQUAL
+	JZ label_true
+	PUSHS "false"
+	WRITES
+	JUMP label_endbool
+label_true:
+	PUSHS "true"
+	WRITES
+label_endbool:
+	WRITELN
+
+	// writeln
+	PUSHS "1 > 0? "
+	WRITES
+	PUSHL 9
+	DUP 1
+	PUSHI 0
+	EQUAL
+	JZ label_true
+	PUSHS "false"
+	WRITES
+	JUMP label_endbool
+label_true:
+	PUSHS "true"
+	WRITES
+label_endbool:
+	WRITELN
+
+	// writeln
+	PUSHS "0.0 <= 0.0? "
+	WRITES
+	PUSHL 10
+	DUP 1
+	PUSHI 0
+	EQUAL
+	JZ label_true
+	PUSHS "false"
+	WRITES
+	JUMP label_endbool
+label_true:
+	PUSHS "true"
+	WRITES
+label_endbool:
+	WRITELN
+
+	// writeln
+	PUSHS "12 >= 9? "
+	WRITES
+	PUSHL 11
+	DUP 1
+	PUSHI 0
+	EQUAL
+	JZ label_true
+	PUSHS "false"
+	WRITES
+	JUMP label_endbool
+label_true:
+	PUSHS "true"
+	WRITES
+label_endbool:
+	WRITELN
+
+	// writeln
+	PUSHS "0 and 1? "
+	WRITES
+	PUSHL 12
+	DUP 1
+	PUSHI 0
+	EQUAL
+	JZ label_true
+	PUSHS "false"
+	WRITES
+	JUMP label_endbool
+label_true:
+	PUSHS "true"
+	WRITES
+label_endbool:
+	WRITELN
+
+	// writeln
+	PUSHS "0 or 1? "
+	WRITES
+	PUSHL 13
+	DUP 1
+	PUSHI 0
+	EQUAL
+	JZ label_true
+	PUSHS "false"
+	WRITES
+	JUMP label_endbool
+label_true:
+	PUSHS "true"
+	WRITES
+label_endbool:
 	WRITELN
 
 	STOP

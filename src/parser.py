@@ -353,11 +353,18 @@ def p_expression_value(p):
         p[0] = p[1]
     
 def p_expression_function_call(p):
-    'expression : ID LPAREN expression_list RPAREN'
-    p[0] = ("Function_call", {
-        "name": p[1],
-        "args": p[3]
-    })
+    '''expression : ID LPAREN expression_list RPAREN
+                  | ID LPAREN RPAREN'''
+    if len(p) == 5:
+        p[0] = ("Function_call", {
+            "name": p[1],
+            "args": p[3]
+        })
+    else:
+        p[0] = ("Function_call", {
+            "name": p[1],
+            "args": []
+        })
     
 def p_expression_list(p):
     '''expression_list : expression
@@ -370,6 +377,10 @@ def p_expression_list(p):
 def p_expression_not(p):
     'expression : NOT expression'
     p[0] = ('NOT', p[2])
+
+def p_expression_empty(p):
+    'expression :'
+    p[0] = "empty"
 
 def p_expression_builtinfunction(p): ###
     '''expression : ORDFUNC    expression

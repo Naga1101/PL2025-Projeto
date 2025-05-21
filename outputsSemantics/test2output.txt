@@ -6,22 +6,20 @@ main:
 
 // Unhandled expression type: ['Introduza o primeiro número: ']
 	// write
-	WRITEI
-	WRITELN
-
+	PUSHS "Introduza o primeiro número: "
+	WRITES
 // Unhandled expression type: ['Introduza o segundo número: ']
 	// write
-	WRITEI
-	WRITELN
-
+	PUSHS "Introduza o segundo número: "
+	WRITES
 // Unhandled expression type: ['Introduza o terceiro número: ']
 	// write
-	WRITEI
-	WRITELN
-
+	PUSHS "Introduza o terceiro número: "
+	WRITES
 // Unhandled expression type: ['O maior é: ', 'maior']
 	// writeln
-	WRITEI
+	PUSHS "O maior é: "
+	WRITES
 	WRITELN
 
 	STOP

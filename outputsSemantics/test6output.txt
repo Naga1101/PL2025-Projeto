@@ -6,19 +6,23 @@ main:
 
 // Unhandled expression type: ['Introduza uma string binária:']
 	// writeln
-	WRITEI
+	PUSHS "Introduza uma string binária:"
+	WRITES
 	WRITELN
 
 	// assign 0 to valor
 	PUSHI 0
-	STOREL 5
+	STOREL 0
 
 	// assign 1 to potencia
 	PUSHI 1
-	STOREL 6
+	STOREL 1
 
 // Unhandled expression type: ['O valor inteiro correspondente é: ', 'valor']
 	// writeln
+	PUSHS "O valor inteiro correspondente é: "
+	WRITES
+	PUSHL 0
 	WRITEI
 	WRITELN
 

@@ -6,7 +6,8 @@ main:
 
 // Unhandled expression type: ['Introduza um número inteiro positivo:']
 	// writeln
-	WRITEI
+	PUSHS "Introduza um número inteiro positivo:"
+	WRITES
 	WRITELN
 
 	// assign true to primo
