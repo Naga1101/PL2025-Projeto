@@ -13,7 +13,7 @@ main:
 	PUSHI 65
 	STOREL 1
 
-// Unhandled expression type: ['The ASCII code of ', 'ch', ' is ', 'code']
+// Unsupported expression: The ASCII code of 
 	// writeln
 	PUSHS "The ASCII code of "
 	WRITES

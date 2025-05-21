@@ -20,6 +20,7 @@ tipo_de_push = {
 
 free_fp = 0
 free_gp = 0
+if_counter = 1
 
 tabela_simbolos_global = {}
 tabela_funcoes = {}
@@ -67,7 +68,6 @@ def handle_write(output):
     lines.append('\t// write')
     print("aqui" ,output)
     print_tables()
-    # TODO forma de descobrir o tipo de write que é preciso
     if isinstance(output, list):
         for item in output:
             lines.extend(process_write_item(item))
@@ -85,20 +85,22 @@ def process_write_item(item):
         gp = var_info.get('gp')
 
         if var_type == 'boolean':
+            global if_counter
             # Load valor booleano da memória
             lines.append(f'\tPUSHL {gp}')
             # Se for 0 escreve 'false', se for 1 escreve 'true'
             lines.append('\tDUP 1')
             lines.append('\tPUSHI 0')
             lines.append('\tEQUAL')
-            lines.append('\tJZ label_true')
+            lines.append(f'\tJZ labelTrue{if_counter}')
             lines.append('\tPUSHS "false"')
             lines.append('\tWRITES')
-            lines.append('\tJUMP label_endbool')
-            lines.append('label_true:')
+            lines.append(f'\tJUMP labelEndbool{if_counter}')
+            lines.append(f'\tlabelTrue{if_counter}:')
             lines.append('\tPUSHS "true"')
             lines.append('\tWRITES')
-            lines.append('label_endbool:')
+            lines.append(f'\tlabelEndbool{if_counter}:')
+            if_counter += 1
         elif var_type == 'integer':
             lines.append(f'\tPUSHL {gp}')
             lines.append('\tWRITEI')
@@ -177,7 +179,6 @@ def handle_binop(input):
 
     lines = []
     if op_type == '+':
-        print(op_type)
         lines.append(f'\t// binop +')
         print("lines", lines)
     elif op_type == '-':
@@ -215,14 +216,15 @@ def handle_binop(input):
         type =  tabela_simbolos_global[left_operand]['type']
         left_push = tabela_simbolos_global[left_operand]['gp']
         left_type = 'PUSHL'
-    elif tabela_simbolos_global[update_value]['kind'] == 'function':
+    elif update_value != None and tabela_simbolos_global[update_value]['kind'] == 'function':
         func_params = tabela_funcoes[update_value]['parameters']
         for param in func_params:
             if left_operand == param[0]:
                 left_push = param[2]
             type =  param[1]
             left_type = 'PUSHL'
-    else:
+    
+    if left_push is None:
         if isinstance(left_operand, int): 
             left_push = left_operand
             type = 'integer'
@@ -257,7 +259,7 @@ def handle_binop(input):
         right_type = 'PUSHL'
         if type != 'float' and tabela_simbolos_global[right_operand]['type'] == 'float':
             type =  'float'
-    elif tabela_simbolos_global[update_value]['kind'] == 'function':
+    elif update_value != None and tabela_simbolos_global[update_value]['kind'] == 'function':
         func_params = tabela_funcoes[update_value]['parameters']
         for param in func_params:
             if right_operand == param[0]:
@@ -266,7 +268,8 @@ def handle_binop(input):
                 type =  param[1]
             right_type = 'PUSHL'
         update_value = None
-    else:
+    
+    if right_push is None:
         if isinstance(right_operand, int):  
             right_push = right_operand
             right_type = tipo_de_push['integer']
@@ -458,6 +461,16 @@ def evaluate_expression(expr, isAssign=None, isFunc=None):
         print(len(expr[1:]))
         return handler(args) if handler else [f"// Unsupported expression: {instr_type}"]
 
+    if(isinstance(expr, list)):
+        instr_type = expr[0]
+        args = expr[1:]
+        if len(args) == 1:
+            args = args[0]
+        if(isFunc is not None and instr_type in ['binop', 'ord']):
+            args = (args, isFunc)
+        handler = instruction_handlers.get(instr_type)
+        return handler(args) if handler else [f"// Unsupported expression: {instr_type}"]
+    
     if isinstance(expr, str) and expr in tabela_simbolos_global:
         var_info = tabela_simbolos_global[expr]
         var_type = var_info.get('type', 'string')
@@ -1412,6 +1425,7 @@ def runSemantics(input, outputFileName):
 
 def main():
     ast_tree = ast.literal_eval(data5)
+    #ast_tree = ast.literal_eval(data10)
 
     _, program_data = ast_tree
     body = program_data["program_body"]

@@ -4,7 +4,7 @@ JUMP main
 main:
 	START
 
-// Unhandled expression type: ['Introduza um número inteiro positivo:']
+// Unsupported expression: Introduza um número inteiro positivo:
 	// writeln
 	PUSHS "Introduza um número inteiro positivo:"
 	WRITES

@@ -4,7 +4,7 @@ JUMP main
 main:
 	START
 
-// Unhandled expression type: ['Introduza uma string binária:']
+// Unsupported expression: Introduza uma string binária:
 	// writeln
 	PUSHS "Introduza uma string binária:"
 	WRITES
@@ -18,7 +18,7 @@ main:
 	PUSHI 1
 	STOREL 1
 
-// Unhandled expression type: ['O valor inteiro correspondente é: ', 'valor']
+// Unsupported expression: O valor inteiro correspondente é: 
 	// writeln
 	PUSHS "O valor inteiro correspondente é: "
 	WRITES

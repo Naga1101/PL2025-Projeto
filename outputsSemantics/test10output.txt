@@ -2,9 +2,9 @@ JUMP main
 
 add:
 	// binop +
-	PUSHL -2
-	PUSHL -1
-	ADD
+	PUSHL 1
+	PUSHL 0
+	FADD
 
 	RETURN
 
@@ -28,7 +28,7 @@ main:
 	CALL
 	STOREL 2
 
-// Unhandled expression type: ['result']
+// Unsupported expression: result
 	// writeln
 	PUSHL 2
 	WRITEI

@@ -8,13 +8,13 @@ main:
 	PUSHI 0
 	STOREL 0
 
-// Unhandled expression type: ['Introduza 5 números inteiros:']
+// Unsupported expression: Introduza 5 números inteiros:
 	// writeln
 	PUSHS "Introduza 5 números inteiros:"
 	WRITES
 	WRITELN
 
-// Unhandled expression type: ['A soma dos números é: ', 'soma']
+// Unsupported expression: A soma dos números é: 
 	// writeln
 	PUSHS "A soma dos números é: "
 	WRITES

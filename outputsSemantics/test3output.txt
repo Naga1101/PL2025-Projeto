@@ -4,7 +4,7 @@ JUMP main
 main:
 	START
 
-// Unhandled expression type: ['Introduza um número inteiro positivo:']
+// Unsupported expression: Introduza um número inteiro positivo:
 	// writeln
 	PUSHS "Introduza um número inteiro positivo:"
 	WRITES
@@ -14,7 +14,7 @@ main:
 	PUSHI 1
 	STOREL 0
 
-// Unhandled expression type: ['Fatorial de ', 'n', ': ', 'fat']
+// Unsupported expression: Fatorial de 
 	// writeln
 	PUSHS "Fatorial de "
 	WRITES

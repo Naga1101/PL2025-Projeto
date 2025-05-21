@@ -4,19 +4,19 @@ JUMP main
 main:
 	START
 
-// Unhandled expression type: ['Introduza o primeiro número: ']
+// Unsupported expression: Introduza o primeiro número: 
 	// write
 	PUSHS "Introduza o primeiro número: "
 	WRITES
-// Unhandled expression type: ['Introduza o segundo número: ']
+// Unsupported expression: Introduza o segundo número: 
 	// write
 	PUSHS "Introduza o segundo número: "
 	WRITES
-// Unhandled expression type: ['Introduza o terceiro número: ']
+// Unsupported expression: Introduza o terceiro número: 
 	// write
 	PUSHS "Introduza o terceiro número: "
 	WRITES
-// Unhandled expression type: ['O maior é: ', 'maior']
+// Unsupported expression: O maior é: 
 	// writeln
 	PUSHS "O maior é: "
 	WRITES

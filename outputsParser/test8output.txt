@@ -1,1 +1,762 @@
-null
+[
+  "program",
+  {
+    "program_name": "TesteBinOp",
+    "program_body": {
+      "functions": [
+        [
+          "function",
+          {
+            "name": "SomaF",
+            "parameters": [
+              [
+                [
+                  "vars",
+                  [
+                    "soma"
+                  ]
+                ],
+                [
+                  "type",
+                  "float"
+                ]
+              ]
+            ],
+            "return_type": "float",
+            "body": [
+              "compound",
+              [
+                [
+                  "assign",
+                  "SomaF",
+                  [
+                    "binop",
+                    {
+                      "type": "+",
+                      "left": 10,
+                      "right": 2.3
+                    }
+                  ]
+                ]
+              ]
+            ]
+          }
+        ],
+        [
+          "function",
+          {
+            "name": "SubF",
+            "parameters": [
+              [
+                [
+                  "vars",
+                  [
+                    "soma"
+                  ]
+                ],
+                [
+                  "type",
+                  "float"
+                ]
+              ]
+            ],
+            "return_type": "float",
+            "body": [
+              "compound",
+              [
+                [
+                  "assign",
+                  "SubF",
+                  [
+                    "binop",
+                    {
+                      "type": "-",
+                      "left": 23,
+                      "right": "soma"
+                    }
+                  ]
+                ]
+              ]
+            ]
+          }
+        ],
+        [
+          "function",
+          {
+            "name": "MultF",
+            "parameters": [
+              [
+                [
+                  "vars",
+                  [
+                    "soma"
+                  ]
+                ],
+                [
+                  "type",
+                  "float"
+                ]
+              ]
+            ],
+            "return_type": "float",
+            "body": [
+              "compound",
+              [
+                [
+                  "assign",
+                  "MultF",
+                  [
+                    "binop",
+                    {
+                      "type": "*",
+                      "left": 3,
+                      "right": 7.6
+                    }
+                  ]
+                ]
+              ]
+            ]
+          }
+        ],
+        [
+          "function",
+          {
+            "name": "DivF",
+            "parameters": [
+              [
+                [
+                  "vars",
+                  [
+                    "soma"
+                  ]
+                ],
+                [
+                  "type",
+                  "float"
+                ]
+              ]
+            ],
+            "return_type": "float",
+            "body": [
+              "compound",
+              [
+                [
+                  "assign",
+                  "DivF",
+                  [
+                    "binop",
+                    {
+                      "type": "div",
+                      "left": 2.754,
+                      "right": 3.5
+                    }
+                  ]
+                ]
+              ]
+            ]
+          }
+        ],
+        [
+          "function",
+          {
+            "name": "Igual",
+            "parameters": [
+              [
+                [
+                  "vars",
+                  [
+                    "a"
+                  ]
+                ],
+                [
+                  "type",
+                  "boolean"
+                ]
+              ]
+            ],
+            "return_type": "boolean",
+            "body": [
+              "compound",
+              [
+                [
+                  "assign",
+                  "Igual",
+                  [
+                    "binop",
+                    {
+                      "type": "=",
+                      "left": 12,
+                      "right": 21
+                    }
+                  ]
+                ]
+              ]
+            ]
+          }
+        ],
+        [
+          "function",
+          {
+            "name": "Diferente",
+            "parameters": [
+              [
+                [
+                  "vars",
+                  [
+                    "a"
+                  ]
+                ],
+                [
+                  "type",
+                  "boolean"
+                ]
+              ]
+            ],
+            "return_type": "boolean",
+            "body": [
+              "compound",
+              [
+                [
+                  "assign",
+                  "Diferente",
+                  [
+                    "binop",
+                    {
+                      "type": "<>",
+                      "left": 32,
+                      "right": 2
+                    }
+                  ]
+                ]
+              ]
+            ]
+          }
+        ],
+        [
+          "function",
+          {
+            "name": "Menor",
+            "parameters": [
+              [
+                [
+                  "vars",
+                  [
+                    "a"
+                  ]
+                ],
+                [
+                  "type",
+                  "boolean"
+                ]
+              ]
+            ],
+            "return_type": "boolean",
+            "body": [
+              "compound",
+              [
+                [
+                  "assign",
+                  "Menor",
+                  [
+                    "binop",
+                    {
+                      "type": "<",
+                      "left": 90,
+                      "right": 110
+                    }
+                  ]
+                ]
+              ]
+            ]
+          }
+        ],
+        [
+          "function",
+          {
+            "name": "Maior",
+            "parameters": [
+              [
+                [
+                  "vars",
+                  [
+                    "a"
+                  ]
+                ],
+                [
+                  "type",
+                  "boolean"
+                ]
+              ]
+            ],
+            "return_type": "boolean",
+            "body": [
+              "compound",
+              [
+                [
+                  "assign",
+                  "Maior",
+                  [
+                    "binop",
+                    {
+                      "type": ">",
+                      "left": 1,
+                      "right": 0
+                    }
+                  ]
+                ]
+              ]
+            ]
+          }
+        ],
+        [
+          "function",
+          {
+            "name": "MenorIgual",
+            "parameters": [
+              [
+                [
+                  "vars",
+                  [
+                    "a"
+                  ]
+                ],
+                [
+                  "type",
+                  "boolean"
+                ]
+              ]
+            ],
+            "return_type": "boolean",
+            "body": [
+              "compound",
+              [
+                [
+                  "assign",
+                  "MenorIgual",
+                  [
+                    "binop",
+                    {
+                      "type": "<=",
+                      "left": 0.0,
+                      "right": 0.0
+                    }
+                  ]
+                ]
+              ]
+            ]
+          }
+        ],
+        [
+          "function",
+          {
+            "name": "MaiorIgual",
+            "parameters": [
+              [
+                [
+                  "vars",
+                  [
+                    "a"
+                  ]
+                ],
+                [
+                  "type",
+                  "boolean"
+                ]
+              ]
+            ],
+            "return_type": "boolean",
+            "body": [
+              "compound",
+              [
+                [
+                  "assign",
+                  "MaiorIgual",
+                  [
+                    "binop",
+                    {
+                      "type": ">=",
+                      "left": 12,
+                      "right": 9
+                    }
+                  ]
+                ]
+              ]
+            ]
+          }
+        ],
+        [
+          "function",
+          {
+            "name": "Conjuncao",
+            "parameters": [
+              [
+                [
+                  "vars",
+                  [
+                    "a"
+                  ]
+                ],
+                [
+                  "type",
+                  "boolean"
+                ]
+              ]
+            ],
+            "return_type": "boolean",
+            "body": [
+              "compound",
+              [
+                [
+                  "assign",
+                  "Conjuncao",
+                  [
+                    "binop",
+                    {
+                      "type": "and",
+                      "left": 0,
+                      "right": 1
+                    }
+                  ]
+                ]
+              ]
+            ]
+          }
+        ],
+        [
+          "function",
+          {
+            "name": "Disjuncao",
+            "parameters": [
+              [
+                [
+                  "vars",
+                  [
+                    "a"
+                  ]
+                ],
+                [
+                  "type",
+                  "boolean"
+                ]
+              ]
+            ],
+            "return_type": "boolean",
+            "body": [
+              "compound",
+              [
+                [
+                  "assign",
+                  "Disjuncao",
+                  [
+                    "binop",
+                    {
+                      "type": "or",
+                      "left": 0,
+                      "right": 1
+                    }
+                  ]
+                ]
+              ]
+            ]
+          }
+        ]
+      ],
+      "var_declaration": [
+        "var_decl_lines",
+        [
+          [
+            [
+              "vars",
+              [
+                "b",
+                "sF",
+                "suF",
+                "mF",
+                "dF"
+              ]
+            ],
+            [
+              "type",
+              "float"
+            ]
+          ],
+          [
+            [
+              "vars",
+              [
+                "a",
+                "b1",
+                "b2",
+                "b3",
+                "b4",
+                "b5",
+                "b6",
+                "b7",
+                "b8"
+              ]
+            ],
+            [
+              "type",
+              "boolean"
+            ]
+          ]
+        ]
+      ],
+      "program_code": [
+        "compound",
+        [
+          [
+            "assign",
+            "b",
+            1
+          ],
+          [
+            "assign",
+            "a",
+            1
+          ],
+          [
+            "assign",
+            "sF",
+            [
+              "Function_call",
+              {
+                "name": "SomaF",
+                "args": [
+                  "b"
+                ]
+              }
+            ]
+          ],
+          [
+            "assign",
+            "suF",
+            [
+              "Function_call",
+              {
+                "name": "SubF",
+                "args": [
+                  "sF"
+                ]
+              }
+            ]
+          ],
+          [
+            "assign",
+            "mF",
+            [
+              "Function_call",
+              {
+                "name": "MultF",
+                "args": [
+                  "b"
+                ]
+              }
+            ]
+          ],
+          [
+            "assign",
+            "dF",
+            [
+              "Function_call",
+              {
+                "name": "DivF",
+                "args": [
+                  "b"
+                ]
+              }
+            ]
+          ],
+          [
+            "writeln",
+            [
+              "Soma: ",
+              "sF"
+            ]
+          ],
+          [
+            "writeln",
+            [
+              "Subtracao: ",
+              "suF"
+            ]
+          ],
+          [
+            "writeln",
+            [
+              "Multiplicacao: ",
+              "mF"
+            ]
+          ],
+          [
+            "writeln",
+            [
+              "Divisao: ",
+              "dF"
+            ]
+          ],
+          [
+            "assign",
+            "b1",
+            [
+              "Function_call",
+              {
+                "name": "Igual",
+                "args": [
+                  "a"
+                ]
+              }
+            ]
+          ],
+          [
+            "assign",
+            "b2",
+            [
+              "Function_call",
+              {
+                "name": "Diferente",
+                "args": [
+                  "a"
+                ]
+              }
+            ]
+          ],
+          [
+            "assign",
+            "b3",
+            [
+              "Function_call",
+              {
+                "name": "Menor",
+                "args": [
+                  "a"
+                ]
+              }
+            ]
+          ],
+          [
+            "assign",
+            "b4",
+            [
+              "Function_call",
+              {
+                "name": "Maior",
+                "args": [
+                  "a"
+                ]
+              }
+            ]
+          ],
+          [
+            "assign",
+            "b5",
+            [
+              "Function_call",
+              {
+                "name": "MenorIgual",
+                "args": [
+                  "a"
+                ]
+              }
+            ]
+          ],
+          [
+            "assign",
+            "b6",
+            [
+              "Function_call",
+              {
+                "name": "MaiorIgual",
+                "args": [
+                  "a"
+                ]
+              }
+            ]
+          ],
+          [
+            "assign",
+            "b7",
+            [
+              "Function_call",
+              {
+                "name": "Conjuncao",
+                "args": [
+                  "a"
+                ]
+              }
+            ]
+          ],
+          [
+            "assign",
+            "b8",
+            [
+              "Function_call",
+              {
+                "name": "Disjuncao",
+                "args": [
+                  "a"
+                ]
+              }
+            ]
+          ],
+          [
+            "writeln",
+            [
+              "12 = 21? ",
+              "b1"
+            ]
+          ],
+          [
+            "writeln",
+            [
+              "32 <> 2? ",
+              "b2"
+            ]
+          ],
+          [
+            "writeln",
+            [
+              "90 < 110? ",
+              "b3"
+            ]
+          ],
+          [
+            "writeln",
+            [
+              "1 > 0? ",
+              "b4"
+            ]
+          ],
+          [
+            "writeln",
+            [
+              "0.0 <= 0.0? ",
+              "b5"
+            ]
+          ],
+          [
+            "writeln",
+            [
+              "12 >= 9? ",
+              "b6"
+            ]
+          ],
+          [
+            "writeln",
+            [
+              "0 and 1? ",
+              "b7"
+            ]
+          ],
+          [
+            "writeln",
+            [
+              "0 or 1? ",
+              "b8"
+            ]
+          ]
+        ]
+      ]
+    }
+  }
+]
