@@ -1,0 +1,58 @@
+JUMP main
+
+
+main:
+	START
+
+	// writeln
+	// binop *
+	PUSHF 7.5
+	// binop -
+	PUSHI 10
+	PUSHI 4
+	SUB
+
+	FMUL
+
+	WRITEI
+	WRITELN
+
+	// writeln
+	// binop >
+	// binop +
+	PUSHI 3
+	PUSHI 3
+	ADD
+
+	// binop *
+	PUSHI 2
+	PUSHI 2
+	MUL
+
+	SUP
+
+	WRITEI
+	WRITELN
+
+	// writeln
+	// binop and
+	// binop =
+	// binop mod
+	PUSHI 10
+	PUSHI 4
+	MOD
+
+	PUSHI 2
+	EQUAL
+
+	// binop <
+	PUSHI 5
+	PUSHI 10
+	INF
+
+	AND
+
+	WRITEI
+	WRITELN
+
+	STOP

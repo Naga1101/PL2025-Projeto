@@ -1,0 +1,81 @@
+[
+  "program",
+  {
+    "program_name": "TesteFuncao",
+    "program_body": {
+      "functions": [
+        [
+          "function",
+          {
+            "name": "Dobro",
+            "parameters": [
+              [
+                [
+                  "vars",
+                  [
+                    "x"
+                  ]
+                ],
+                [
+                  "type",
+                  "integer"
+                ]
+              ]
+            ],
+            "return_type": "integer",
+            "body": [
+              "compound",
+              [
+                [
+                  "assign",
+                  "Dobro",
+                  [
+                    "binop",
+                    {
+                      "type": "*",
+                      "left": "x",
+                      "right": 2
+                    }
+                  ]
+                ]
+              ]
+            ]
+          }
+        ]
+      ],
+      "program_code": [
+        "compound",
+        [
+          [
+            "writeln",
+            [
+              [
+                "Function_call",
+                {
+                  "name": "Dobro",
+                  "args": [
+                    5
+                  ]
+                }
+              ]
+            ]
+          ],
+          [
+            "writeln",
+            [
+              [
+                "Function_call",
+                {
+                  "name": "Dobro",
+                  "args": [
+                    10
+                  ]
+                }
+              ]
+            ]
+          ]
+        ]
+      ]
+    }
+  }
+]

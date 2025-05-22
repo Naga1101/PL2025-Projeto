@@ -1,0 +1,76 @@
+JUMP main
+
+
+main:
+	START
+
+	// writeln
+	// binop and
+	// binop >
+	PUSHI 5
+	PUSHI 3
+	SUP
+
+	// binop <
+	PUSHI 2
+	PUSHI 4
+	INF
+
+	AND
+
+	WRITEI
+	WRITELN
+
+	// writeln
+	// binop or
+	// binop >
+	PUSHI 1
+	PUSHI 3
+	SUP
+
+	// binop =
+	PUSHI 6
+	PUSHI 6
+	EQUAL
+
+	OR
+
+	WRITEI
+	WRITELN
+
+	// writeln
+	// binop and
+	// binop <
+	PUSHI 10
+	PUSHI 5
+	INF
+
+	// binop =
+	PUSHI 1
+	PUSHI 1
+	EQUAL
+
+	AND
+
+	WRITEI
+	WRITELN
+
+	// writeln
+	// binop or
+	// binop <>
+	PUSHI 4
+	PUSHI 2
+	EQUAL
+	NOT
+
+	// binop <
+	PUSHI 3
+	PUSHI 2
+	INF
+
+	OR
+
+	WRITEI
+	WRITELN
+
+	STOP

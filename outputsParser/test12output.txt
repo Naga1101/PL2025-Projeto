@@ -1,0 +1,133 @@
+[
+  "program",
+  {
+    "program_name": "TesteFuncIf",
+    "program_body": {
+      "functions": [
+        [
+          "function",
+          {
+            "name": "Positivo",
+            "parameters": [
+              [
+                [
+                  "vars",
+                  [
+                    "x"
+                  ]
+                ],
+                [
+                  "type",
+                  "integer"
+                ]
+              ]
+            ],
+            "return_type": "boolean",
+            "body": [
+              "compound",
+              [
+                [
+                  "assign",
+                  "Positivo",
+                  [
+                    "binop",
+                    {
+                      "type": ">",
+                      "left": "x",
+                      "right": 0
+                    }
+                  ]
+                ]
+              ]
+            ]
+          }
+        ]
+      ],
+      "var_declaration": [
+        "var_decl_lines",
+        [
+          [
+            [
+              "vars",
+              [
+                "a",
+                "b"
+              ]
+            ],
+            [
+              "type",
+              "Boolean"
+            ]
+          ]
+        ]
+      ],
+      "program_code": [
+        "compound",
+        [
+          [
+            "assign",
+            "a",
+            [
+              "Function_call",
+              {
+                "name": "Positivo",
+                "args": [
+                  5
+                ]
+              }
+            ]
+          ],
+          [
+            "if",
+            {
+              "case": "a",
+              "do": [
+                "writeln",
+                [
+                  "Positivo"
+                ]
+              ],
+              "else": [
+                "writeln",
+                [
+                  "Negativo"
+                ]
+              ]
+            }
+          ],
+          [
+            "assign",
+            "b",
+            [
+              "Function_call",
+              {
+                "name": "Positivo",
+                "args": [
+                  3
+                ]
+              }
+            ]
+          ],
+          [
+            "if",
+            {
+              "case": "b",
+              "do": [
+                "writeln",
+                [
+                  "Positivo"
+                ]
+              ],
+              "else": [
+                "writeln",
+                [
+                  "Negativo"
+                ]
+              ]
+            }
+          ]
+        ]
+      ]
+    }
+  }
+]

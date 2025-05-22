@@ -9,8 +9,8 @@ main:
 	WRITES
 	WRITELN
 
-	// assign true to primo
-	PUSHS "true"
+	// assign 1 to primo
+	PUSHI 1
 	STOREL 0
 
 	// assign 2 to i
@@ -18,7 +18,7 @@ main:
 	STOREL 1
 
 	// If case: {'case': 'primo', 'do': ('writeln', ['num', ' é um número primo']), 'else': ('writeln', ['num', ' não é um número primo'])}
-PUSHS primo
+	PUSHL 0
 	JZ labelElse1
 	// writeln
 	PUSHL 

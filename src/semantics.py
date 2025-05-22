@@ -166,6 +166,7 @@ def handle_assign(var, value):  # passar o atributo que diz se é main ou func
     return lines
 
 def handle_binop(input):
+    type = None
     update_value = None
     left_value = None
     right_value = None
@@ -182,7 +183,16 @@ def handle_binop(input):
 
     op_type = binop['type']
     left_operand = binop['left']
+    if isinstance(left_operand, list):
+        left_operand = evaluate_expression(left_operand)
     right_operand = binop['right']
+    if isinstance(right_operand, list):
+        right_operand = evaluate_expression(right_operand)
+    if isinstance(left_operand, tuple):
+        left_operand = evaluate_expression(left_operand)
+    right_operand = binop['right']
+    if isinstance(right_operand, tuple):
+        right_operand = evaluate_expression(right_operand)
 
     lines = []
     if op_type == '+':
@@ -217,91 +227,116 @@ def handle_binop(input):
     
     left_push = None
     left_type = None
-    if left_operand in tabela_simbolos_global:
-        if update_value is not None: 
-            left_value = tabela_simbolos_global[left_operand]['value']
-        type =  tabela_simbolos_global[left_operand]['type']
-        left_push = tabela_simbolos_global[left_operand]['gp']
-        left_type = 'PUSHL'
-    elif update_value != None and tabela_simbolos_global[update_value]['kind'] == 'function':
-        func_params = tabela_funcoes[update_value]['parameters']
-        for param in func_params:
-            if left_operand == param[0]:
-                left_push = param[2]
-            type =  param[1]
+
+    if not isinstance(left_operand, list):
+        if left_operand in tabela_simbolos_global:
+            if update_value is not None: 
+                left_value = tabela_simbolos_global[left_operand]['value']
+            type =  tabela_simbolos_global[left_operand]['type']
+            left_push = tabela_simbolos_global[left_operand]['gp']
             left_type = 'PUSHL'
-    
-    if left_push is None:
-        if isinstance(left_operand, int): 
-            left_push = left_operand
-            type = 'integer'
-            left_type = tipo_de_push['integer']
-        elif isinstance(left_operand, float):  
-            left_push = left_operand
-            type = 'float'
-            left_type = tipo_de_push['float']
-        elif isinstance(left_operand, str):  
-            if left_operand.isdigit():  
-                left_push = int(left_operand)
-                left_type = tipo_de_push['integer']
+        elif update_value != None and tabela_simbolos_global[update_value]['kind'] == 'function':
+            func_params = tabela_funcoes[update_value]['parameters']
+            for param in func_params:
+                if left_operand == param[0]:
+                    left_push = param[2]
+                type =  param[1]
+                left_type = 'PUSHL'
+        
+        if left_push is None:
+            if isinstance(left_operand, int): 
+                left_push = left_operand
                 type = 'integer'
+                left_type = tipo_de_push['integer']
+            elif isinstance(left_operand, float):  
+                left_push = left_operand
+                type = 'float'
+                left_type = tipo_de_push['float']
+            elif isinstance(left_operand, str):  
+                if left_operand.isdigit():  
+                    left_push = int(left_operand)
+                    left_type = tipo_de_push['integer']
+                    type = 'integer'
+                else:
+                    try:
+                        float_value = float(left_operand)  
+                        left_push = float_value
+                        left_type = tipo_de_push['float']
+                        type = 'float'
+                    except ValueError:
+                        left_push = left_operand
+                        left_type = tipo_de_push['string']
+                        type = 'string'
+
+        lines.append(f'\t{left_type} {left_push}')
+
+    elif isinstance(left_operand, list):
+        lines += left_operand
+        if type != 'float':
+            size = len(left_operand)
+            op = left_operand[size - 1]
+            if op.startswith('\tF'):
+                type = 'float'
             else:
-                try:
-                    float_value = float(left_operand)  
-                    left_push = float_value
-                    left_type = tipo_de_push['float']
-                    type = 'float'
-                except ValueError:
-                    left_push = left_operand
-                    left_type = tipo_de_push['string']
-                    type = 'string'
+                type = 'integer'
 
     right_push = None
     right_type = None
-    if right_operand in tabela_simbolos_global:
-        print(tabela_simbolos_global[right_operand])
-        if update_value is not None: 
-            right_value = tabela_simbolos_global[right_operand]['value']
-        right_push = tabela_simbolos_global[right_operand]['gp']
-        right_type = 'PUSHL'
-        if type != 'float' and tabela_simbolos_global[right_operand]['type'] == 'float':
-            type =  'float'
-    elif update_value != None and tabela_simbolos_global[update_value]['kind'] == 'function':
-        func_params = tabela_funcoes[update_value]['parameters']
-        for param in func_params:
-            if right_operand == param[0]:
-                right_push = param[2]
-            if type != 'float':
-                type =  param[1]
+
+    if not isinstance(right_operand, list):
+        if right_operand in tabela_simbolos_global:
+            print(tabela_simbolos_global[right_operand])
+            if update_value is not None: 
+                right_value = tabela_simbolos_global[right_operand]['value']
+            right_push = tabela_simbolos_global[right_operand]['gp']
             right_type = 'PUSHL'
-        update_value = None
-    
-    if right_push is None:
-        if isinstance(right_operand, int):  
-            right_push = right_operand
-            right_type = tipo_de_push['integer']
-        elif isinstance(right_operand, float):
-            if type != 'float':
+            if type != 'float' and tabela_simbolos_global[right_operand]['type'] == 'float':
                 type =  'float'
-            right_push = right_operand
-            right_type = tipo_de_push['float']
-        elif isinstance(right_operand, str):  
-            if right_operand.isdigit(): 
-                right_push = int(right_operand)
-                right_type = tipo_de_push['integer']
-            else:
-                try:
-                    float_value = float(right_operand)  
-                    right_push = float_value
-                    right_type = tipo_de_push['float']
-                    if type != 'float':
-                        type =  param[1]
-                except ValueError:
-                    right_push = right_operand
-                    right_type = tipo_de_push['string']
+        elif update_value != None and tabela_simbolos_global[update_value]['kind'] == 'function':
+            func_params = tabela_funcoes[update_value]['parameters']
+            for param in func_params:
+                if right_operand == param[0]:
+                    right_push = param[2]
+                if type != 'float':
+                    type =  param[1]
+                right_type = 'PUSHL'
+            update_value = None
         
-    lines.append(f'\t{left_type} {left_push}')
-    lines.append(f'\t{right_type} {right_push}')
+        if right_push is None:
+            if isinstance(right_operand, int):  
+                right_push = right_operand
+                right_type = tipo_de_push['integer']
+            elif isinstance(right_operand, float):
+                if type != 'float':
+                    type =  'float'
+                right_push = right_operand
+                right_type = tipo_de_push['float']
+            elif isinstance(right_operand, str):  
+                if right_operand.isdigit(): 
+                    right_push = int(right_operand)
+                    right_type = tipo_de_push['integer']
+                else:
+                    try:
+                        float_value = float(right_operand)  
+                        right_push = float_value
+                        right_type = tipo_de_push['float']
+                        if type != 'float':
+                            type =  param[1]
+                    except ValueError:
+                        right_push = right_operand
+                        right_type = tipo_de_push['string']
+            
+        lines.append(f'\t{right_type} {right_push}')
+
+    elif isinstance(right_operand, list):
+        lines += right_operand
+        if type != 'float':
+            size = len(right_operand)
+            op = right_operand[size - 1]
+            if op.startswith('\tF'):
+                type = 'float'
+            else:
+                type = 'integer'
 
     if left_value is None:
         left_value = left_push
@@ -557,7 +592,7 @@ def create_symbol_table(consts, functions, var_decl):
             for var in vars_list:
                 tabela_simbolos_global[var] = {
                     'kind': 'var',
-                    'type': var_type,
+                    'type': var_type.lower(),
                     'value': '',
                     'gp' : '',
                     'fp' : ''
@@ -582,13 +617,13 @@ def create_symbol_table(consts, functions, var_decl):
                     parameters.append((var, var_type, myfp))
 
             tabela_simbolos_global[func_name] = {
-                'kind': kind,
-                'type': return_type,
+                'kind': kind.lower(),
+                'type': return_type.lower(),
                 'value': ''
             }
 
             tabela_funcoes[func_name] = {
-                'return_type': return_type,
+                'return_type': return_type.lower(),
                 'parameters': parameters,
                 'func_body': body
             }
@@ -664,149 +699,98 @@ data5 = """
 [
   "program",
   {
-    "program_name": "NumeroPrimo",
+    "program_name": "TesteBinopsComplexos",
     "program_body": {
-      "var_declaration": [
-        "var_decl_lines",
-        [
-          [
-            [
-              "vars",
-              [
-                "num",
-                "i"
-              ]
-            ],
-            [
-              "type",
-              "integer"
-            ]
-          ],
-          [
-            [
-              "vars",
-              [
-                "primo"
-              ]
-            ],
-            [
-              "type",
-              "boolean"
-            ]
-          ]
-        ]
-      ],
       "program_code": [
         "compound",
         [
           [
             "writeln",
             [
-              "Introduza um nÃºmero inteiro positivo:"
+              [
+                "binop",
+                {
+                  "type": "*",
+                  "left": [
+                    "binop",
+                    {
+                      "type": "+",
+                      "left": 5,
+                      "right": 2
+                    }
+                  ],
+                  "right": [
+                    "binop",
+                    {
+                      "type": "-",
+                      "left": 10,
+                      "right": 4
+                    }
+                  ]
+                }
+              ]
             ]
           ],
           [
-            "readln",
-            "num"
+            "writeln",
+            [
+              [
+                "binop",
+                {
+                  "type": ">",
+                  "left": [
+                    "binop",
+                    {
+                      "type": "+",
+                      "left": 3,
+                      "right": 3
+                    }
+                  ],
+                  "right": [
+                    "binop",
+                    {
+                      "type": "*",
+                      "left": 2,
+                      "right": 2
+                    }
+                  ]
+                }
+              ]
+            ]
           ],
           [
-            "assign",
-            "primo",
-            "true"
-          ],
-          [
-            "assign",
-            "i",
-            2
-          ],
-          [
-            "while",
-            {
-              "condition": [
+            "writeln",
+            [
+              [
                 "binop",
                 {
                   "type": "and",
                   "left": [
                     "binop",
                     {
-                      "type": "<=",
-                      "left": "i",
-                      "right": [
+                      "type": "=",
+                      "left": [
                         "binop",
                         {
-                          "type": "div",
-                          "left": "num",
-                          "right": 2
-                        }
-                      ]
-                    }
-                  ],
-                  "right": "primo"
-                }
-              ],
-              "body": [
-                "compound",
-                [
-                  [
-                    "if",
-                    {
-                      "case": [
-                        "binop",
-                        {
-                          "type": "=",
-                          "left": [
-                            "binop",
-                            {
-                              "type": "mod",
-                              "left": "num",
-                              "right": "i"
-                            }
-                          ],
-                          "right": 0
+                          "type": "mod",
+                          "left": 10,
+                          "right": 4
                         }
                       ],
-                      "do": [
-                        "assign",
-                        "primo",
-                        "false"
-                      ]
+                      "right": 2
                     }
                   ],
-                  [
-                    "assign",
-                    "i",
-                    [
-                      "binop",
-                      {
-                        "type": "+",
-                        "left": "i",
-                        "right": 1
-                      }
-                    ]
+                  "right": [
+                    "binop",
+                    {
+                      "type": "<",
+                      "left": 5,
+                      "right": 10
+                    }
                   ]
-                ]
+                }
               ]
-            }
-          ],
-          [
-            "if",
-            {
-              "case": "primo",
-              "do": [
-                "writeln",
-                [
-                  "num",
-                  " Ã© um nÃºmero primo"
-                ]
-              ],
-              "else": [
-                "writeln",
-                [
-                  "num",
-                  " nÃ£o Ã© um nÃºmero primo"
-                ]
-              ]
-            }
+            ]
           ]
         ]
       ]

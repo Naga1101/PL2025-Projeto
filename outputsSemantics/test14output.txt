@@ -1,0 +1,31 @@
+JUMP main
+
+dobro:
+	// binop *
+	PUSHL -1
+	PUSHI 2
+	MUL
+
+	RETURN
+
+
+main:
+	START
+
+	// writeln
+	// Call da dobro com os parametros [5]
+	PUSHI 5
+	PUSHA dobro
+	CALL
+	WRITEI
+	WRITELN
+
+	// writeln
+	// Call da dobro com os parametros [10]
+	PUSHI 10
+	PUSHA dobro
+	CALL
+	WRITEI
+	WRITELN
+
+	STOP

@@ -1,0 +1,94 @@
+[
+  "program",
+  {
+    "program_name": "TesteBinopsComplexos",
+    "program_body": {
+      "program_code": [
+        "compound",
+        [
+          [
+            "writeln",
+            [
+              [
+                "binop",
+                {
+                  "type": "*",
+                  "left": 7.5,
+                  "right": [
+                    "binop",
+                    {
+                      "type": "-",
+                      "left": 10,
+                      "right": 4
+                    }
+                  ]
+                }
+              ]
+            ]
+          ],
+          [
+            "writeln",
+            [
+              [
+                "binop",
+                {
+                  "type": ">",
+                  "left": [
+                    "binop",
+                    {
+                      "type": "+",
+                      "left": 3,
+                      "right": 3
+                    }
+                  ],
+                  "right": [
+                    "binop",
+                    {
+                      "type": "*",
+                      "left": 2,
+                      "right": 2
+                    }
+                  ]
+                }
+              ]
+            ]
+          ],
+          [
+            "writeln",
+            [
+              [
+                "binop",
+                {
+                  "type": "and",
+                  "left": [
+                    "binop",
+                    {
+                      "type": "=",
+                      "left": [
+                        "binop",
+                        {
+                          "type": "mod",
+                          "left": 10,
+                          "right": 4
+                        }
+                      ],
+                      "right": 2
+                    }
+                  ],
+                  "right": [
+                    "binop",
+                    {
+                      "type": "<",
+                      "left": 5,
+                      "right": 10
+                    }
+                  ]
+                }
+              ]
+            ]
+          ]
+        ]
+      ]
+    }
+  }
+]

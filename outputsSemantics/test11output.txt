@@ -1,0 +1,56 @@
+JUMP main
+
+
+main:
+	START
+
+	// writeln
+	PUSHS "Ola, Mundo!"
+	WRITES
+	WRITELN
+
+	// write
+	PUSHS "Ola, Mundo!"
+	WRITES
+	// assign 5 to num1
+	PUSHI 5
+	STOREL 0
+
+	// assign 7.5 to num2
+	PUSHL 7.5
+	STOREL 1
+
+	// assign 15 to num3
+	PUSHI 15
+	STOREL 2
+
+	// If case: {'case': ('binop', {'type': '>', 'left': 'num1', 'right': 0}), 'do': ('writeln', ['num1 is positive'])}
+	// binop >
+	PUSHL 0
+	PUSHI 0
+	SUP
+
+	JZ labelEndIF1
+	// writeln
+	PUSHS "num1 is positive"
+	WRITES
+	WRITELN
+
+	labelEndIF1:
+	// If case: {'case': ('binop', {'type': '>', 'left': 'num1', 'right': 0}), 'do': ('compound', [('writeln', ['num1 is positive']), ('assign', 'num2', ('binop', {'type': '+', 'left': 'num2', 'right': 1})), ('assign', 'num3', ('binop', {'type': '*', 'left': 'num3', 'right': 2}))]), 'else': ('writeln', ['num1 is negative'])}
+	// binop >
+	PUSHL 0
+	PUSHI 0
+	SUP
+
+	JZ labelElse2
+// Unsupported expression: compound
+	JUMP labelEndIF2
+	labelElse2:
+	// writeln
+	PUSHS "num1 is negative"
+	WRITES
+	WRITELN
+
+	labelEndIF2:
+	STOP
