@@ -13,7 +13,6 @@ main:
 	PUSHI 65
 	STOREL 1
 
-// Unsupported expression: The ASCII code of 
 	// writeln
 	PUSHS "The ASCII code of "
 	WRITES

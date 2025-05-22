@@ -8,13 +8,11 @@ main:
 	PUSHI 0
 	STOREL 0
 
-// Unsupported expression: Introduza 5 números inteiros:
 	// writeln
 	PUSHS "Introduza 5 números inteiros:"
 	WRITES
 	WRITELN
 
-// Unsupported expression: A soma dos números é: 
 	// writeln
 	PUSHS "A soma dos números é: "
 	WRITES

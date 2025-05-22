@@ -85,59 +85,106 @@ data2 output:
 )
 
 data3 output:
-('program', 
+(
+    'program',
     {
-        'program_name': 'Maior3', 
-        'program_body': 
-            {
-                'var_declaration': 
-                    ('var_decl_lines', 
-                        [
-                            (
-                                ('vars', ['num1', 'num2', 'num3', 'maior']), 
-                                ('type', 'Integer')
-                            )
-                        ]
-                    ), 
-                'program_code': 
-                    ('compound', 
-                        [
-                            ('writeln', 'Ola, Mundo!'), 
-                            ('write', 'Ola, Mundo!'), 
-                            ('if', 
-                                {
-                                    'case': ('binop', '>', 'num1', 0), 
-                                    'do': ('writeln', 'num1 is positive')
-                                }
-                            ), 
-                            ('if', 
-                                {
-                                    'case': ('binop', '>', 'num1', 0), 
-                                    'do': (
-                                        'compound', 
-                                        [
-                                            ('writeln', num1), 
-                                            ('Assign', 'num2', ('binop', '+', 'num2', 1)), 
-                                            ('Assign', 'num3', ('binop', '*', 'num3', 2))
-                                        ]
-                                    ),
-                                    'else': ('writeln', 'num1 is negative')
-                                }
-                            ), 
-                            ('for', 
-                                {
-                                    'var': 'num2', 
-                                    'start': 1, 
-                                    'end': 5, 
-                                    'direction': 'to', 
-                                    'body': ('write', 'num2')
-                                }
-                            )
-                        ]
+        'program_name': 'Maior3',
+        'program_body': {
+            'var_declaration': (
+                'var_decl_lines',
+                [
+                    (
+                        ('vars', ['num1', 'num3', 'maior']),
+                        ('type', 'Integer')
+                    ),
+                    (
+                        ('vars', ['num2']),
+                        ('type', 'Float')
                     )
-            }
+                ]
+            ),
+            'program_code': (
+                'compound',
+                [
+                    ('writeln', ['Ola, Mundo!']),
+                    ('write', ['Ola, Mundo!']),
+                    ('assign', 'num1', 5),
+                    ('assign', 'num2', 7.5),
+                    ('assign', 'num3', 15),
+                    (
+                        'if',
+                        {
+                            'case': (
+                                'binop',
+                                {
+                                    'type': '>',
+                                    'left': 'num1',
+                                    'right': 0
+                                }
+                            ),
+                            'do': ('writeln', ['num1 is positive'])
+                        }
+                    ),
+                    (
+                        'if',
+                        {
+                            'case': (
+                                'binop',
+                                {
+                                    'type': '>',
+                                    'left': 'num1',
+                                    'right': 0
+                                }
+                            ),
+                            'do': (
+                                'compound',
+                                [
+                                    ('writeln', ['num1 is positive']),
+                                    (
+                                        'assign',
+                                        'num2',
+                                        (
+                                            'binop',
+                                            {
+                                                'type': '+',
+                                                'left': 'num2',
+                                                'right': 1
+                                            }
+                                        )
+                                    ),
+                                    (
+                                        'assign',
+                                        'num3',
+                                        (
+                                            'binop',
+                                            {
+                                                'type': '*',
+                                                'left': 'num3',
+                                                'right': 2
+                                            }
+                                        )
+                                    )
+                                ]
+                            ),
+                            'else': ('writeln', ['num1 is negative'])
+                        }
+                    ),
+                    (
+                        'for',
+                        {
+                            'var': 'num2',
+                            'start': 1,
+                            'end': 5,
+                            'direction': 'to',
+                            'body': ('write', ['num2'])
+                        }
+                    )
+                ]
+            )
+        }
     }
 )
+
 
 data4 output:
 (

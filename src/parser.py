@@ -449,20 +449,21 @@ end.
 data3="""
 program Maior3;
 var
-    num1, num2, num3, maior: Integer;
+    num1, num3, maior: Integer;
+    num2 : Float;
 begin
     writeln('Ola, Mundo!');
     write('Ola, Mundo!');
 
+    num1 := 5;
+    num2 := 7.5;
+    num3 := 15;
+
     if num1 > 0 then
         writeln('num1 is positive');
 
     if num1 > 0 then
-    begin
-        writeln('num1 is positive');
-        num2 := num2 + 1;
-        num3 := num3 * 2;
-    end;
+        writeln('num1 is positive')
     else
         writeln('num1 is negative');
 
@@ -636,7 +637,7 @@ if __name__ == "__main__":
     #test_parser(data5)
     #test_parser(data6)
     #test_parser(data7)
-    #test_parser(data8)
+    test_parser(data8)
     #test_parser(data9)
     #test_parser(data10)
-    test_parser(data11)
+    #test_parser(data11)

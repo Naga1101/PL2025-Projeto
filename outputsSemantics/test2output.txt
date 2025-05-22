@@ -4,22 +4,12 @@ JUMP main
 main:
 	START
 
-// Unsupported expression: Introduza o primeiro número: 
 	// write
 	PUSHS "Introduza o primeiro número: "
 	WRITES
-// Unsupported expression: Introduza o segundo número: 
 	// write
 	PUSHS "Introduza o segundo número: "
 	WRITES
-// Unsupported expression: Introduza o terceiro número: 
 	// write
 	PUSHS "Introduza o terceiro número: "
 	WRITES
-// Unsupported expression: O maior é: 
-	// writeln
-	PUSHS "O maior é: "
-	WRITES
-	WRITELN
-
-	STOP

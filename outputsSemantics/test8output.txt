@@ -11,8 +11,8 @@ somaf:
 subf:
 	// binop -
 	PUSHI 23
-	PUSHL 0
-	SUB
+	PUSHL -1
+	FSUB
 
 	RETURN
 
@@ -131,7 +131,6 @@ main:
 	CALL
 	STOREL 5
 
-// Unsupported expression: Soma: 
 	// writeln
 	PUSHS "Soma: "
 	WRITES
@@ -139,7 +138,6 @@ main:
 	WRITEF
 	WRITELN
 
-// Unsupported expression: Subtracao: 
 	// writeln
 	PUSHS "Subtracao: "
 	WRITES
@@ -147,7 +145,6 @@ main:
 	WRITEF
 	WRITELN
 
-// Unsupported expression: Multiplicacao: 
 	// writeln
 	PUSHS "Multiplicacao: "
 	WRITES
@@ -155,7 +152,6 @@ main:
 	WRITEF
 	WRITELN
 
-// Unsupported expression: Divisao: 
 	// writeln
 	PUSHS "Divisao: "
 	WRITES
@@ -219,7 +215,6 @@ main:
 	CALL
 	STOREL 13
 
-// Unsupported expression: 12 = 21? 
 	// writeln
 	PUSHS "12 = 21? "
 	WRITES
@@ -237,7 +232,6 @@ main:
 	labelEndbool1:
 	WRITELN
 
-// Unsupported expression: 32 <> 2? 
 	// writeln
 	PUSHS "32 <> 2? "
 	WRITES
@@ -255,7 +249,6 @@ main:
 	labelEndbool2:
 	WRITELN
 
-// Unsupported expression: 90 < 110? 
 	// writeln
 	PUSHS "90 < 110? "
 	WRITES
@@ -273,7 +266,6 @@ main:
 	labelEndbool3:
 	WRITELN
 
-// Unsupported expression: 1 > 0? 
 	// writeln
 	PUSHS "1 > 0? "
 	WRITES
@@ -291,7 +283,6 @@ main:
 	labelEndbool4:
 	WRITELN
 
-// Unsupported expression: 0.0 <= 0.0? 
 	// writeln
 	PUSHS "0.0 <= 0.0? "
 	WRITES
@@ -309,7 +300,6 @@ main:
 	labelEndbool5:
 	WRITELN
 
-// Unsupported expression: 12 >= 9? 
 	// writeln
 	PUSHS "12 >= 9? "
 	WRITES
@@ -327,7 +317,6 @@ main:
 	labelEndbool6:
 	WRITELN
 
-// Unsupported expression: 0 and 1? 
 	// writeln
 	PUSHS "0 and 1? "
 	WRITES
@@ -345,7 +334,6 @@ main:
 	labelEndbool7:
 	WRITELN
 
-// Unsupported expression: 0 or 1? 
 	// writeln
 	PUSHS "0 or 1? "
 	WRITES

@@ -4,7 +4,6 @@ JUMP main
 main:
 	START
 
-// Unsupported expression: Ola, Mundo!
 	// writeln
 	PUSHS "Ola, Mundo!"
 	WRITES

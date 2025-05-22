@@ -4,7 +4,6 @@ JUMP main
 main:
 	START
 
-// Unsupported expression: Introduza um número inteiro positivo:
 	// writeln
 	PUSHS "Introduza um número inteiro positivo:"
 	WRITES
@@ -14,7 +13,6 @@ main:
 	PUSHI 1
 	STOREL 0
 
-// Unsupported expression: Fatorial de 
 	// writeln
 	PUSHS "Fatorial de "
 	WRITES
