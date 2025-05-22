@@ -271,6 +271,56 @@ def t_DOT(t):
     r'\.'
     return t
 
+## Tipos de variáveis
+
+def t_INTEGERTYPE(t):
+    r'\bInteger\b|\binteger\b'
+    return t
+
+def t_FLOATTYPE(t):
+    r'\bFloat\b|\bfloat\b'
+    return t
+
+def t_BOOLEANTYPE(t):
+    r'\bBoolean\b|\bboolean\b'
+    return t
+
+def t_STRINGTYPE(t):
+    r'\bString\b|\bstring\b'
+    return t
+
+## Literais
+
+### Literais numéricos
+def t_FLOAT(t):
+    r'\-?\d+\.\d+'
+    t.value = float(t.value)
+    return t
+
+def t_NUMBER(t):
+    r'\-?\d+'
+    t.value = int(t.value)
+    return t
+
+### Literais de strings/char
+def t_STRING(t):
+    r'\'([^\'\n]|(\\\'))*\''
+    value = t.value[1:-1]
+    if len(value) == 1:
+        t.type = 'CHAR'
+    t.value = value
+    return t
+
+## True e False
+
+def t_TRUE(t):
+    r'true'
+    return t
+
+def t_FALSE(t):
+    r'false'
+    return t
+
 ## Operadores
 
 def t_PLUS(t):
@@ -317,56 +367,6 @@ def t_GT(t):
     r'>'
     return t
 
-## Tipos de variáveis
-
-def t_INTEGERTYPE(t):
-    r'\bInteger\b|\binteger\b'
-    return t
-
-def t_FLOATTYPE(t):
-    r'\bFloat\b|\bfloat\b'
-    return t
-
-def t_BOOLEANTYPE(t):
-    r'\bBoolean\b|\bboolean\b'
-    return t
-
-def t_STRINGTYPE(t):
-    r'\bString\b|\bstring\b'
-    return t
-
-## Literais
-
-### Literais numéricos
-def t_FLOAT(t):
-    r'\d+\.\d+'
-    t.value = float(t.value)
-    return t
-
-def t_NUMBER(t):
-    r'\d+'
-    t.value = int(t.value)
-    return t
-
-### Literais de strings/char
-def t_STRING(t):
-    r'\'([^\'\n]|(\\\'))*\''
-    value = t.value[1:-1]
-    if len(value) == 1:
-        t.type = 'CHAR'
-    t.value = value
-    return t
-
-## True e False
-
-def t_TRUE(t):
-    r'true'
-    return t
-
-def t_FALSE(t):
-    r'false'
-    return t
-
 ## Comentarios
 
 def t_COMMENT(t):
@@ -403,6 +403,7 @@ def main():
     números }
     end.
     x := false
+    -7.5
     """
 
     lexer.input(data)
