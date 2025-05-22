@@ -15,7 +15,8 @@ tipo_de_push = {
     'Integer': 'PUSHI',
     'integer': 'PUSHI',
     'float': 'PUSHF',
-    'string': 'PUSHS'
+    'string': 'PUSHS',
+    'boolean': 'PUSHI',
 }
 
 free_fp = 0
@@ -146,6 +147,11 @@ def handle_assign(var, value):  # passar o atributo que diz se é main ou func
     my_gp = free_gp
     free_gp += 1
 
+    if value == 'true':
+        value = 1
+    elif value == 'false':
+        value = 0
+    
     tabela_simbolos_global[var]['value'] = value
     tabela_simbolos_global[var]['gp'] = my_gp
     
@@ -513,8 +519,8 @@ def evaluate_expression(expr, isAssign=None, isFunc=None):
     if isinstance(expr, str) and expr in tabela_simbolos_global:
         var_info = tabela_simbolos_global[expr]
         var_type = var_info.get('type', 'string')
-        push_instr = tipo_de_push.get(var_type, 'PUSHS')
-        return [f'{push_instr} {expr}'] if push_instr == 'PUSHS' else [f'{push_instr}L {var_info["fp"]}']
+        push_instr = tipo_de_push.get(var_type.lower(), 'PUSHS')
+        return [f'\t{push_instr} {expr}'] if push_instr == 'PUSHS' else [f'\tPUSHL {var_info["gp"]}']
 
     # Literal values
     if isinstance(expr, int):
@@ -655,7 +661,158 @@ data1 = """
 """
 
 data5 = """
-('program', {'program_name': 'Maior3', 'program_body': {'var_declaration': ('var_decl_lines', [(('vars', ['num1', 'num3', 'maior']), ('type', 'Integer')), (('vars', ['num2']), ('type', 'Float'))]), 'program_code': ('compound', [('writeln', ['Ola, Mundo!']), ('write', ['Ola, Mundo!']), ('assign', 'num1', 5), ('assign', 'num2', 7.5), ('assign', 'num3', 15), ('if', {'case': ('binop', {'type': '>', 'left': 'num1', 'right': 0}), 'do': ('writeln', ['num1 is positive'])}), ('if', {'case': ('binop', {'type': '>', 'left': 'num1', 'right': 0}), 'do': ('writeln', ['num1 is positive']), 'else': ('writeln', ['num1 is negative'])}), ('for', {'var': 'num2', 'start': 1, 'end': 5, 'direction': 'to', 'body': ('write', ['num2'])})])}})
+[
+  "program",
+  {
+    "program_name": "NumeroPrimo",
+    "program_body": {
+      "var_declaration": [
+        "var_decl_lines",
+        [
+          [
+            [
+              "vars",
+              [
+                "num",
+                "i"
+              ]
+            ],
+            [
+              "type",
+              "integer"
+            ]
+          ],
+          [
+            [
+              "vars",
+              [
+                "primo"
+              ]
+            ],
+            [
+              "type",
+              "boolean"
+            ]
+          ]
+        ]
+      ],
+      "program_code": [
+        "compound",
+        [
+          [
+            "writeln",
+            [
+              "Introduza um nÃºmero inteiro positivo:"
+            ]
+          ],
+          [
+            "readln",
+            "num"
+          ],
+          [
+            "assign",
+            "primo",
+            "true"
+          ],
+          [
+            "assign",
+            "i",
+            2
+          ],
+          [
+            "while",
+            {
+              "condition": [
+                "binop",
+                {
+                  "type": "and",
+                  "left": [
+                    "binop",
+                    {
+                      "type": "<=",
+                      "left": "i",
+                      "right": [
+                        "binop",
+                        {
+                          "type": "div",
+                          "left": "num",
+                          "right": 2
+                        }
+                      ]
+                    }
+                  ],
+                  "right": "primo"
+                }
+              ],
+              "body": [
+                "compound",
+                [
+                  [
+                    "if",
+                    {
+                      "case": [
+                        "binop",
+                        {
+                          "type": "=",
+                          "left": [
+                            "binop",
+                            {
+                              "type": "mod",
+                              "left": "num",
+                              "right": "i"
+                            }
+                          ],
+                          "right": 0
+                        }
+                      ],
+                      "do": [
+                        "assign",
+                        "primo",
+                        "false"
+                      ]
+                    }
+                  ],
+                  [
+                    "assign",
+                    "i",
+                    [
+                      "binop",
+                      {
+                        "type": "+",
+                        "left": "i",
+                        "right": 1
+                      }
+                    ]
+                  ]
+                ]
+              ]
+            }
+          ],
+          [
+            "if",
+            {
+              "case": "primo",
+              "do": [
+                "writeln",
+                [
+                  "num",
+                  " Ã© um nÃºmero primo"
+                ]
+              ],
+              "else": [
+                "writeln",
+                [
+                  "num",
+                  " nÃ£o Ã© um nÃºmero primo"
+                ]
+              ]
+            }
+          ]
+        ]
+      ]
+    }
+  }
+]
 """
 
 data6 = """
@@ -711,7 +868,7 @@ def runSemantics(input, outputFileName):
         print("Erro na criação do ficheiro ", outputFileName)
 
 def main():
-    ast_tree = ast.literal_eval(data8)
+    ast_tree = ast.literal_eval(data5)
     #ast_tree = ast.literal_eval(data10)
 
     _, program_data = ast_tree

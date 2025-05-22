@@ -37,34 +37,34 @@ def convert(obj):
 def main():
     #text = "Menu to run the tests provided"  
     exit = startTests = False
-    runTests = [False, False, False, False, False, False, False, False, False, False]
+    runTests = [False, False, False, False, False, False, False, False, False, False, False, False]
 
     while not exit:
         while not startTests:
             print("Selecione os testes pretende correr:")
-            for i in range(10):
+            for i in range(12):
                 if runTests[i]:
                     print(f" {i+1}: O teste {i+1} está selecionado;")
                 else:
                     print(f" {i+1}: O teste {i+1} não está selecionado;")
-            print(" 11: Selecionar todos os testes;")
-            print(" 12: Desselecionar todos os testes;")
-            print(" 13: Correr os testes selecionados.")
+            print(" 30: Selecionar todos os testes;")
+            print(" 31: Desselecionar todos os testes;")
+            print(" 32: Correr os testes selecionados.")
             option = input("> ")
 
             try:
                 option = int(option)
 
-                if 0 <= option < 11:
+                if 0 <= option < 13:
                     option -= 1
                     runTests[option] = not runTests[option] 
-                elif option == 11:
-                    for i in range(10):
+                elif option == 30:
+                    for i in range(12):
                         runTests[i] = True
-                elif option == 12:
-                    for i in range(8):
+                elif option == 31:
+                    for i in range(12):
                         runTests[i] = False
-                elif option == 13:
+                elif option == 32:
                     if any(runTests):
                         startTests = True
                     else:
