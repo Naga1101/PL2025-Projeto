@@ -9,19 +9,20 @@ main:
 	WRITES
 	WRITELN
 
-	// write
-	PUSHS "Ola, Mundo!"
-	WRITES
 	// assign 5 to num1
 	PUSHI 5
 	STOREL 0
 
-	// assign 7.5 to num2
-	PUSHL 7.5
+	// assign -7.5 to num2
+	PUSHF -7.5
 	STOREL 1
 
-	// assign 15 to num3
-	PUSHI 15
+	// assign ('binop', {'type': '*', 'left': 'num1', 'right': 'num2'}) to num3
+	// binop *
+	PUSHL 0
+	PUSHL 1
+	FMUL
+
 	STOREL 2
 
 	// If case: {'case': ('binop', {'type': '>', 'left': 'num1', 'right': 0}), 'do': ('writeln', ['num1 is positive'])}
@@ -37,14 +38,18 @@ main:
 	WRITELN
 
 	labelEndIF1:
-	// If case: {'case': ('binop', {'type': '>', 'left': 'num1', 'right': 0}), 'do': ('compound', [('writeln', ['num1 is positive']), ('assign', 'num2', ('binop', {'type': '+', 'left': 'num2', 'right': 1})), ('assign', 'num3', ('binop', {'type': '*', 'left': 'num3', 'right': 2}))]), 'else': ('writeln', ['num1 is negative'])}
+	// If case: {'case': ('binop', {'type': '>', 'left': 'num3', 'right': 0}), 'do': ('writeln', ['num3 is positive']), 'else': ('writeln', ['num1 is negative'])}
 	// binop >
-	PUSHL 0
+	PUSHL 2
 	PUSHI 0
-	SUP
+	FSUP
 
 	JZ labelElse2
-// Unsupported expression: compound
+	// writeln
+	PUSHS "num3 is positive"
+	WRITES
+	WRITELN
+
 	JUMP labelEndIF2
 	labelElse2:
 	// writeln

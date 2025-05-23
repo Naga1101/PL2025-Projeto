@@ -1,27 +1,19 @@
 program Maior3;
 var
-    num1, num3, maior: Integer;
-    num2 : Float;
+    num1, maior : Integer;
+    num2, num3 : Float;
 begin
     writeln('Ola, Mundo!');
-    write('Ola, Mundo!');
 
     num1 := 5;
-    num2 := 7.5;
-    num3 := 15;
+    num2 := -7.5;
+    num3 := num1 * num2;
 
     if num1 > 0 then
         writeln('num1 is positive');
 
-    if num1 > 0 then
-    begin
-        writeln('num1 is positive');
-        num2 := num2 + 1;
-        num3 := num3 * 2;
-    end
+    if num3 > 0 then
+        writeln('num3 is positive')
     else
         writeln('num1 is negative');
-
-    for num2 := 1 to 5 do
-        write(num2);
 end.

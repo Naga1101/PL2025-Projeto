@@ -10,13 +10,13 @@ var
 begin
     a := Positivo(5);
     if a then
-        writeln('Positivo')
+        writeln('É positivo')
     else
-        writeln('Negativo');
+        writeln('É negativo');
 
-    b := Positivo(3);
+    b := Positivo(-3);
     if b then
-        writeln('Positivo')
+        writeln('É positivo')
     else
-        writeln('Negativo');
+        writeln('É negativo');
 end.

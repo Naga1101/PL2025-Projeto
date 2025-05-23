@@ -561,7 +561,7 @@ def evaluate_expression(expr, isAssign=None, isFunc=None):
     if isinstance(expr, int):
         return ['\tPUSHI ' + str(expr)]
     elif isinstance(expr, float):
-        return ['\tPUSHL ' + str(expr)]
+        return ['\tPUSHF ' + str(expr)]
     elif isinstance(expr, str):
         return [f'\tPUSHS "{expr}"']
     elif isinstance(expr, list):
