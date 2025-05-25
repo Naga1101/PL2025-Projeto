@@ -77,6 +77,39 @@ def handle_write(output):
         lines.extend(process_write_item(output))
     return lines
 
+def handle_readln(var_name):
+    global free_gp
+
+    if tabela_simbolos_global[var_name].get('gp', '') == '':
+        tabela_simbolos_global[var_name]['gp'] = free_gp
+        free_gp += 1
+
+    gp = tabela_simbolos_global[var_name]['gp']
+    lines = [
+        '\t// readln',
+        f'\tPUSHL {gp}',
+        '\tREADI',
+        '\tREADLN',
+        f'\tSTOREL {gp}\n'
+    ]
+    return lines
+
+def handle_read(var_name):
+    global free_gp
+
+    if tabela_simbolos_global[var_name].get('gp', '') == '':
+        tabela_simbolos_global[var_name]['gp'] = free_gp
+        free_gp += 1
+
+    gp = tabela_simbolos_global[var_name]['gp']
+    lines = [
+        '\t// read',
+        f'\tPUSHL {gp}',
+        '\tREADI',
+        f'\tSTOREL {gp}\n'
+    ]
+    return lines
+
 def process_write_item(item):
     lines = []
 
@@ -453,6 +486,60 @@ def handle_ord(ord_input):
     # print_tables()
     return lines
 
+def handle_pred(pred_input):
+    lines = ['\t// pred']
+    input_value = None
+    update_value = None
+    if isinstance(pred_input, tuple):
+        input_value, update_value = pred_input
+        if isinstance(input_value, str) and input_value in tabela_simbolos_global:
+            input_value = tabela_simbolos_global[input_value]['value']
+    else:
+        input_value = pred_input
+        if isinstance(pred_input, str) and pred_input in tabela_simbolos_global:
+            input_value = tabela_simbolos_global[pred_input]['value']
+    output = input_value - 1
+    if update_value is not None and update_value in tabela_simbolos_global:
+        tabela_simbolos_global[update_value]['value'] = output
+    lines.append(f'\tPUSHI {output}')
+    return lines
+
+def handle_succ(succ_input):
+    lines = ['\t// succ']
+    input_value = None
+    update_value = None
+    if isinstance(succ_input, tuple):
+        input_value, update_value = succ_input
+        if isinstance(input_value, str) and input_value in tabela_simbolos_global:
+            input_value = tabela_simbolos_global[input_value]['value']
+    else:
+        input_value = succ_input
+        if isinstance(succ_input, str) and succ_input in tabela_simbolos_global:
+            input_value = tabela_simbolos_global[succ_input]['value']
+    output = input_value + 1
+    if update_value is not None and update_value in tabela_simbolos_global:
+        tabela_simbolos_global[update_value]['value'] = output
+    lines.append(f'\tPUSHI {output}')
+    return lines
+
+def handle_length(length_input):
+    lines = ['\t// length']
+    if isinstance(length_input, tuple) and length_input[0] == 'array':
+        array_name = length_input[1]['name']
+    else:
+        array_name = length_input
+
+    type_info = tabela_simbolos_global[array_name]['type']
+    if isinstance(type_info, tuple) and type_info[0] == 'array':
+        low  = type_info[1]['low']
+        high = type_info[1]['high']
+        size = high - low + 1
+    else:
+        size = 0
+
+    lines.append(f'\tPUSHI {size}')
+    return lines
+
 def handle_function_call(input):
     func_name = input["name"].lower()
     params = input["args"]
@@ -517,9 +604,14 @@ def handle_for(input):
 instruction_handlers = {
     'writeln': handle_writeln,
     'write': handle_write,
+    'readln': handle_readln,
+    'read': handle_read,
     'assign': handle_assign,
     'binop': handle_binop,
     'ord': handle_ord,
+    'pred': handle_pred,
+    'succ': handle_succ,
+    'length': handle_length,
     'return': handle_return,
     'Function_call': handle_function_call,
     'if': handle_if,
