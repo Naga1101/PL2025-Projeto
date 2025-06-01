@@ -281,7 +281,7 @@ def handle_binop(input):
                 type =  param[1]
                 left_type = 'PUSHL'
         
-        if left_push is None:
+        if left_push is None or type == 'boolean':
             if isinstance(left_operand, int): 
                 left_push = left_operand
                 type = 'integer'
@@ -340,7 +340,10 @@ def handle_binop(input):
                 right_type = 'PUSHL'
             update_value = None
         
-        if right_push is None:
+        if right_push is None or type == 'boolean':
+            if type == 'boolean':
+                type = 'integer'
+                
             if isinstance(right_operand, int):  
                 right_push = right_operand
                 right_type = tipo_de_push['integer']

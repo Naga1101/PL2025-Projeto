@@ -51,14 +51,18 @@ diferente:
 
 menor:
 	// binop <
-	PUSHI 90
+	PUSHF 90.5
 	PUSHI 110
+	FINF
+
 	RETURN
 
 maior:
 	// binop >
 	PUSHI 1
 	PUSHI 0
+	SUP
+
 	RETURN
 
 menorigual:
@@ -73,6 +77,8 @@ maiorigual:
 	// binop >=
 	PUSHI 12
 	PUSHI 9
+	SUPEQ
+
 	RETURN
 
 conjuncao:

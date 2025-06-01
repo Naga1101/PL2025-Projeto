@@ -32,7 +32,7 @@ end;
 
 function Menor(a: boolean): boolean;
 begin
-    Menor := 90 < 110;
+    Menor := 90.5 < 110;
 end;
 
 function Maior(a: boolean): boolean;
