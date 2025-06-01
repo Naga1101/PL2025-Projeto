@@ -22,7 +22,8 @@ test_files = [
     "./testes/teste12.pp",
     "./testes/teste13.pp",
     "./testes/teste14.pp",
-    "./testes/teste15.pp",
+    "./testes/teste16.pp",
+    "./testes/teste16.pp",
 ]
 
 lexer_dir = "outputsLexer"
@@ -42,12 +43,12 @@ def convert(obj):
 def main():
     #text = "Menu to run the tests provided"  
     exit = startTests = False
-    runTests = [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False]
+    runTests = [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False]
 
     while not exit:
         while not startTests:
             print("Selecione os testes pretende correr:")
-            for i in range(15):
+            for i in range(16):
                 if runTests[i]:
                     print(f" {i+1}: O teste {i+1} está selecionado;")
                 else:
@@ -60,7 +61,7 @@ def main():
             try:
                 option = int(option)
 
-                if 0 <= option < 16:
+                if 0 <= option < 17:
                     option -= 1
                     runTests[option] = not runTests[option] 
                 elif option == 30:
@@ -81,7 +82,7 @@ def main():
 
             print()
         
-        for i in range(15): 
+        for i in range(16): 
             if runTests[i]:
                 print(f"Teste {i+1}...")
                 input_file = open(test_files[i], 'r')

@@ -22,6 +22,7 @@ tipo_de_push = {
 free_fp = 0
 free_gp = 0
 if_counter = 1
+for_counter = 1
 while_counter = 1
 
 tabela_simbolos_global = {}
@@ -522,7 +523,6 @@ def handle_while(while_input):
     
     return lines
 
-# TODO assumir que ord vai ser sempre um char ou uma var
 def handle_ord(ord_input):
     lines = ['\t// ord']
     input_value = None
@@ -655,10 +655,47 @@ def handle_if(if_input):
     print(lines)
     return lines
 
-def handle_for(input):
-  data = input
-  print(data)
-  return []
+def handle_for(for_input):
+    global for_counter
+    lines =[f'\t// for loop: {for_input}']
+    direction = 'ADD' if for_input['direction'] == 'to' else 'SUB'
+    condition = 'SUP' if for_input['direction'] == 'to' else 'INF'
+    assign_start = ('assign', for_input['var'], for_input['start'])
+    _body = for_input['body']
+
+
+    assign_lines = evaluate_expression(assign_start)
+    lines += assign_lines
+    
+    lines.append(f'\tlabelForStart{for_counter}:')
+
+    index_gp = tabela_simbolos_global[for_input['var']]['gp']
+    
+    lines.append(f'\tPUSHL {index_gp}')
+    if (not isinstance(for_input['end'], int) and tabela_simbolos_global[for_input['end']]):
+        end = tabela_simbolos_global[for_input['end']]['gp'] 
+        lines.append(f'\tPUSHL {end}')
+    else:
+        lines.append(f'\tPUSHI {for_input['end']}')
+    lines.append(f'\t{condition}')
+
+    lines.append(f'\tJZ labelForBody{for_counter}')
+    lines.append(f'\tJUMP labelForEnd{for_counter}')
+    lines.append(f'\tlabelForBody{for_counter}:')
+
+    body_lines = evaluate_expression(_body)
+    lines += body_lines
+
+    lines.append(f'\tPUSHL {index_gp}')
+    lines.append('\tPUSHI 1')
+    lines.append(f'\t{direction}')
+    lines.append(f'\tSTOREL {index_gp}')
+
+    lines.append(f'\tJUMP labelForStart{for_counter}')
+    lines.append(f'\tlabelForEnd{for_counter}:\n')
+
+    for_counter += 1
+    return lines
     
 def handle_compound(compound_input):
     lines =[f'\t// Compound statement(lista de comandos dentro de um begin ... end)']

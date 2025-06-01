@@ -10,10 +10,10 @@ main:
 	WRITELN
 
 	// readln
-	PUSHL 0
-	READI
-	READLN
+	READ
+	ATOI
 	STOREL 0
+	WRITELN
 
 	// assign 1 to primo
 	PUSHI 1
@@ -23,9 +23,52 @@ main:
 	PUSHI 2
 	STOREL 2
 
+	// While loop: {'condition': ('binop', {'type': 'and', 'left': ('binop', {'type': '<=', 'left': 'i', 'right': ('binop', {'type': 'div', 'left': 'num', 'right': 2})}), 'right': 'primo'}), 'body': ('compound', [('if', {'case': ('binop', {'type': '=', 'left': ('binop', {'type': 'mod', 'left': 'num', 'right': 'i'}), 'right': 0}), 'do': ('assign', 'primo', 'false')}), ('assign', 'i', ('binop', {'type': '+', 'left': 'i', 'right': 1}))])}
+	labelWhileBegin1:
+	// binop and
+	// binop <=
+	PUSHL 2
+	// binop div
+	PUSHL 0
+	PUSHI 2
+	DIV
+
+	INFEQ
+
+	PUSHL 1
+	AND
+
+	JZ labelWhileEnd1
+	// Compound statement(lista de comandos dentro de um begin ... end)
+	// If case: {'case': ('binop', {'type': '=', 'left': ('binop', {'type': 'mod', 'left': 'num', 'right': 'i'}), 'right': 0}), 'do': ('assign', 'primo', 'false')}
+	// binop =
+	// binop mod
+	PUSHL 0
+	PUSHL 2
+	MOD
+
+	PUSHI 0
+	EQUAL
+
+	JZ labelEndIF1
+	// assign 0 to primo
+	PUSHI 0
+	STOREL 1
+
+	labelEndIF1:
+	// assign ('binop', {'type': '+', 'left': 'i', 'right': 1}) to i
+	// binop +
+	PUSHL 2
+	PUSHI 1
+	ADD
+
+	STOREL 2
+
+	JUMP labelWhileBegin1
+	labelWhileEnd1:
 	// If case: {'case': 'primo', 'do': ('writeln', ['num', ' é um número primo']), 'else': ('writeln', ['num', ' não é um número primo'])}
 	PUSHL 1
-	JZ labelElse1
+	JZ labelElse2
 	// writeln
 	PUSHL 0
 	WRITEI
@@ -33,8 +76,8 @@ main:
 	WRITES
 	WRITELN
 
-	JUMP labelEndIF1
-	labelElse1:
+	JUMP labelEndIF2
+	labelElse2:
 	// writeln
 	PUSHL 0
 	WRITEI
@@ -42,5 +85,5 @@ main:
 	WRITES
 	WRITELN
 
-	labelEndIF1:
+	labelEndIF2:
 	STOP

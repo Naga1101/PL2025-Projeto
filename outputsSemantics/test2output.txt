@@ -8,26 +8,80 @@ main:
 	PUSHS "Introduza o primeiro número: "
 	WRITES
 	// readln
-	PUSHL 0
-	READI
-	READLN
+	READ
+	ATOI
 	STOREL 0
+	WRITELN
 
 	// write
 	PUSHS "Introduza o segundo número: "
 	WRITES
 	// readln
-	PUSHL 1
-	READI
-	READLN
+	READ
+	ATOI
 	STOREL 1
+	WRITELN
 
 	// write
 	PUSHS "Introduza o terceiro número: "
 	WRITES
 	// readln
-	PUSHL 2
-	READI
-	READLN
+	READ
+	ATOI
 	STOREL 2
+	WRITELN
 
+	// If case: {'case': ('binop', {'type': '>', 'left': 'num1', 'right': 'num2'}), 'do': ('if', {'case': ('binop', {'type': '>', 'left': 'num1', 'right': 'num3'}), 'do': ('assign', 'maior', 'num1'), 'else': ('assign', 'maior', 'num3')}), 'else': ('if', {'case': ('binop', {'type': '>', 'left': 'num2', 'right': 'num3'}), 'do': ('assign', 'maior', 'num2'), 'else': ('assign', 'maior', 'num3')})}
+	// binop >
+	PUSHL 0
+	PUSHL 1
+	SUP
+
+	JZ labelElse2
+	// If case: {'case': ('binop', {'type': '>', 'left': 'num1', 'right': 'num3'}), 'do': ('assign', 'maior', 'num1'), 'else': ('assign', 'maior', 'num3')}
+	// binop >
+	PUSHL 0
+	PUSHL 2
+	SUP
+
+	JZ labelElse1
+	// assign num1 to maior
+	PUSHL 0
+	STOREL 3
+
+	JUMP labelEndIF1
+	labelElse1:
+	// assign num3 to maior
+	PUSHL 2
+	STOREL 3
+
+	labelEndIF1:
+	JUMP labelEndIF2
+	labelElse2:
+	// If case: {'case': ('binop', {'type': '>', 'left': 'num2', 'right': 'num3'}), 'do': ('assign', 'maior', 'num2'), 'else': ('assign', 'maior', 'num3')}
+	// binop >
+	PUSHL 1
+	PUSHL 2
+	SUP
+
+	JZ labelElse2
+	// assign num2 to maior
+	PUSHL 1
+	STOREL 3
+
+	JUMP labelEndIF2
+	labelElse2:
+	// assign num3 to maior
+	PUSHL 2
+	STOREL 3
+
+	labelEndIF2:
+	labelEndIF3:
+	// writeln
+	PUSHS "O maior é: "
+	WRITES
+	PUSHL 3
+	WRITEI
+	WRITELN
+
+	STOP

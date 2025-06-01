@@ -13,13 +13,13 @@ main:
 	PUSHI 1
 	STOREL 1
 
-	labelForStart3:
+	labelForStart5:
 	PUSHL 1
 	PUSHI 3
 	SUP
-	JZ labelForBody3
-	JUMP labelForEnd3
-	labelForBody3:
+	JZ labelForBody5
+	JUMP labelForEnd5
+	labelForBody5:
 	// assign ('binop', {'type': '+', 'left': 'soma', 'right': 'i'}) to soma
 	// binop +
 	PUSHL 0
@@ -32,21 +32,21 @@ main:
 	PUSHI 1
 	ADD
 	STOREL 1
-	JUMP labelForStart3
-	labelForEnd3:
+	JUMP labelForStart5
+	labelForEnd5:
 
 	// for loop: {'var': 'i', 'start': 3, 'end': 1, 'direction': 'downto', 'body': ('assign', 'soma', ('binop', {'type': '+', 'left': 'soma', 'right': 'i'}))}
 	// assign 3 to i
 	PUSHI 3
 	STOREL 1
 
-	labelForStart4:
+	labelForStart6:
 	PUSHL 1
 	PUSHI 1
 	INF
-	JZ labelForBody4
-	JUMP labelForEnd4
-	labelForBody4:
+	JZ labelForBody6
+	JUMP labelForEnd6
+	labelForBody6:
 	// assign ('binop', {'type': '+', 'left': 'soma', 'right': 'i'}) to soma
 	// binop +
 	PUSHL 0
@@ -59,8 +59,8 @@ main:
 	PUSHI 1
 	SUB
 	STOREL 1
-	JUMP labelForStart4
-	labelForEnd4:
+	JUMP labelForStart6
+	labelForEnd6:
 
 	// writeln
 	PUSHL 0

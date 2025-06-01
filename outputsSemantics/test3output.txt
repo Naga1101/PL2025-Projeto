@@ -10,23 +10,50 @@ main:
 	WRITELN
 
 	// readln
-	PUSHL 3
-	READI
-	READLN
-	STOREL 3
+	READ
+	ATOI
+	STOREL 0
+	WRITELN
 
 	// assign 1 to fat
 	PUSHI 1
-	STOREL 4
+	STOREL 1
+
+	// for loop: {'var': 'i', 'start': 1, 'end': 'n', 'direction': 'to', 'body': ('assign', 'fat', ('binop', {'type': '*', 'left': 'fat', 'right': 'i'}))}
+	// assign 1 to i
+	PUSHI 1
+	STOREL 2
+
+	labelForStart1:
+	PUSHL 2
+	PUSHL 0
+	SUP
+	JZ labelForBody1
+	JUMP labelForEnd1
+	labelForBody1:
+	// assign ('binop', {'type': '*', 'left': 'fat', 'right': 'i'}) to fat
+	// binop *
+	PUSHL 1
+	PUSHL 2
+	MUL
+
+	STOREL 1
+
+	PUSHL 2
+	PUSHI 1
+	ADD
+	STOREL 2
+	JUMP labelForStart1
+	labelForEnd1:
 
 	// writeln
 	PUSHS "Fatorial de "
 	WRITES
-	PUSHL 3
+	PUSHL 0
 	WRITEI
 	PUSHS ": "
 	WRITES
-	PUSHL 4
+	PUSHL 1
 	WRITEI
 	WRITELN
 

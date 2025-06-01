@@ -11,10 +11,9 @@ main:
 	WRITELN
 
 	// readln
-	PUSHL 0
-	READI
-	READLN
+	READ
 	STOREL 0
+	WRITELN
 
 	// assign ('Function_call', {'name': 'BinToInt', 'args': ['bin']}) to valor
 	// Call da bintoint com os parametros ['bin']

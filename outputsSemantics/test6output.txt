@@ -10,10 +10,9 @@ main:
 	WRITELN
 
 	// readln
-	PUSHL 0
-	READI
-	READLN
+	READ
 	STOREL 0
+	WRITELN
 
 	// assign 0 to valor
 	PUSHI 0
@@ -22,6 +21,52 @@ main:
 	// assign 1 to potencia
 	PUSHI 1
 	STOREL 2
+
+	// for loop: {'var': 'i', 'start': ('length', 'bin'), 'end': 1, 'direction': 'downto', 'body': ('compound', [('if', {'case': ('binop', {'type': '=', 'left': ('array', {'name': 'bin', 'index': 'i'}), 'right': '1'}), 'do': ('assign', 'valor', ('binop', {'type': '+', 'left': 'valor', 'right': 'potencia'}))}), ('assign', 'potencia', ('binop', {'type': '*', 'left': 'potencia', 'right': 2}))])}
+	// assign ('length', 'bin') to i
+	// length
+	PUSHL 0
+	STRLEN
+	STOREL 3
+
+	labelForStart2:
+	PUSHL 3
+	PUSHI 1
+	INF
+	JZ labelForBody2
+	JUMP labelForEnd2
+	labelForBody2:
+	// Compound statement(lista de comandos dentro de um begin ... end)
+	// If case: {'case': ('binop', {'type': '=', 'left': ('array', {'name': 'bin', 'index': 'i'}), 'right': '1'}), 'do': ('assign', 'valor', ('binop', {'type': '+', 'left': 'valor', 'right': 'potencia'}))}
+	// binop =
+	// Unsupported expression: array
+	PUSHI 1
+	EQUAL
+
+	JZ labelEndIF1
+	// assign ('binop', {'type': '+', 'left': 'valor', 'right': 'potencia'}) to valor
+	// binop +
+	PUSHL 1
+	PUSHL 2
+	ADD
+
+	STOREL 1
+
+	labelEndIF1:
+	// assign ('binop', {'type': '*', 'left': 'potencia', 'right': 2}) to potencia
+	// binop *
+	PUSHL 2
+	PUSHI 2
+	MUL
+
+	STOREL 2
+
+	PUSHL 3
+	PUSHI 1
+	SUB
+	STOREL 3
+	JUMP labelForStart2
+	labelForEnd2:
 
 	// writeln
 	PUSHS "O valor inteiro correspondente é: "
