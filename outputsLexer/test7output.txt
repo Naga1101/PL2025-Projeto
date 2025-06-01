@@ -80,27 +80,27 @@ SEMICOLON(;) at line 1, position 376
 BEGIN(begin) at line 1, position 378
 WRITEFUNCLN(writeln) at line 1, position 388
 LPAREN(() at line 1, position 395
-STRING(Introduza uma string binÃ¡ria:) at line 1, position 396
-RPAREN()) at line 1, position 428
-SEMICOLON(;) at line 1, position 429
-READFUNCLN(readln) at line 1, position 435
-LPAREN(() at line 1, position 441
-ID(bin) at line 1, position 442
-RPAREN()) at line 1, position 445
-SEMICOLON(;) at line 1, position 446
-ID(valor) at line 1, position 452
-ASSIGN(:=) at line 1, position 458
-ID(BinToInt) at line 1, position 461
-LPAREN(() at line 1, position 469
-ID(bin) at line 1, position 470
-RPAREN()) at line 1, position 473
-SEMICOLON(;) at line 1, position 474
-WRITEFUNCLN(writeln) at line 1, position 481
-LPAREN(() at line 1, position 488
-STRING(O valor inteiro correspondente Ã©: ) at line 1, position 489
-COMMA(,) at line 1, position 526
-ID(valor) at line 1, position 528
-RPAREN()) at line 1, position 533
-SEMICOLON(;) at line 1, position 534
-END(end) at line 1, position 536
-DOT(.) at line 1, position 539
+STRING(Introduza uma string binária:) at line 1, position 396
+RPAREN()) at line 1, position 427
+SEMICOLON(;) at line 1, position 428
+READFUNCLN(readln) at line 1, position 434
+LPAREN(() at line 1, position 440
+ID(bin) at line 1, position 441
+RPAREN()) at line 1, position 444
+SEMICOLON(;) at line 1, position 445
+ID(valor) at line 1, position 451
+ASSIGN(:=) at line 1, position 457
+ID(BinToInt) at line 1, position 460
+LPAREN(() at line 1, position 468
+ID(bin) at line 1, position 469
+RPAREN()) at line 1, position 472
+SEMICOLON(;) at line 1, position 473
+WRITEFUNCLN(writeln) at line 1, position 480
+LPAREN(() at line 1, position 487
+STRING(O valor inteiro correspondente é: ) at line 1, position 488
+COMMA(,) at line 1, position 524
+ID(valor) at line 1, position 526
+RPAREN()) at line 1, position 531
+SEMICOLON(;) at line 1, position 532
+END(end) at line 1, position 534
+DOT(.) at line 1, position 537

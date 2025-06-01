@@ -84,13 +84,13 @@
               "do": [
                 "writeln",
                 [
-                  "Ã‰ positivo"
+                  "É positivo"
                 ]
               ],
               "else": [
                 "writeln",
                 [
-                  "Ã‰ negativo"
+                  "É negativo"
                 ]
               ]
             }
@@ -115,13 +115,13 @@
               "do": [
                 "writeln",
                 [
-                  "Ã‰ positivo"
+                  "É positivo"
                 ]
               ],
               "else": [
                 "writeln",
                 [
-                  "Ã‰ pegativo"
+                  "É negativo"
                 ]
               ]
             }

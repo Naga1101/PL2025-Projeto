@@ -9,18 +9,24 @@ main:
 	WRITES
 	WRITELN
 
+	// readln
+	PUSHL 0
+	READI
+	READLN
+	STOREL 0
+
 	// assign 0 to valor
 	PUSHI 0
-	STOREL 0
+	STOREL 1
 
 	// assign 1 to potencia
 	PUSHI 1
-	STOREL 1
+	STOREL 2
 
 	// writeln
 	PUSHS "O valor inteiro correspondente é: "
 	WRITES
-	PUSHL 0
+	PUSHL 1
 	WRITEI
 	WRITELN
 

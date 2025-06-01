@@ -10,17 +10,23 @@ main:
 	WRITES
 	WRITELN
 
+	// readln
+	PUSHL 0
+	READI
+	READLN
+	STOREL 0
+
 	// assign ('Function_call', {'name': 'BinToInt', 'args': ['bin']}) to valor
 	// Call da bintoint com os parametros ['bin']
-	PUSHL 
+	PUSHL 0
 	PUSHA bintoint
 	CALL
-	STOREL 0
+	STOREL 1
 
 	// writeln
 	PUSHS "O valor inteiro correspondente é: "
 	WRITES
-	PUSHL 0
+	PUSHL 1
 	WRITEI
 	WRITELN
 

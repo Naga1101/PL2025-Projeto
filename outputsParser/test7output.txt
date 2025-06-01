@@ -165,7 +165,7 @@
           [
             "writeln",
             [
-              "Introduza uma string binÃ¡ria:"
+              "Introduza uma string binária:"
             ]
           ],
           [
@@ -188,7 +188,7 @@
           [
             "writeln",
             [
-              "O valor inteiro correspondente Ã©: ",
+              "O valor inteiro correspondente é: ",
               "valor"
             ]
           ]

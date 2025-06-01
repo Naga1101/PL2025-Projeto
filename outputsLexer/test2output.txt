@@ -13,76 +13,76 @@ COLON(:) at line 1, position 47
 INTEGERTYPE(Integer) at line 1, position 49
 SEMICOLON(;) at line 1, position 56
 BEGIN(begin) at line 1, position 58
-COMMENT({ Ler 3 nÃºmeros }) at line 1, position 68
-WRITEFUNC(Write) at line 1, position 91
-LPAREN(() at line 1, position 96
-STRING(Introduza o primeiro nÃºmero: ) at line 1, position 97
-RPAREN()) at line 1, position 129
-SEMICOLON(;) at line 1, position 130
-READFUNCLN(ReadLn) at line 1, position 136
-LPAREN(() at line 1, position 142
-ID(num1) at line 1, position 143
-RPAREN()) at line 1, position 147
-SEMICOLON(;) at line 1, position 148
-WRITEFUNC(Write) at line 1, position 155
-LPAREN(() at line 1, position 160
-STRING(Introduza o segundo nÃºmero: ) at line 1, position 161
-RPAREN()) at line 1, position 192
-SEMICOLON(;) at line 1, position 193
-READFUNCLN(ReadLn) at line 1, position 199
-LPAREN(() at line 1, position 205
-ID(num2) at line 1, position 206
-RPAREN()) at line 1, position 210
-SEMICOLON(;) at line 1, position 211
-WRITEFUNC(Write) at line 1, position 218
-LPAREN(() at line 1, position 223
-STRING(Introduza o terceiro nÃºmero: ) at line 1, position 224
-RPAREN()) at line 1, position 256
-SEMICOLON(;) at line 1, position 257
-READFUNCLN(ReadLn) at line 1, position 263
-LPAREN(() at line 1, position 269
-ID(num3) at line 1, position 270
-RPAREN()) at line 1, position 274
-SEMICOLON(;) at line 1, position 275
-COMMENT({ Calcular o maior }) at line 1, position 286
-IF(if) at line 1, position 311
-ID(num1) at line 1, position 314
-GT(>) at line 1, position 319
-ID(num2) at line 1, position 321
-THEN(then) at line 1, position 326
-IF(if) at line 1, position 339
-ID(num1) at line 1, position 342
-GT(>) at line 1, position 347
-ID(num3) at line 1, position 349
-THEN(then) at line 1, position 354
-ID(maior) at line 1, position 359
-ASSIGN(:=) at line 1, position 365
-ID(num1) at line 1, position 368
-ELSE(else) at line 1, position 381
-ID(maior) at line 1, position 386
-ASSIGN(:=) at line 1, position 392
-ID(num3) at line 1, position 395
-ELSE(else) at line 1, position 404
-IF(if) at line 1, position 417
-ID(num2) at line 1, position 420
-GT(>) at line 1, position 425
-ID(num3) at line 1, position 427
-THEN(then) at line 1, position 432
-ID(maior) at line 1, position 437
-ASSIGN(:=) at line 1, position 443
-ID(num2) at line 1, position 446
-ELSE(else) at line 1, position 459
-ID(maior) at line 1, position 464
-ASSIGN(:=) at line 1, position 470
-ID(num3) at line 1, position 473
-SEMICOLON(;) at line 1, position 477
-COMMENT({ Escrever o resultado }) at line 1, position 484
-WRITEFUNCLN(WriteLn) at line 1, position 513
-LPAREN(() at line 1, position 520
-STRING(O maior Ã©: ) at line 1, position 521
-COMMA(,) at line 1, position 535
-ID(maior) at line 1, position 537
-RPAREN()) at line 1, position 542
-SEMICOLON(;) at line 1, position 543
-END(end) at line 1, position 545
-DOT(.) at line 1, position 548
+COMMENT({ Ler 3 números }) at line 1, position 68
+WRITEFUNC(Write) at line 1, position 90
+LPAREN(() at line 1, position 95
+STRING(Introduza o primeiro número: ) at line 1, position 96
+RPAREN()) at line 1, position 127
+SEMICOLON(;) at line 1, position 128
+READFUNCLN(ReadLn) at line 1, position 134
+LPAREN(() at line 1, position 140
+ID(num1) at line 1, position 141
+RPAREN()) at line 1, position 145
+SEMICOLON(;) at line 1, position 146
+WRITEFUNC(Write) at line 1, position 153
+LPAREN(() at line 1, position 158
+STRING(Introduza o segundo número: ) at line 1, position 159
+RPAREN()) at line 1, position 189
+SEMICOLON(;) at line 1, position 190
+READFUNCLN(ReadLn) at line 1, position 196
+LPAREN(() at line 1, position 202
+ID(num2) at line 1, position 203
+RPAREN()) at line 1, position 207
+SEMICOLON(;) at line 1, position 208
+WRITEFUNC(Write) at line 1, position 215
+LPAREN(() at line 1, position 220
+STRING(Introduza o terceiro número: ) at line 1, position 221
+RPAREN()) at line 1, position 252
+SEMICOLON(;) at line 1, position 253
+READFUNCLN(ReadLn) at line 1, position 259
+LPAREN(() at line 1, position 265
+ID(num3) at line 1, position 266
+RPAREN()) at line 1, position 270
+SEMICOLON(;) at line 1, position 271
+COMMENT({ Calcular o maior }) at line 1, position 282
+IF(if) at line 1, position 307
+ID(num1) at line 1, position 310
+GT(>) at line 1, position 315
+ID(num2) at line 1, position 317
+THEN(then) at line 1, position 322
+IF(if) at line 1, position 335
+ID(num1) at line 1, position 338
+GT(>) at line 1, position 343
+ID(num3) at line 1, position 345
+THEN(then) at line 1, position 350
+ID(maior) at line 1, position 355
+ASSIGN(:=) at line 1, position 361
+ID(num1) at line 1, position 364
+ELSE(else) at line 1, position 377
+ID(maior) at line 1, position 382
+ASSIGN(:=) at line 1, position 388
+ID(num3) at line 1, position 391
+ELSE(else) at line 1, position 400
+IF(if) at line 1, position 413
+ID(num2) at line 1, position 416
+GT(>) at line 1, position 421
+ID(num3) at line 1, position 423
+THEN(then) at line 1, position 428
+ID(maior) at line 1, position 433
+ASSIGN(:=) at line 1, position 439
+ID(num2) at line 1, position 442
+ELSE(else) at line 1, position 455
+ID(maior) at line 1, position 460
+ASSIGN(:=) at line 1, position 466
+ID(num3) at line 1, position 469
+SEMICOLON(;) at line 1, position 473
+COMMENT({ Escrever o resultado }) at line 1, position 480
+WRITEFUNCLN(WriteLn) at line 1, position 509
+LPAREN(() at line 1, position 516
+STRING(O maior é: ) at line 1, position 517
+COMMA(,) at line 1, position 530
+ID(maior) at line 1, position 532
+RPAREN()) at line 1, position 537
+SEMICOLON(;) at line 1, position 538
+END(end) at line 1, position 540
+DOT(.) at line 1, position 543

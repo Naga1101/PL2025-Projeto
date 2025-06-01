@@ -7,9 +7,27 @@ main:
 	// write
 	PUSHS "Introduza o primeiro número: "
 	WRITES
+	// readln
+	PUSHL 0
+	READI
+	READLN
+	STOREL 0
+
 	// write
 	PUSHS "Introduza o segundo número: "
 	WRITES
+	// readln
+	PUSHL 1
+	READI
+	READLN
+	STOREL 1
+
 	// write
 	PUSHS "Introduza o terceiro número: "
 	WRITES
+	// readln
+	PUSHL 2
+	READI
+	READLN
+	STOREL 2
+

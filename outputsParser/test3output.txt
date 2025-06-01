@@ -28,7 +28,7 @@
           [
             "writeln",
             [
-              "Introduza um nÃºmero inteiro positivo:"
+              "Introduza um número inteiro positivo:"
             ]
           ],
           [

@@ -40,33 +40,33 @@ ID(a) at line 1, position 155
 THEN(then) at line 1, position 157
 WRITEFUNCLN(writeln) at line 1, position 170
 LPAREN(() at line 1, position 177
-STRING(Ã‰ positivo) at line 1, position 178
-RPAREN()) at line 1, position 191
-ELSE(else) at line 1, position 197
-WRITEFUNCLN(writeln) at line 1, position 210
-LPAREN(() at line 1, position 217
-STRING(Ã‰ negativo) at line 1, position 218
-RPAREN()) at line 1, position 231
-SEMICOLON(;) at line 1, position 232
-ID(b) at line 1, position 239
-ASSIGN(:=) at line 1, position 241
-ID(Positivo) at line 1, position 244
-LPAREN(() at line 1, position 252
-NUMBER(-3) at line 1, position 253
-RPAREN()) at line 1, position 255
-SEMICOLON(;) at line 1, position 256
-IF(if) at line 1, position 262
-ID(b) at line 1, position 265
-THEN(then) at line 1, position 267
-WRITEFUNCLN(writeln) at line 1, position 280
-LPAREN(() at line 1, position 287
-STRING(Ã‰ positivo) at line 1, position 288
-RPAREN()) at line 1, position 301
-ELSE(else) at line 1, position 307
-WRITEFUNCLN(writeln) at line 1, position 320
-LPAREN(() at line 1, position 327
-STRING(Ã‰ pegativo) at line 1, position 328
-RPAREN()) at line 1, position 341
-SEMICOLON(;) at line 1, position 342
-END(end) at line 1, position 344
-DOT(.) at line 1, position 347
+STRING(É positivo) at line 1, position 178
+RPAREN()) at line 1, position 190
+ELSE(else) at line 1, position 196
+WRITEFUNCLN(writeln) at line 1, position 209
+LPAREN(() at line 1, position 216
+STRING(É negativo) at line 1, position 217
+RPAREN()) at line 1, position 229
+SEMICOLON(;) at line 1, position 230
+ID(b) at line 1, position 237
+ASSIGN(:=) at line 1, position 239
+ID(Positivo) at line 1, position 242
+LPAREN(() at line 1, position 250
+NUMBER(-3) at line 1, position 251
+RPAREN()) at line 1, position 253
+SEMICOLON(;) at line 1, position 254
+IF(if) at line 1, position 260
+ID(b) at line 1, position 263
+THEN(then) at line 1, position 265
+WRITEFUNCLN(writeln) at line 1, position 278
+LPAREN(() at line 1, position 285
+STRING(É positivo) at line 1, position 286
+RPAREN()) at line 1, position 298
+ELSE(else) at line 1, position 304
+WRITEFUNCLN(writeln) at line 1, position 317
+LPAREN(() at line 1, position 324
+STRING(É negativo) at line 1, position 325
+RPAREN()) at line 1, position 337
+SEMICOLON(;) at line 1, position 338
+END(end) at line 1, position 340
+DOT(.) at line 1, position 343

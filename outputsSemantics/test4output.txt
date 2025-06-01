@@ -9,19 +9,25 @@ main:
 	WRITES
 	WRITELN
 
+	// readln
+	PUSHL 0
+	READI
+	READLN
+	STOREL 0
+
 	// assign 1 to primo
 	PUSHI 1
-	STOREL 0
+	STOREL 1
 
 	// assign 2 to i
 	PUSHI 2
-	STOREL 1
+	STOREL 2
 
 	// If case: {'case': 'primo', 'do': ('writeln', ['num', ' é um número primo']), 'else': ('writeln', ['num', ' não é um número primo'])}
-	PUSHL 0
+	PUSHL 1
 	JZ labelElse1
 	// writeln
-	PUSHL 
+	PUSHL 0
 	WRITEI
 	PUSHS " é um número primo"
 	WRITES
@@ -30,7 +36,7 @@ main:
 	JUMP labelEndIF1
 	labelElse1:
 	// writeln
-	PUSHL 
+	PUSHL 0
 	WRITEI
 	PUSHS " não é um número primo"
 	WRITES

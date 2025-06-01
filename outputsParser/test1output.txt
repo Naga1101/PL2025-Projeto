@@ -8,7 +8,7 @@
         [
           [
             "comment",
-            "{ ISTO Ã‰ UM COMENTARIO }"
+            "{ ISTO É UM COMENTARIO }"
           ],
           [
             "writeln",

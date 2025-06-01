@@ -9,18 +9,24 @@ main:
 	WRITES
 	WRITELN
 
+	// readln
+	PUSHL 3
+	READI
+	READLN
+	STOREL 3
+
 	// assign 1 to fat
 	PUSHI 1
-	STOREL 0
+	STOREL 4
 
 	// writeln
 	PUSHS "Fatorial de "
 	WRITES
-	PUSHL 
+	PUSHL 3
 	WRITEI
 	PUSHS ": "
 	WRITES
-	PUSHL 0
+	PUSHL 4
 	WRITEI
 	WRITELN
 

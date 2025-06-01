@@ -39,7 +39,7 @@
           [
             "writeln",
             [
-              "Introduza um nÃºmero inteiro positivo:"
+              "Introduza um número inteiro positivo:"
             ]
           ],
           [
@@ -133,14 +133,14 @@
                 "writeln",
                 [
                   "num",
-                  " Ã© um nÃºmero primo"
+                  " é um número primo"
                 ]
               ],
               "else": [
                 "writeln",
                 [
                   "num",
-                  " nÃ£o Ã© um nÃºmero primo"
+                  " não é um número primo"
                 ]
               ]
             }

@@ -42,7 +42,7 @@ main:
 	CALL
 	STOREL 1
 
-	// If case: {'case': 'b', 'do': ('writeln', ['É positivo']), 'else': ('writeln', ['É pegativo'])}
+	// If case: {'case': 'b', 'do': ('writeln', ['É positivo']), 'else': ('writeln', ['É negativo'])}
 	PUSHL 1
 	JZ labelElse2
 	// writeln
@@ -53,7 +53,7 @@ main:
 	JUMP labelEndIF2
 	labelElse2:
 	// writeln
-	PUSHS "É pegativo"
+	PUSHS "É negativo"
 	WRITES
 	WRITELN
 

@@ -28,12 +28,12 @@
         [
           [
             "comment",
-            "{ Ler 3 nÃºmeros }"
+            "{ Ler 3 números }"
           ],
           [
             "write",
             [
-              "Introduza o primeiro nÃºmero: "
+              "Introduza o primeiro número: "
             ]
           ],
           [
@@ -43,7 +43,7 @@
           [
             "write",
             [
-              "Introduza o segundo nÃºmero: "
+              "Introduza o segundo número: "
             ]
           ],
           [
@@ -53,7 +53,7 @@
           [
             "write",
             [
-              "Introduza o terceiro nÃºmero: "
+              "Introduza o terceiro número: "
             ]
           ],
           [
@@ -130,7 +130,7 @@
           [
             "writeln",
             [
-              "O maior Ã©: ",
+              "O maior é: ",
               "maior"
             ]
           ]

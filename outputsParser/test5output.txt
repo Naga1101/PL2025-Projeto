@@ -51,7 +51,7 @@
           [
             "writeln",
             [
-              "Introduza 5 nÃºmeros inteiros:"
+              "Introduza 5 números inteiros:"
             ]
           ],
           [
@@ -99,7 +99,7 @@
           [
             "writeln",
             [
-              "A soma dos nÃºmeros Ã©: ",
+              "A soma dos números é: ",
               "soma"
             ]
           ]
