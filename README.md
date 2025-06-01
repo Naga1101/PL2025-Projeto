@@ -5,19 +5,19 @@
 
 ## Análise Léxica
 
-A primeira etapa deste projeto foi identificar todos os tokens existentes na linguagem Pascal de forma a que ao forneceremos um ficheiro e código este seja analisado e convertido numa lista de tokens.
-Para tal foi necessário seguir uma organização na declaração estes padrões, pois quando um token pode ser apanhado por mais de um padrão, o que se encontra declarado será o que vai definir o token. Devido a esteproblema o padrão que apanha os identificadores ```r'\b[a-zA-Z_]{1}[a-zA-Z0-9_]*\b'``` teve de ser o último a ser definido pois este vai ao encontro de keywords pré existentes na lingaugem Pascal.
+A primeira etapa deste projeto foi identificar todos os tokens existentes na linguagem Pascal, de forma a que, ao fornecermos um ficheiro e código, este seja analisado e convertido numa lista de tokens.
+Para tal foi necessário seguir uma organização na declaração estes padrões, pois quando um token pode ser apanhado por mais do que um padrão, o que se encontra declarado será o que vai definir o token. Devido a este problema, o padrão que apanha os identificadores ```r'\b[a-zA-Z_]{1}[a-zA-Z0-9_]*\b'``` teve de ser o último a ser definido pois este vai ao encontro de keywords pré existentes na linguagem Pascal.
 O lexer que obtivemos encontra-se localizado no ficheio _lexer.py_.
 
 ## Análise Sintática
 
-Após a definição dos tokens, definimos as regras que a nossa gramática iria seguir. 
+Após a definição dos tokens, foi necessário definir as regras que a nossa gramática iria seguir. 
 
 ### Estrutura definida
-Começamos por definir uma estrutura principal com estes **tokens não terminais = {const_decls; func_decls; var_decl; begin_progr}** que consistem nos blocos existentes na liguagem pascal. Cada uma destas produções contêm uma lista de tokens não terminais que definem a parte de código correspondente(por exemplo: ```const_decls → CONST const_decl_list``` que irá identificar todas as constantes definidas pelo código). 
+Começamos por definir uma estrutura principal com os seguintes **tokens não terminais = {const_decls; func_decls; var_decl; begin_progr}** que consistem nos blocos existentes na liguagem pascal. Cada uma destas produções contém uma lista de tokens não terminais que definem a parte de código correspondente, por exemplo: ```const_decls → CONST const_decl_list```, que irá identificar todas as constantes definidas pelo código. 
 
 ### Statements definidos
-De forma a identificar o corpo principal da função definimos todos os tipos de statements que podem aparecer numa função pascal:
+De forma a identificar o corpo principal da função, definimos todos os tipos de statements que podem aparecer numa função pascal:
 
 
 ```
@@ -31,7 +31,7 @@ P18: statement → simple_statement ';'
 
 Os *simple_statement* correspondem a todas as linhas de código pascal que acabam com ';' e têm apenas 1 linha. 
 
-De seguida os *compound_statement* correspondem a uma lista de statements que se encontra entre um ```BEGIN ... END```, foi realizada uma decisão de dividir a chamada do *compound_statement* em duas produções diferentes sendo uma delas a ```P18: statement``` que ocorre quando o *compound_statement* se encontra dentro de uma função e o segundo caso na produção ```P15: begin_progr → compound_statement '.'``` que corresponde ao ```BEGIN ... END``` principal que acaba com um '.' para sinalizar o fim da função.
+Os *compound_statement* correspondem a uma lista de statements que se encontram entre um ```BEGIN ... END```. Foi realizada uma decisão de dividir a chamada do *compound_statement* em duas produções diferentes sendo uma delas a ```P18: statement``` que ocorre quando o *compound_statement* se encontra dentro de uma função, e o segundo caso, na produção ```P15: begin_progr → compound_statement '.'``` que corresponde ao ```BEGIN ... END``` principal que acaba com um '.' para sinalizar o fim da função.
 
 O *selection_statement* corresponde aos casos ```if ... then``` ou ```if ... then ... else```.
 
@@ -40,7 +40,7 @@ O *while_statement* e o *for_statement* correspondem aos loops existentes em pas
 Por fim o statement *COMMENT* corresponde ao token terminal correspondente aos comentários escritos pelo código.
 
 ### Gramática completa
-Por fim a gramática definida foi a seguinte:
+A gramática por nós definida foi a seguinte:
 
 ```
 P1: init → PROGRAM program_name
@@ -164,16 +164,15 @@ O parser que obtivemos encontra-se localizado no ficheio _parser.py_.
 
 ## Análise Semântica
 
-Na análise semântica
 A análise semântica foi realizada no ficheio _semantics.py_.
 
 ## Geração de Código
 
-Nesta etapa optamos por converter o código Passcal em código da máquina virtual seguindo uma tradução dirigida pela sintaxe
+Nesta etapa optamos por converter o código Pascal em código da máquina virtual seguindo uma tradução dirigida pela sintaxe
 
-Após ter o código verificado pela análise semântica, é realizada a conversão do mesmo para a linguagem VM, tentámos conseguir converter qualquer tipo de comando que encontrássemos mas acabamos por não definir *loops for* nem *arrays* em código da VM. Apesar destes serem reconhecidos pelo parser e lexer não é realizado nada com estes comandos na conversão semnântica. De resto qualquer coisa escrita em código pascal será convertida em código da VM **(loops while, operações lógicas, operações aritméticas, operações relacionais, operações if else, declaração de variáveis e definição de funções e chamadas de funções)**. 
+Após ter o código verificado pela análise semântica, é realizada a conversão do mesmo para a linguagem VM. Tentámos converter qualquer tipo de comando que encontrássemos mas acabamos por não definir *loops for* nem *arrays* em código da VM. Apesar destes serem reconhecidos pelo parser e lexer não é realizado nada com estes comandos na conversão semnântica. De resto qualquer coisa escrita em código pascal será convertida em código da VM **(loops while, operações lógicas, operações aritméticas, operações relacionais, operações if else, declaração de variáveis e definição de funções e chamadas de funções)**. 
 
-Também optamos por definir algums funções pré definidas em pascal tal como os dois tipos de *writes* e *reads* e a função *ord* e *length* ()
+Também optámos por definir algumas funções pré-definidas em pascal tal como os dois tipos de *writes* e *reads* e a função *ord* e *length* ()
 
 Exemplo de um teste (**teste 14***):
 
@@ -291,11 +290,11 @@ main:
 	STOP
 ```
 
-Tal como a análise semântica a geração de código foi realizada no ficheio _semantics.py_.
+Tal como a análise semântica, a geração de código foi realizada no ficheio _semantics.py_.
 
 ## Correr testes
 
-De forma a facilitar o processo de teste do programa foi realizado um script (_runTests.py_) que mostra os testes existentes e irá corre-los de forma a que o ficheiro Pascal chegue até ao ficheiro formato final, um output em formato txt com os comandos que podem ser corridos na máquina virtual.
+De forma a facilitar o processo de teste do programa foi realizado um script (_runTests.py_) que mostra os testes existentes e irá corrê-los de forma a que o ficheiro Pascal chegue até ao ficheiro formato final, um output em formato txt com os comandos que podem ser corridos na máquina virtual.
 
 Os ficheiros teste encontram-se na pasta _testes_ e os outputs encontram-se divididos por 3 pastas diferentes(_outputsParser_, _outputsLexer_ e _outputsSemantics_) com o nome do teste que estão a realizar.
 
