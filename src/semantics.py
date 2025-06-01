@@ -22,6 +22,7 @@ tipo_de_push = {
 free_fp = 0
 free_gp = 0
 if_counter = 1
+while_counter = 1
 
 tabela_simbolos_global = {}
 tabela_funcoes = {}
@@ -175,9 +176,15 @@ def process_write_item(item):
     return lines
 
 def handle_assign(var, value):  # passar o atributo que diz se é main ou func
-    global free_gp
-    my_gp = free_gp
-    free_gp += 1
+    my_gp = None
+    if(var in tabela_simbolos_global and tabela_simbolos_global[var]['gp'] != ''):
+        my_gp = tabela_simbolos_global[var]['gp']
+    else:
+        global free_gp
+        my_gp = free_gp
+        free_gp += 1
+        tabela_simbolos_global[var]['gp'] = my_gp
+    
 
     if value == 'true':
         value = 1
@@ -185,7 +192,6 @@ def handle_assign(var, value):  # passar o atributo que diz se é main ou func
         value = 0
     
     tabela_simbolos_global[var]['value'] = value
-    tabela_simbolos_global[var]['gp'] = my_gp
     
     expr_lines = evaluate_expression(value, var)
 
@@ -378,85 +384,143 @@ def handle_binop(input):
     type = type.lower()
     if op_type == '+':
         if update_value is not None: 
-            tabela_simbolos_global[update_value]['value'] = left_value + right_value
+            try:
+                tabela_simbolos_global[update_value]['value'] = left_value + right_value
+            except:
+                pass
         if type == 'integer': 
             lines.append('\tADD\n')
         elif type == 'float':
             lines.append('\tFADD\n')
     elif op_type == '-':
         if update_value is not None: 
-            tabela_simbolos_global[update_value]['value'] = left_value - right_value
+            try:
+                tabela_simbolos_global[update_value]['value'] = left_value - right_value
+            except:
+                pass
         if type == 'integer': 
             lines.append('\tSUB\n')
         elif type == 'float':
             lines.append('\tFSUB\n')
     elif op_type == '*':        
         if update_value is not None: 
-            tabela_simbolos_global[update_value]['value'] = left_value * right_value
+            try:
+                tabela_simbolos_global[update_value]['value'] = left_value * right_value
+            except:
+                pass
         if type == 'integer': 
             lines.append('\tMUL\n')
         elif type == 'float':
             lines.append('\tFMUL\n')
     elif op_type == 'div':        
         if update_value is not None: 
-            tabela_simbolos_global[update_value]['value'] = left_value / right_value
+            try:
+                tabela_simbolos_global[update_value]['value'] = left_value / right_value
+            except:
+                pass
         if type == 'integer': 
             lines.append('\tDIV\n')
         elif type == 'float':
             lines.append('\tFDIV\n')
     elif op_type == 'mod':        
         if update_value is not None: 
-            tabela_simbolos_global[update_value]['value'] = left_value % right_value
+            try:
+                tabela_simbolos_global[update_value]['value'] = left_value % right_value
+            except:
+                pass
         lines.append('\tMOD\n')
     elif op_type == 'and':
         if update_value is not None: 
-            tabela_simbolos_global[update_value]['value'] = left_value and right_value
+            try:
+                tabela_simbolos_global[update_value]['value'] = left_value and right_value
+            except:
+                pass
         lines.append('\tAND\n')
     elif op_type == 'or':
         if update_value is not None: 
-            tabela_simbolos_global[update_value]['value'] = left_value or right_value
+            try:
+                tabela_simbolos_global[update_value]['value'] = left_value or right_value
+            except:
+                pass
         lines.append('\tOR\n')
     elif op_type == '>':
         if update_value is not None: 
-            tabela_simbolos_global[update_value]['value'] = left_value > right_value
+            try:
+                tabela_simbolos_global[update_value]['value'] = left_value > right_value
+            except:
+                pass
         if type == 'integer':
             lines.append('\tSUP\n')
         elif type == 'float':
             lines.append('\tFSUP\n')
     elif op_type == '<':
         if update_value is not None: 
-            tabela_simbolos_global[update_value]['value'] = left_value < right_value
+            try:
+                tabela_simbolos_global[update_value]['value'] = left_value < right_value
+            except:
+                pass
         if type == 'integer':
             lines.append('\tINF\n')
         elif type == 'float':
             lines.append('\tFINF\n')
     elif op_type == '>=':
         if update_value is not None: 
-            tabela_simbolos_global[update_value]['value'] = left_value >= right_value
+            try:
+                tabela_simbolos_global[update_value]['value'] = left_value >= right_value
+            except:
+                pass
         if type == 'integer':
             lines.append('\tSUPEQ\n')
         elif type == 'float':
             lines.append('\tFSUPEQ\n')
     elif op_type == '<=':
         if update_value is not None: 
-            tabela_simbolos_global[update_value]['value'] = left_value <= right_value
+            try:
+                tabela_simbolos_global[update_value]['value'] = left_value <= right_value
+            except:
+                pass
         if type == 'integer':
             lines.append('\tINFEQ\n')
         elif type == 'float':
             lines.append('\tFINFEQ\n')
     elif op_type == '=':
         if update_value is not None: 
-            tabela_simbolos_global[update_value]['value'] = left_value == right_value
+            try:
+                tabela_simbolos_global[update_value]['value'] = left_value == right_value
+            except:
+                pass
         lines.append('\tEQUAL\n')
     elif op_type == '<>':
         if update_value is not None: 
-            tabela_simbolos_global[update_value]['value'] = left_value != right_value
+            try:
+                tabela_simbolos_global[update_value]['value'] = left_value != right_value
+            except:
+                pass
         lines.append('\tEQUAL')
         lines.append('\tNOT\n')
     else:
         return f"; Unsupported operation: {op_type}"
 
     print_tables()
+    return lines
+
+def handle_while(while_input):
+    global while_counter
+    lines =[f'\t// While loop: {while_input}']
+    _condition = while_input['condition']
+    _body = while_input['body']
+
+    lines.append(f'\tlabelWhileBegin{while_counter}:')
+    lines_condition = evaluate_expression(_condition)
+    lines += lines_condition
+    lines.append(f'\tJZ labelWhileEnd{while_counter}')
+    lines_body = evaluate_expression(_body)
+    lines += lines_body
+    lines.append(f'\tJUMP labelWhileBegin{while_counter}')
+    lines.append(f'\tlabelWhileEnd{while_counter}:')
+
+    while_counter += 1
+    
     return lines
 
 # TODO assumir que ord vai ser sempre um char ou uma var
@@ -599,6 +663,14 @@ def handle_for(input):
   print(data)
   return []
     
+def handle_compound(compound_input):
+    lines =[f'\t// Compound statement(lista de comandos dentro de um begin ... end)']
+    for input in compound_input:
+        new_lines = evaluate_expression(input)
+        for line in new_lines:
+            lines.append(line)
+    return lines
+
 instruction_handlers = {
     'writeln': handle_writeln,
     'write': handle_write,
@@ -614,12 +686,17 @@ instruction_handlers = {
     'Function_call': handle_function_call,
     'if': handle_if,
     'for': handle_for,
-    # Add other instruction types here
+    'while': handle_while,
+    'compound': handle_compound,
 }
 
 def evaluate_expression(expr, isAssign=None, isFunc=None):
     if isinstance(expr, tuple):
         instr_type = expr[0]
+        if(isAssign is None and instr_type == 'assign'):
+           var = expr[1]
+           value = expr[2]
+           return handle_assign(var, value)
         args = expr[1:]
         if(isAssign is not None and instr_type in ['binop', 'ord']):
             args = (*args, isAssign)
@@ -629,7 +706,7 @@ def evaluate_expression(expr, isAssign=None, isFunc=None):
             args = args[0]
         handler = instruction_handlers.get(instr_type)
         print(len(expr[1:]))
-        return handler(args) if handler else [f"// Unsupported expression: {instr_type}"]
+        return handler(args) if handler else [f"\t// Unsupported expression: {instr_type}"]
 
     if(isinstance(expr, list)):
         instr_type = expr[0]
@@ -639,7 +716,7 @@ def evaluate_expression(expr, isAssign=None, isFunc=None):
         if(isFunc is not None and instr_type in ['binop', 'ord']):
             args = (args, isFunc)
         handler = instruction_handlers.get(instr_type)
-        return handler(args) if handler else [f"// Unsupported expression: {instr_type}"]
+        return handler(args) if handler else [f"\t// Unsupported expression: {instr_type}"]
     
     if isinstance(expr, str) and expr in tabela_simbolos_global:
         var_info = tabela_simbolos_global[expr]
@@ -785,110 +862,6 @@ data1 = """
 ('program', {'program_name': 'Maior3', 'program_body': {'var_declaration': ('var_decl_lines', [(('vars', ['num1', 'num2', 'num3', 'maior']), ('type', 'Integer')), (('vars', ['bol1', 'bol2']), ('type', 'Boolean'))]), 'program_code': ('compound', [('writeln', 'Ola, Mundo!'),('writeln', 'Adeus, Mundo!')])}})
 """
 
-data5 = """
-[
-  "program",
-  {
-    "program_name": "TesteBinopsComplexos",
-    "program_body": {
-      "program_code": [
-        "compound",
-        [
-          [
-            "writeln",
-            [
-              [
-                "binop",
-                {
-                  "type": "*",
-                  "left": [
-                    "binop",
-                    {
-                      "type": "+",
-                      "left": 5,
-                      "right": 2
-                    }
-                  ],
-                  "right": [
-                    "binop",
-                    {
-                      "type": "-",
-                      "left": 10,
-                      "right": 4
-                    }
-                  ]
-                }
-              ]
-            ]
-          ],
-          [
-            "writeln",
-            [
-              [
-                "binop",
-                {
-                  "type": ">",
-                  "left": [
-                    "binop",
-                    {
-                      "type": "+",
-                      "left": 3,
-                      "right": 3
-                    }
-                  ],
-                  "right": [
-                    "binop",
-                    {
-                      "type": "*",
-                      "left": 2,
-                      "right": 2
-                    }
-                  ]
-                }
-              ]
-            ]
-          ],
-          [
-            "writeln",
-            [
-              [
-                "binop",
-                {
-                  "type": "and",
-                  "left": [
-                    "binop",
-                    {
-                      "type": "=",
-                      "left": [
-                        "binop",
-                        {
-                          "type": "mod",
-                          "left": 10,
-                          "right": 4
-                        }
-                      ],
-                      "right": 2
-                    }
-                  ],
-                  "right": [
-                    "binop",
-                    {
-                      "type": "<",
-                      "left": 5,
-                      "right": 10
-                    }
-                  ]
-                }
-              ]
-            ]
-          ]
-        ]
-      ]
-    }
-  }
-]
-"""
-
 data6 = """
 ('program', {'program_name': 'Maior3', 'program_body': {'var_declaration': ('var_decl_lines', [(('vars', ['num1', 'num2', 'num3', 'maior']), ('type', 'Integer')), (('vars', ['bol1', 'bol2']), ('type', 'Boolean'))]), 'program_code': ('compound', [('assign', 'num2', 7), ('assign', 'num1', ('binop', {'type': '+', 'left': 5, 'right': 'num2'})), ('write', ('binop', {'type': '+', 'left': 'num1', 'right': 'num2'}))])}})
 """
@@ -942,8 +915,7 @@ def runSemantics(input, outputFileName):
         print("Erro na criação do ficheiro ", outputFileName)
 
 def main():
-    ast_tree = ast.literal_eval(data5)
-    #ast_tree = ast.literal_eval(data10)
+    ast_tree = ast.literal_eval(data10)
 
     _, program_data = ast_tree
     body = program_data["program_body"]

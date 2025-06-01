@@ -12,19 +12,72 @@ dobro:
 main:
 	START
 
-	// writeln
-	// Call da dobro com os parametros [5]
-	PUSHI 5
+	// write
+	PUSHS "Introduza um número menor que 10: "
+	WRITES
+	// readln
+	READ
+	ATOI
+	STOREL 0
+	WRITELN
+
+	// assign 1 to counter
+	PUSHI 1
+	STOREL 1
+
+	// While loop: {'condition': ('binop', {'type': '<', 'left': 'valor', 'right': 10}), 'body': ('compound', [('assign', 'valor', ('Function_call', {'name': 'Dobro', 'args': ['valor']})), ('writeln', ['O ciclo ', 'counter', ' têm o valor: ', 'valor']), ('if', {'case': ('binop', {'type': '<', 'left': 'valor', 'right': 10}), 'do': ('assign', 'counter', ('binop', {'type': '+', 'left': 'counter', 'right': 1}))})])}
+	labelWhileBegin5:
+	// binop <
+	PUSHL 0
+	PUSHI 10
+	INF
+
+	JZ labelWhileEnd5
+	// Compound statement(lista de comandos dentro de um begin ... end)
+	// assign ('Function_call', {'name': 'Dobro', 'args': ['valor']}) to valor
+	// Call da dobro com os parametros ['valor']
+	PUSHL 0
 	PUSHA dobro
 	CALL
+	STOREL 0
+
+	// writeln
+	PUSHS "O ciclo "
+	WRITES
+	PUSHL 1
+	WRITEI
+	PUSHS " têm o valor: "
+	WRITES
+	PUSHL 0
 	WRITEI
 	WRITELN
 
-	// writeln
-	// Call da dobro com os parametros [10]
+	// If case: {'case': ('binop', {'type': '<', 'left': 'valor', 'right': 10}), 'do': ('assign', 'counter', ('binop', {'type': '+', 'left': 'counter', 'right': 1}))}
+	// binop <
+	PUSHL 0
 	PUSHI 10
-	PUSHA dobro
-	CALL
+	INF
+
+	JZ labelEndIF1
+	// assign ('binop', {'type': '+', 'left': 'counter', 'right': 1}) to counter
+	// binop +
+	PUSHL 1
+	PUSHI 1
+	ADD
+
+	STOREL 1
+
+	labelEndIF1:
+	JUMP labelWhileBegin5
+	labelWhileEnd5:
+	// writeln
+	PUSHS "Foram preciso "
+	WRITES
+	PUSHL 1
+	WRITEI
+	PUSHS " ciclos e o valor final foi "
+	WRITES
+	PUSHL 0
 	WRITEI
 	WRITELN
 

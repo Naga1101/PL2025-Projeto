@@ -170,9 +170,135 @@ A análise semântica foi realizada no ficheio _semantics.py_.
 ## Geração de Código
 
 Nesta etapa optamos por converter o código Passcal em código da máquina virtual seguindo uma tradução dirigida pela sintaxe
+
+Após ter o código verificado pela análise semântica, é realizada a conversão do mesmo para a linguagem VM, tentámos conseguir converter qualquer tipo de comando que encontrássemos mas acabamos por não definir *loops for* nem *arrays* em código da VM. Apesar destes serem reconhecidos pelo parser e lexer não é realizado nada com estes comandos na conversão semnântica. De resto qualquer coisa escrita em código pascal será convertida em código da VM **(loops while, operações lógicas, operações aritméticas, operações relacionais, operações if else, declaração de variáveis e definição de funções e chamadas de funções)**. 
+
+Também optamos por definir algums funções pré definidas em pascal tal como os dois tipos de *writes* e *reads* e a função *ord* e *length* ()
+
+Exemplo de um teste (**teste 14***):
+
+Pascal *teste14.pp*
+```
+program TesteFuncao;
+
+function Dobro(x: integer): integer;
+begin
+    Dobro := x * 2;
+end;
+
+var
+    valor, counter: Integer;
+begin
+    Write('Introduza um número menor que 10: ');
+    ReadLn(valor);
+    counter := 1;
+    while valor < 10 do
+    begin
+        valor := Dobro(valor);
+        writeln('O ciclo ', counter, ' têm o valor: ', valor);
+        if valor < 10 then
+            counter := counter + 1;
+    end;
+    writeln('Foram preciso ', counter, ' ciclos e o valor final foi ', valor);
+end.
+```
+
+Conversão em código da VM
+```
+JUMP main
+
+dobro:
+	// binop *
+	PUSHL -1
+	PUSHI 2
+	MUL
+
+	RETURN
+
+
+main:
+	START
+
+	// write
+	PUSHS "Introduza um número menor que 10: "
+	WRITES
+	// readln
+	READ
+	ATOI
+	STOREL 0
+	WRITELN
+
+	// assign 1 to counter
+	PUSHI 1
+	STOREL 1
+
+	// While loop: {'condition': ('binop', {'type': '<', 'left': 'valor', 'right': 10}), 'body': ('compound', [('assign', 'valor', ('Function_call', {'name': 'Dobro', 'args': ['valor']})), ('writeln', ['O ciclo ', 'counter', ' têm o valor: ', 'valor']), ('if', {'case': ('binop', {'type': '<', 'left': 'valor', 'right': 10}), 'do': ('assign', 'counter', ('binop', {'type': '+', 'left': 'counter', 'right': 1}))})])}
+	labelWhileBegin4:
+	// binop <
+	PUSHL 0
+	PUSHI 10
+	INF
+
+	JZ labelWhileEnd4
+	// Compound statement(lista de comandos dentro de um begin ... end)
+	// assign ('Function_call', {'name': 'Dobro', 'args': ['valor']}) to valor
+	// Call da dobro com os parametros ['valor']
+	PUSHL 0
+	PUSHA dobro
+	CALL
+	STOREL 0
+
+	// writeln
+	PUSHS "O ciclo "
+	WRITES
+	PUSHL 1
+	WRITEI
+	PUSHS " têm o valor: "
+	WRITES
+	PUSHL 0
+	WRITEI
+	WRITELN
+
+	// If case: {'case': ('binop', {'type': '<', 'left': 'valor', 'right': 10}), 'do': ('assign', 'counter', ('binop', {'type': '+', 'left': 'counter', 'right': 1}))}
+	// binop <
+	PUSHL 0
+	PUSHI 10
+	INF
+
+	JZ labelEndIF1
+	// assign ('binop', {'type': '+', 'left': 'counter', 'right': 1}) to counter
+	// binop +
+	PUSHL 1
+	PUSHI 1
+	ADD
+
+	STOREL 1
+
+	labelEndIF1:
+	JUMP labelWhileBegin4
+	labelWhileEnd4:
+	// writeln
+	PUSHS "Foram preciso "
+	WRITES
+	PUSHL 1
+	WRITEI
+	PUSHS " ciclos e o valor final foi "
+	WRITES
+	PUSHL 0
+	WRITEI
+	WRITELN
+
+	STOP
+```
+
 Tal como a análise semântica a geração de código foi realizada no ficheio _semantics.py_.
 
 ## Correr testes
 
 De forma a facilitar o processo de teste do programa foi realizado um script (_runTests.py_) que mostra os testes existentes e irá corre-los de forma a que o ficheiro Pascal chegue até ao ficheiro formato final, um output em formato txt com os comandos que podem ser corridos na máquina virtual.
+
 Os ficheiros teste encontram-se na pasta _testes_ e os outputs encontram-se divididos por 3 pastas diferentes(_outputsParser_, _outputsLexer_ e _outputsSemantics_) com o nome do teste que estão a realizar.
+
+Todos os testes produzem 3 outputs, a conversão em tokens, a conversão na *tree ast* realizada pelo ply.yacc e por fim  o output esperado para colocar na VM disponibilizada pelos docentes. 
+
+**Obs:** Existem casos em que o código gerado não é o correto pois, tal como mencionado anteriormente, não foram implementadas todas as conversões dos comandos para código máquina.
