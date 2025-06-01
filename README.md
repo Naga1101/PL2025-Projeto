@@ -207,10 +207,10 @@ O parser que obtivemos encontra-se localizado no ficheio _parser.py_.
 
 Na análise semântica começamos por definir duas tabelas:
 
-- Tabela de Símbolos Global: Esta tabela serve para a função ter sempre conhecimeto das variáveis declardas, do seu tipo(int, string, etc) do seu poiter global na stack e do seu tipo na função pascal(constante, variável ou função);
-- Tabela de Fuções: Esta tabela guarda o nome da função, o tipo a que dá return (int, string, etc) e os parâmetros que recebe (lista de parâmteros com o nome deles, o frame point do parâmetro e o tipo do parâmetro).
+- Tabela de Símbolos Global: Esta tabela serve para a função ter sempre conhecimento das variáveis declaradas, do seu tipo(int, string, etc), do seu pointer global na stack e do seu tipo na função pascal(constante, variável ou função);
+- Tabela de Funções: Esta tabela guarda o nome da função, o tipo a que esta dá return (int, string, etc) e os parâmetros que recebe (lista de parâmetros com o seu nome, frame point e o tipo).
 
-Com estas duas tabelas podemos referenciar qulquer tipo de variável ou chamar qualquer tipo de função que iremos ter sempre o conhecimento do seu tipo, de onde se encontra o seu valor na stack e conseguimos evitar a atribuição de valores com o tipo errado a uma variável. Também nos permite chamar corretamente uma função, com o número de parâmetros corretos e a devolver o valor esperado. 
+Com estas duas tabelas podemos referenciar qulquer tipo de variável ou chamar qualquer tipo de função que teremos sempre o conhecimento do seu tipo, de onde se encontra o seu valor na stack e conseguimos evitar a atribuição de valores com o tipo errado a uma variável. Também nos permite chamar corretamente uma função, com o número de parâmetros corretos e a devolver o valor esperado. 
 
 A análise semântica foi realizada no ficheio _semantics.py_.
 
@@ -218,7 +218,7 @@ A análise semântica foi realizada no ficheio _semantics.py_.
 
 Nesta etapa optamos por converter o código Passcal em código da máquina virtual seguindo uma tradução dirigida pela sintaxe.
 
-Após ter o código verificado pela análise semântica, é realizada a conversão do mesmo para a linguagem VM, tentámos conseguir converter qualquer tipo de comando que encontrássemos mas acabamos por não definir *loops for* nem *arrays* em código da VM. 
+Após ter o código verificado pela análise semântica, é realizada a conversão do mesmo para a linguagem VM, tentámos converter qualquer tipo de comando que encontrássemos mas acabamos por não definir *loops for* nem *arrays* em código da VM. 
 
 Apesar destes serem reconhecidos pelo parser e lexer não é realizado nada com estes comandos na conversão semântica. De resto qualquer coisa escrita em código pascal será convertida em código da VM **(loops while, operações lógicas, operações aritméticas, operações relacionais, operações if else, declaração de variáveis e definição de funções e chamadas de funções)**. 
 
