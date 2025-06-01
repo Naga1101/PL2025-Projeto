@@ -2,6 +2,7 @@
 
 ## Introdução
 
+Este relatório descreve o processo de desenvolvimento de um compilador para a linguagem Pascal, proposto no âmbito da unidade curricular de Processamento de Linguagens (2024/2025). Irão ser descritas em detalhe as principais fases do projeto: **análise léxica**, **análise sintática**, **análise semântica** e **geração de código** para máquina virtual (VM) fornecida pela equipa docente. A implementação foi feita com recurso aos módulos ``lex`` e ``yacc`` da linguagem python.
 
 ## Análise Léxica
 
