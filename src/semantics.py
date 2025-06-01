@@ -630,32 +630,29 @@ def handle_return(func_name, return_input):
 
 def handle_if(if_input):
     global if_counter
-    lines =[f'\t// If case: {if_input}']
+    current_block_if_id = if_counter
+    if_counter += 1
+    lines = [f'\t// If case: {if_input}']
     _case = if_input['case']
     _do = if_input['do']
     _else = None
     if(len(if_input) > 2):
-      _else = if_input['else']
-
+        _else = if_input['else']
     lines_case = evaluate_expression(_case)
     lines += lines_case
-
-    lines_do = evaluate_expression(_do)
-    if _else is not None:  
-      lines.append(f'\tJZ labelElse{if_counter}')
+    lines_do = evaluate_expression(_do) 
+    if _else is not None:
+      lines.append(f'\tJZ labelElse{current_block_if_id}')
       lines += lines_do
-      lines.append(f'\tJUMP labelEndIF{if_counter}')
-      lines.append(f'\tlabelElse{if_counter}:')
+      lines.append(f'\tJUMP labelEndIF{current_block_if_id}')
+      lines.append(f'\tlabelElse{current_block_if_id}:')
       lines_else = evaluate_expression(_else)
-      lines += lines_else 
-      lines.append(f'\tlabelEndIF{if_counter}:')
+      lines += lines_else
+      lines.append(f'\tlabelEndIF{current_block_if_id}:')
     else:
-      lines.append(f'\tJZ labelEndIF{if_counter}')
+      lines.append(f'\tJZ labelEndIF{current_block_if_id}')
       lines += lines_do
-      lines.append(f'\tlabelEndIF{if_counter}:')
-
-    if_counter += 1
-    print(lines)
+      lines.append(f'\tlabelEndIF{current_block_if_id}:')
     return lines
 
 def handle_for(for_input):
@@ -679,7 +676,7 @@ def handle_for(for_input):
         end = tabela_simbolos_global[for_input['end']]['gp'] 
         lines.append(f'\tPUSHL {end}')
     else:
-        lines.append(f'\tPUSHI {for_input['end']}')
+        lines.append(f"\tPUSHI {for_input['end']}")
     lines.append(f'\t{condition}')
 
     lines.append(f'\tJZ labelForBody{for_counter}')
