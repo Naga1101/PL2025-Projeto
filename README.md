@@ -2,6 +2,7 @@
 
 ## Introdução
 
+Este relatório descreve o processo de desenvolvimento de um compilador para a linguagem Pascal, proposto no âmbito da unidade curricular de Processamento de Linguagens (2024/2025). Irão ser descritas em detalhe as principais fases do projeto: **análise léxica**, **análise sintática**, **análise semântica** e **geração de código** para máquina virtual (VM) fornecida pela equipa docente. A implementação foi feita com recurso aos módulos ``lex`` e ``yacc`` da linguagem python.
 
 ## Análise Léxica
 
@@ -47,7 +48,7 @@ PROGRAM(program) at line 1, position 5
 ID(funcaoTeste) at line 1, position 13
 ```
 
-O lexer que obtivemos encontra-se localizado no ficheio _lexer.py_.
+O lexer que obtivemos encontra-se localizado no ficheiro _lexer.py_.
 
 ## Análise Sintática
 
@@ -201,7 +202,7 @@ P26: expression_list → expression
                      | expression_list ',' expression
 ```
 
-O parser que obtivemos encontra-se localizado no ficheio _parser.py_.
+O parser que obtivemos encontra-se localizado no ficheiro _parser.py_.
 
 ## Análise Semântica
 
@@ -212,7 +213,7 @@ Na análise semântica começamos por definir duas tabelas:
 
 Com estas duas tabelas podemos referenciar qualquer tipo de variável ou chamar qualquer tipo de função que teremos sempre o conhecimento do seu tipo, de onde se encontra o seu valor na stack e conseguimos evitar a atribuição de valores com o tipo errado a uma variável. Também nos permite chamar corretamente uma função, com o número de parâmetros corretos e a devolver o valor esperado. 
 
-A análise semântica foi realizada no ficheio _semantics.py_.
+A análise semântica foi realizada no ficheiro _semantics.py_.
 
 ## Geração de Código
 
@@ -343,7 +344,7 @@ main:
 	STOP
 ```
 
-Tal como a análise semântica, a geração de código foi realizada no ficheio _semantics.py_.
+Tal como a análise semântica, a geração de código foi realizada no ficheiro _semantics.py_.
 
 ## Correr testes
 
