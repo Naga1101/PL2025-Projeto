@@ -79,35 +79,34 @@ def handle_write(output):
 
 def handle_readln(var_name):
     global free_gp
-
-    if tabela_simbolos_global[var_name].get('gp', '') == '':
-        tabela_simbolos_global[var_name]['gp'] = free_gp
+    if tabela_simbolos_global[var_name].get("gp", "") == "":
+        tabela_simbolos_global[var_name]["gp"] = free_gp
         free_gp += 1
-
-    gp = tabela_simbolos_global[var_name]['gp']
-    lines = [
-        '\t// readln',
-        f'\tPUSHL {gp}',
-        '\tREADI',
-        '\tREADLN',
-        f'\tSTOREL {gp}\n'
-    ]
+    gp = tabela_simbolos_global[var_name]["gp"]
+    var_type = tabela_simbolos_global[var_name]["type"]
+    lines = ["\t// readln", "\tREAD"]
+    if var_type in ("integer", "boolean"):
+        lines.append("\tATOI")
+    elif var_type == "float":
+        lines.append("\tATOF")
+    lines.append(f"\tSTOREL {gp}")
+    lines.append("\tWRITELN\n")
     return lines
+
 
 def handle_read(var_name):
     global free_gp
-
-    if tabela_simbolos_global[var_name].get('gp', '') == '':
-        tabela_simbolos_global[var_name]['gp'] = free_gp
+    if tabela_simbolos_global[var_name].get("gp", "") == "":
+        tabela_simbolos_global[var_name]["gp"] = free_gp
         free_gp += 1
-
-    gp = tabela_simbolos_global[var_name]['gp']
-    lines = [
-        '\t// read',
-        f'\tPUSHL {gp}',
-        '\tREADI',
-        f'\tSTOREL {gp}\n'
-    ]
+    gp = tabela_simbolos_global[var_name]["gp"]
+    var_type = tabela_simbolos_global[var_name]["type"]
+    lines = ["\t// read", "\tREAD"]
+    if var_type in ("integer", "boolean"):
+        lines.append("\tATOI")
+    elif var_type == "float":
+        lines.append("\tATOF")
+    lines.append(f"\tSTOREL {gp}\n")
     return lines
 
 def process_write_item(item):
@@ -486,59 +485,58 @@ def handle_ord(ord_input):
     # print_tables()
     return lines
 
-def handle_pred(pred_input):
+def handle_pred(val):
     lines = ['\t// pred']
-    input_value = None
-    update_value = None
-    if isinstance(pred_input, tuple):
-        input_value, update_value = pred_input
-        if isinstance(input_value, str) and input_value in tabela_simbolos_global:
-            input_value = tabela_simbolos_global[input_value]['value']
-    else:
-        input_value = pred_input
-        if isinstance(pred_input, str) and pred_input in tabela_simbolos_global:
-            input_value = tabela_simbolos_global[pred_input]['value']
-    output = input_value - 1
-    if update_value is not None and update_value in tabela_simbolos_global:
-        tabela_simbolos_global[update_value]['value'] = output
-    lines.append(f'\tPUSHI {output}')
+    if isinstance(val, int):
+        lines.append(f'\tPUSHI {val - 1}')
+        return lines
+    if isinstance(val, str) and len(val) == 1 and val not in tabela_simbolos_global:
+        lines.append(f'\tPUSHS "{chr(ord(val) - 1)}"')
+        return lines
+    lines += evaluate_expression(val)
+    lines.append('\tPUSHI 1')
+    lines.append('\tSUB')
     return lines
 
-def handle_succ(succ_input):
+
+def handle_succ(val):
     lines = ['\t// succ']
-    input_value = None
-    update_value = None
-    if isinstance(succ_input, tuple):
-        input_value, update_value = succ_input
-        if isinstance(input_value, str) and input_value in tabela_simbolos_global:
-            input_value = tabela_simbolos_global[input_value]['value']
-    else:
-        input_value = succ_input
-        if isinstance(succ_input, str) and succ_input in tabela_simbolos_global:
-            input_value = tabela_simbolos_global[succ_input]['value']
-    output = input_value + 1
-    if update_value is not None and update_value in tabela_simbolos_global:
-        tabela_simbolos_global[update_value]['value'] = output
-    lines.append(f'\tPUSHI {output}')
+    if isinstance(val, int):
+        lines.append(f'\tPUSHI {val + 1}')
+        return lines
+    if isinstance(val, str) and len(val) == 1 and val not in tabela_simbolos_global:
+        lines.append(f'\tPUSHS "{chr(ord(val) + 1)}"')
+        return lines
+    lines += evaluate_expression(val)
+    lines.append('\tPUSHI 1')
+    lines.append('\tADD')
     return lines
 
-def handle_length(length_input):
-    lines = ['\t// length']
-    if isinstance(length_input, tuple) and length_input[0] == 'array':
-        array_name = length_input[1]['name']
+def handle_length(val):
+    lines = ["\t// length"]
+    if (
+        isinstance(val, str)
+        and val in tabela_simbolos_global
+        and tabela_simbolos_global[val]["type"] == "string"
+    ):
+        global free_gp
+        if tabela_simbolos_global[val]["gp"] == "":
+            tabela_simbolos_global[val]["gp"] = free_gp
+            free_gp += 1
+        gp = tabela_simbolos_global[val]["gp"]
+        lines.append(f"\tPUSHL {gp}")
+        lines.append("\tSTRLEN")
+    elif isinstance(val, str):
+        lines.append(f"\tPUSHI {len(val)}")
+    elif isinstance(val, tuple) and val[0] == "array":
+        low = val[1]["low"]
+        high = val[1]["high"]
+        lines.append(f"\tPUSHI {high - low + 1}")
     else:
-        array_name = length_input
-
-    type_info = tabela_simbolos_global[array_name]['type']
-    if isinstance(type_info, tuple) and type_info[0] == 'array':
-        low  = type_info[1]['low']
-        high = type_info[1]['high']
-        size = high - low + 1
-    else:
-        size = 0
-
-    lines.append(f'\tPUSHI {size}')
+        lines += evaluate_expression(val)
+        lines.append("\tSTRLEN")
     return lines
+
 
 def handle_function_call(input):
     func_name = input["name"].lower()
