@@ -676,7 +676,7 @@ def handle_for(for_input):
         end = tabela_simbolos_global[for_input['end']]['gp'] 
         lines.append(f'\tPUSHL {end}')
     else:
-        lines.append(f'\tPUSHI {for_input['end']}')
+        lines.append(f"\tPUSHI {for_input['end']}")
     lines.append(f'\t{condition}')
 
     lines.append(f'\tJZ labelForBody{for_counter}')
