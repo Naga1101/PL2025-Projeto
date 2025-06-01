@@ -387,6 +387,7 @@ def t_error(t):
 
 lexer = lex.lex()
 
+r'''
 def main():
     data = """
     program funcaoTeste
@@ -414,3 +415,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+'''

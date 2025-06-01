@@ -343,7 +343,7 @@ def handle_binop(input):
         if right_push is None or type == 'boolean':
             if type == 'boolean':
                 type = 'integer'
-                
+
             if isinstance(right_operand, int):  
                 right_push = right_operand
                 right_type = tipo_de_push['integer']
@@ -892,26 +892,6 @@ def read_code(func_instructions, main_instructions, output_file):
 
 ################################################################
 
-data1 = """
-('program', {'program_name': 'Maior3', 'program_body': {'var_declaration': ('var_decl_lines', [(('vars', ['num1', 'num2', 'num3', 'maior']), ('type', 'Integer')), (('vars', ['bol1', 'bol2']), ('type', 'Boolean'))]), 'program_code': ('compound', [('writeln', 'Ola, Mundo!'),('writeln', 'Adeus, Mundo!')])}})
-"""
-
-data6 = """
-('program', {'program_name': 'Maior3', 'program_body': {'var_declaration': ('var_decl_lines', [(('vars', ['num1', 'num2', 'num3', 'maior']), ('type', 'Integer')), (('vars', ['bol1', 'bol2']), ('type', 'Boolean'))]), 'program_code': ('compound', [('assign', 'num2', 7), ('assign', 'num1', ('binop', {'type': '+', 'left': 5, 'right': 'num2'})), ('write', ('binop', {'type': '+', 'left': 'num1', 'right': 'num2'}))])}})
-"""
-
-data7 = """
-('program', {'program_name': 'OrdCharExample', 'program_body': {'var_declaration': ('var_decl_lines', [(('vars', ['ch']), ('type', 'string')), (('vars', ['code']), ('type', 'integer'))]), 'program_code': ('compound', [('assign', 'ch', 'A'), ('assign', 'code', ('ord', 'ch')), ('write', ['The ASCII code of ', 'ch', ' is ', 'code'])])}})
-"""
-
-data8 = """
-('program', {'program_name': 'SumExample', 'program_body': {'functions': [('function', {'name': 'Add', 'parameters': [(('vars', ['a']), ('type', 'integer')), (('vars', ['b']), ('type', 'integer'))], 'return_type': 'integer', 'body': ('compound', [('assign', 'Add', ('binop', {'type': '+', 'left': 'a', 'right': 'b'}))])})], 'var_declaration': ('var_decl_lines', [(('vars', ['num1', 'num2', 'result']), ('type', 'integer'))]), 'program_code': ('compound', [('assign', 'num1', 5), ('assign', 'num2', 3), ('assign', 'result', ('Function_call', {'name': 'Add', 'args': ['num1', 'num2']})), ('writeln', ['result'])])}})
-"""
-
-data10 = """
-('program', {'program_name': 'TesteBinOp', 'program_body': {'var_declaration': ('var_decl_lines', [(('vars', ['soma', 'sub', 'mult', 'divi']), ('type', 'integer')), (('vars', ['somaFloat', 'subFloat', 'multFloat', 'diviFloat']), ('type', 'float')), (('vars', ['igual', 'diferente', 'menor', 'maior', 'menorIgual', 'maiorIgual']), ('type', 'boolean')), (('vars', ['conjuncao', 'disjuncao']), ('type', 'boolean'))]), 'program_code': ('compound', [('assign', 'somaFloat', ('binop', {'type': '+', 'left': 10, 'right': 2.3})), ('assign', 'subFloat', ('binop', {'type': '-', 'left': 23, 'right': 'somaFloat'})), ('assign', 'multFloat', ('binop', {'type': '*', 'left': 3, 'right': 7.6})), ('assign', 'diviFloat', ('binop', {'type': '/', 'left': 2.754, 'right': 3.5})), ('assign', 'igual', ('binop', {'type': '=', 'left': 12, 'right': 21})), ('assign', 'diferente', ('binop', {'type': '<>', 'left': 32, 'right': 2})), ('assign', 'menor', ('binop', {'type': '<', 'left': 90, 'right': 110})), ('assign', 'maior', ('binop', {'type': '>', 'left': 1, 'right': 0})), ('assign', 'menorIgual', ('binop', {'type': '<=', 'left': 0.0, 'right': 0.0})), ('assign', 'maiorIgual', ('binop', {'type': '>=', 'left': 12, 'right': 9})), ('assign', 'conjuncao', ('binop', {'type': 'and', 'left': 0, 'right': 1})), ('assign', 'disjuncao', ('binop', {'type': 'or', 'left': 0, 'right': 1}))])}})
-"""
-
 def runSemantics(input, outputFileName):
     try:
         ast_tree = input
@@ -948,6 +928,15 @@ def runSemantics(input, outputFileName):
         print(e)
         print("Erro na criação do ficheiro ", outputFileName)
 
+r'''
+data1 = """
+('program', {'program_name': 'Maior3', 'program_body': {'var_declaration': ('var_decl_lines', [(('vars', ['num1', 'num2', 'num3', 'maior']), ('type', 'Integer')), (('vars', ['bol1', 'bol2']), ('type', 'Boolean'))]), 'program_code': ('compound', [('writeln', 'Ola, Mundo!'),('writeln', 'Adeus, Mundo!')])}})
+"""
+
+data10 = """
+('program', {'program_name': 'TesteBinOp', 'program_body': {'var_declaration': ('var_decl_lines', [(('vars', ['soma', 'sub', 'mult', 'divi']), ('type', 'integer')), (('vars', ['somaFloat', 'subFloat', 'multFloat', 'diviFloat']), ('type', 'float')), (('vars', ['igual', 'diferente', 'menor', 'maior', 'menorIgual', 'maiorIgual']), ('type', 'boolean')), (('vars', ['conjuncao', 'disjuncao']), ('type', 'boolean'))]), 'program_code': ('compound', [('assign', 'somaFloat', ('binop', {'type': '+', 'left': 10, 'right': 2.3})), ('assign', 'subFloat', ('binop', {'type': '-', 'left': 23, 'right': 'somaFloat'})), ('assign', 'multFloat', ('binop', {'type': '*', 'left': 3, 'right': 7.6})), ('assign', 'diviFloat', ('binop', {'type': '/', 'left': 2.754, 'right': 3.5})), ('assign', 'igual', ('binop', {'type': '=', 'left': 12, 'right': 21})), ('assign', 'diferente', ('binop', {'type': '<>', 'left': 32, 'right': 2})), ('assign', 'menor', ('binop', {'type': '<', 'left': 90, 'right': 110})), ('assign', 'maior', ('binop', {'type': '>', 'left': 1, 'right': 0})), ('assign', 'menorIgual', ('binop', {'type': '<=', 'left': 0.0, 'right': 0.0})), ('assign', 'maiorIgual', ('binop', {'type': '>=', 'left': 12, 'right': 9})), ('assign', 'conjuncao', ('binop', {'type': 'and', 'left': 0, 'right': 1})), ('assign', 'disjuncao', ('binop', {'type': 'or', 'left': 0, 'right': 1}))])}})
+"""
+
 def main():
     ast_tree = ast.literal_eval(data10)
 
@@ -969,4 +958,4 @@ def main():
     read_code(functions_body, code_tuple[1], "outputsSemantics/output.txt")
 
 if __name__ == "__main__":
-    main()
+    main()'''

@@ -37,36 +37,16 @@ main:
 	PUSHL 1
 	SUP
 
-	JZ labelElse2
+	JZ labelElse1
 	// If case: {'case': ('binop', {'type': '>', 'left': 'num1', 'right': 'num3'}), 'do': ('assign', 'maior', 'num1'), 'else': ('assign', 'maior', 'num3')}
 	// binop >
 	PUSHL 0
 	PUSHL 2
 	SUP
 
-	JZ labelElse1
+	JZ labelElse2
 	// assign num1 to maior
 	PUSHL 0
-	STOREL 3
-
-	JUMP labelEndIF1
-	labelElse1:
-	// assign num3 to maior
-	PUSHL 2
-	STOREL 3
-
-	labelEndIF1:
-	JUMP labelEndIF2
-	labelElse2:
-	// If case: {'case': ('binop', {'type': '>', 'left': 'num2', 'right': 'num3'}), 'do': ('assign', 'maior', 'num2'), 'else': ('assign', 'maior', 'num3')}
-	// binop >
-	PUSHL 1
-	PUSHL 2
-	SUP
-
-	JZ labelElse2
-	// assign num2 to maior
-	PUSHL 1
 	STOREL 3
 
 	JUMP labelEndIF2
@@ -76,7 +56,27 @@ main:
 	STOREL 3
 
 	labelEndIF2:
+	JUMP labelEndIF1
+	labelElse1:
+	// If case: {'case': ('binop', {'type': '>', 'left': 'num2', 'right': 'num3'}), 'do': ('assign', 'maior', 'num2'), 'else': ('assign', 'maior', 'num3')}
+	// binop >
+	PUSHL 1
+	PUSHL 2
+	SUP
+
+	JZ labelElse3
+	// assign num2 to maior
+	PUSHL 1
+	STOREL 3
+
+	JUMP labelEndIF3
+	labelElse3:
+	// assign num3 to maior
+	PUSHL 2
+	STOREL 3
+
 	labelEndIF3:
+	labelEndIF1:
 	// writeln
 	PUSHS "O maior é: "
 	WRITES

@@ -414,64 +414,8 @@ def test_parser(data):
     result = parser.parse(lexer=lexer, debug=True)
     print(result)
 
-data0 = """
-program Maior3;
-begin
-    { ISTO É UM COMENTARIO}
-    writeln('Ola, Mundo!');
-    write('Ola, Mundo!');
-end.
-"""
 
-data1 = """
-program Maior3;
-var
-    num1, num2, num3, maior: Integer;
-    numeros: array[1..5] of integer;
-begin
-    read(num1);
-    writeln('Ola, Mundo!');
-    write('Ola, Mundo!');
-    num2 := length(numeros);
-end.
-"""
-
-data2 = """
-program Maior3;
-var
-    num1, num2, num3, maior: Integer;
-    bol1, bol2: Boolean;
-begin
-    write('Ola, Mundo!');
-end.
-"""
-
-data3="""
-program Maior3;
-var
-    num1, num3, maior: Integer;
-    num2 : Float;
-begin
-    writeln('Ola, Mundo!');
-    write('Ola, Mundo!');
-
-    num1 := 5;
-    num2 := 7.5;
-    num3 := 15;
-
-    if num1 > 0 then
-        writeln('num1 is positive');
-
-    if num1 > 0 then
-        writeln('num1 is positive')
-    else
-        writeln('num1 is negative');
-
-    for num2 := 1 to 5 do
-        write(num2);
-end.
-"""
-
+r'''
 data4="""
 program SumExample;
 
@@ -490,70 +434,6 @@ begin
 end.
 """
 
-data5="""
-program SumExample;
-const
-  Pi = 3.14159;
-function Add(a: integer; b: integer): integer;
-begin
-    writeln('num1 is positive');
-end;
-
-function Add(a: integer; b: integer): integer;
-begin
-    x := a + b;
-end;
-
-var
-    num1, num2, result: integer;
-begin
-    num1 := 5;
-    num2 := 3;
-    result := Add(num1, num2);
-    writeln('The sum is: ');
-end.
-"""
-
-data6 = """
-program OpTest;
-var
-    x, y, z: integer;
-    b: boolean;
-begin
-    x := 1 + 2 * 3;
-    y := (1 + 2) * 3;
-    z := x - y;
-end.
-"""
-
-data7 = """
-program MultiConstExample;
-
-const
-  Pi = 3.14159;
-  MaxValue = 100;
-  Greeting = 'Hello, Pascal!';
-  NewLine = #10;
-
-var
-  counter: integer;
-
-begin
-  writeln(Greeting);
-  writeln('Pi');
-  writeln('Max');
-
-  counter := 0;
-  while counter < MaxValue do
-  begin
-    writeln('Counter is: counter');
-    if counter = 5 then
-      break;
-    counter := counter + 1;
-  end;
-end.
-"""
-
 data8 = """
 program SumExample;
 
@@ -569,44 +449,6 @@ begin
     num2 := 3;
     result := Add(num1, num2);
     writeln(result);
-end.
-"""
-
-data9 = """
-program OrdCharExample;
-var
-  ch: string;
-  code: integer;
-begin
-  ch := 'A';
-  code := ord(ch); 
-  writeln('The ASCII code of ', ch, ' is ', code);
-end.
-"""
-
-data10 = """
-program TesteBinOp;
-
-var
-    soma, sub, mult, divi: integer;
-    somaFloat, subFloat, multFloat, diviFloat: float;
-    igual, diferente, menor, maior, menorIgual, maiorIgual: boolean;
-    conjuncao, disjuncao: boolean;
-begin
-    somaFloat := 10 + 2.3;
-    subFloat := 23 - somaFloat;
-    multFloat := 3 * 7.6;
-    diviFloat := 2.754 / 3.5;
-
-    igual := 12 = 21;
-    diferente := 32 <> 2;
-    menor := 90 < 110;
-    maior := 1 > 0;
-    menorIgual := 0.0 <= 0.0;
-    maiorIgual := 12 >= 9;
-
-    conjuncao := 0 and 1;
-    disjuncao := 0 or 1;
 end.
 """
 
@@ -629,15 +471,6 @@ end.
 """
 
 if __name__ == "__main__":
-    # test_parser(data0)
-    #test_parser(data1)
-    #test_parser(data2)
-    #test_parser(data3)
     #test_parser(data4)
-    #test_parser(data5)
-    #test_parser(data6)
-    #test_parser(data7)
     test_parser(data8)
-    #test_parser(data9)
-    #test_parser(data10)
-    #test_parser(data11)
+    #test_parser(data11)'''

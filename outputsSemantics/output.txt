@@ -1,6 +1,0 @@
-JUMP main
-
-
-main:
-	START
-
