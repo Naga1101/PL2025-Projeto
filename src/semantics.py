@@ -94,7 +94,6 @@ def handle_readln(var_name):
     lines.append("\tWRITELN\n")
     return lines
 
-
 def handle_read(var_name):
     global free_gp
     if tabela_simbolos_global[var_name].get("gp", "") == "":
@@ -562,7 +561,6 @@ def handle_pred(val):
     lines.append('\tSUB')
     return lines
 
-
 def handle_succ(val):
     lines = ['\t// succ']
     if isinstance(val, int):
@@ -600,7 +598,6 @@ def handle_length(val):
         lines += evaluate_expression(val)
         lines.append("\tSTRLEN")
     return lines
-
 
 def handle_function_call(input):
     func_name = input["name"].lower()

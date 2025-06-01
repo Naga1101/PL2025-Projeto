@@ -6,7 +6,47 @@
 ## Análise Léxica
 
 A primeira etapa deste projeto foi identificar todos os tokens existentes na linguagem Pascal, de forma a que, ao fornecermos um ficheiro e código, este seja analisado e convertido numa lista de tokens.
-Para tal foi necessário seguir uma organização na declaração estes padrões, pois quando um token pode ser apanhado por mais do que um padrão, o que se encontra declarado será o que vai definir o token. Devido a este problema, o padrão que apanha os identificadores ```r'\b[a-zA-Z_]{1}[a-zA-Z0-9_]*\b'``` teve de ser o último a ser definido pois este vai ao encontro de keywords pré existentes na linguagem Pascal.
+
+Para tal foi necessário seguir uma organização na declaração destes padrões, pois quando um token pode ser apanhado por mais do que um padrão, o que se encontra declarado primeiro será o que vai definir o token.
+ 
+Devido a este problema, o padrão que apanha os identificadores ```r'\b[a-zA-Z_]{1}[a-zA-Z0-9_]*\b'``` teve de ser o último a ser definido pois este vai ao encontro de keywords pré existentes na linguagem Pascal.
+
+Exemplo de possível problema:
+
+Input:
+```
+program funcaoTeste
+```
+
+Parser:
+```
+tokens = (
+  PROGRAM,
+  ID
+)
+
+## Keywords
+
+def t_PROGRAM(t):
+    r'\bprogram\b'
+    return t
+
+## Identifiers
+
+def t_ID(t):
+    r'\b[a-zA-Z_]{1}[a-zA-Z0-9_]*\b'
+    return t
+```
+
+Visto que o padrão do *program* se encontra definido antes do *id* a palavra 'program' será corretamente identificada, evitando assim o conflito que existiria com uma má definição do lexer.
+
+Output:
+```
+Tokens:
+PROGRAM(program) at line 1, position 5
+ID(funcaoTeste) at line 1, position 13
+```
+
 O lexer que obtivemos encontra-se localizado no ficheio _lexer.py_.
 
 ## Análise Sintática
@@ -14,6 +54,7 @@ O lexer que obtivemos encontra-se localizado no ficheio _lexer.py_.
 Após a definição dos tokens, foi necessário definir as regras que a nossa gramática iria seguir. 
 
 ### Estrutura definida
+
 Começamos por definir uma estrutura principal com os seguintes **tokens não terminais = {const_decls; func_decls; var_decl; begin_progr}** que consistem nos blocos existentes na liguagem pascal. Cada uma destas produções contém uma lista de tokens não terminais que definem a parte de código correspondente, por exemplo: ```const_decls → CONST const_decl_list```, que irá identificar todas as constantes definidas pelo código. 
 
 ### Statements definidos
@@ -164,13 +205,22 @@ O parser que obtivemos encontra-se localizado no ficheio _parser.py_.
 
 ## Análise Semântica
 
+Na análise semântica começamos por definir duas tabelas:
+
+- Tabela de Símbolos Global: Esta tabela serve para a função ter sempre conhecimeto das variáveis declardas, do seu tipo(int, string, etc) do seu poiter global na stack e do seu tipo na função pascal(constante, variável ou função);
+- Tabela de Fuções: Esta tabela guarda o nome da função, o tipo a que dá return (int, string, etc) e os parâmetros que recebe (lista de parâmteros com o nome deles, o frame point do parâmetro e o tipo do parâmetro).
+
+Com estas duas tabelas podemos referenciar qulquer tipo de variável ou chamar qualquer tipo de função que iremos ter sempre o conhecimento do seu tipo, de onde se encontra o seu valor na stack e conseguimos evitar a atribuição de valores com o tipo errado a uma variável. Também nos permite chamar corretamente uma função, com o número de parâmetros corretos e a devolver o valor esperado. 
+
 A análise semântica foi realizada no ficheio _semantics.py_.
 
 ## Geração de Código
 
-Nesta etapa optamos por converter o código Pascal em código da máquina virtual seguindo uma tradução dirigida pela sintaxe
+Nesta etapa optamos por converter o código Passcal em código da máquina virtual seguindo uma tradução dirigida pela sintaxe.
 
-Após ter o código verificado pela análise semântica, é realizada a conversão do mesmo para a linguagem VM. Tentámos converter qualquer tipo de comando que encontrássemos mas acabamos por não definir *loops for* nem *arrays* em código da VM. Apesar destes serem reconhecidos pelo parser e lexer não é realizado nada com estes comandos na conversão semnântica. De resto qualquer coisa escrita em código pascal será convertida em código da VM **(loops while, operações lógicas, operações aritméticas, operações relacionais, operações if else, declaração de variáveis e definição de funções e chamadas de funções)**. 
+Após ter o código verificado pela análise semântica, é realizada a conversão do mesmo para a linguagem VM, tentámos conseguir converter qualquer tipo de comando que encontrássemos mas acabamos por não definir *loops for* nem *arrays* em código da VM. 
+
+Apesar destes serem reconhecidos pelo parser e lexer não é realizado nada com estes comandos na conversão semântica. De resto qualquer coisa escrita em código pascal será convertida em código da VM **(loops while, operações lógicas, operações aritméticas, operações relacionais, operações if else, declaração de variáveis e definição de funções e chamadas de funções)**. 
 
 Também optámos por definir algumas funções pré-definidas em pascal tal como os dois tipos de *writes* e *reads* e a função *ord* e *length* ()
 
