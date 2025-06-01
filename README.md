@@ -5,7 +5,7 @@
 
 ## Análise Léxica
 
-A primeira etapa deste projeto foi identificar todos os tokens existentes na linguagem Pascal, de forma a que, ao fornecermos um ficheiro e código, este seja analisado e convertido numa lista de tokens.
+A primeira etapa deste projeto foi identificar todos os tokens existentes na linguagem Pascal, de forma a que, ao fornecermos um ficheiro de código, este seja analisado e convertido numa lista de tokens.
 
 Para tal foi necessário seguir uma organização na declaração destes padrões, pois quando um token pode ser apanhado por mais do que um padrão, o que se encontra declarado primeiro será o que vai definir o token.
  
@@ -207,10 +207,10 @@ O parser que obtivemos encontra-se localizado no ficheio _parser.py_.
 
 Na análise semântica começamos por definir duas tabelas:
 
-- Tabela de Símbolos Global: Esta tabela serve para a função ter sempre conhecimento das variáveis declaradas, do seu tipo(int, string, etc), do seu pointer global na stack e do seu tipo na função pascal(constante, variável ou função);
+- Tabela de Símbolos Global: Esta tabela serve para o compilador ter sempre conhecimento das variáveis declaradas, do seu tipo(int, string, etc), do seu pointer global na stack e do seu tipo na função pascal(constante, variável ou função);
 - Tabela de Funções: Esta tabela guarda o nome da função, o tipo a que esta dá return (int, string, etc) e os parâmetros que recebe (lista de parâmetros com o seu nome, frame point e o tipo).
 
-Com estas duas tabelas podemos referenciar qulquer tipo de variável ou chamar qualquer tipo de função que teremos sempre o conhecimento do seu tipo, de onde se encontra o seu valor na stack e conseguimos evitar a atribuição de valores com o tipo errado a uma variável. Também nos permite chamar corretamente uma função, com o número de parâmetros corretos e a devolver o valor esperado. 
+Com estas duas tabelas podemos referenciar qualquer tipo de variável ou chamar qualquer tipo de função que teremos sempre o conhecimento do seu tipo, de onde se encontra o seu valor na stack e conseguimos evitar a atribuição de valores com o tipo errado a uma variável. Também nos permite chamar corretamente uma função, com o número de parâmetros corretos e a devolver o valor esperado. 
 
 A análise semântica foi realizada no ficheio _semantics.py_.
 
@@ -218,11 +218,14 @@ A análise semântica foi realizada no ficheio _semantics.py_.
 
 Nesta etapa optamos por converter o código Passcal em código da máquina virtual seguindo uma tradução dirigida pela sintaxe.
 
-Após ter o código verificado pela análise semântica, é realizada a conversão do mesmo para a linguagem VM, tentámos converter qualquer tipo de comando que encontrássemos mas acabamos por não definir *loops for* nem *arrays* em código da VM. 
+Após ter o código verificado pela análise semântica, é realizada a conversão do mesmo para a linguagem VM, tentámos converter qualquer tipo de comando que encontrássemos mas acabámos por não definir *loops for* nem *arrays* em código da VM. 
 
 Apesar destes serem reconhecidos pelo parser e lexer não é realizado nada com estes comandos na conversão semântica. De resto qualquer coisa escrita em código pascal será convertida em código da VM **(loops while, operações lógicas, operações aritméticas, operações relacionais, operações if else, declaração de variáveis e definição de funções e chamadas de funções)**. 
 
-Também optámos por definir algumas funções pré-definidas em pascal tal como os dois tipos de *writes* e *reads* e a função *ord* e *length* ()
+Também optámos por implementar algumas funções pré-definidas do Pascal, como os dois tipos de write e read, e ainda as funções ord, length, succ e pred.
+A função ord devolve o código ASCII de um caractere.
+A length devolve o tamanho de uma string, já que os arrays ainda não foram suportados na geração de código.
+As funções succ e pred devolvem o valor seguinte e anterior de um dado valor, respetivamente.
 
 Exemplo de um teste (**teste 14***):
 
@@ -350,4 +353,5 @@ Os ficheiros teste encontram-se na pasta _testes_ e os outputs encontram-se divi
 
 Todos os testes produzem 3 outputs, a conversão em tokens, a conversão na *tree ast* realizada pelo ply.yacc e por fim  o output esperado para colocar na VM disponibilizada pelos docentes. 
 
-**Obs:** Existem casos em que o código gerado não é o correto pois, tal como mencionado anteriormente, não foram implementadas todas as conversões dos comandos para código máquina.
+## Limitações
+Como mencionado anteriormente, na parte de geração de código acabámos por não desenvolver suporte para arrays, procedures e o ciclo for no código da VM. Apesar de estes elementos serem reconhecidos pelo léxico e pelo parser, a sua utilização não irá resultar em qualquer ação durante a geração de código. São funcionalidades que gostaríamos de ter implementado no futuro.
