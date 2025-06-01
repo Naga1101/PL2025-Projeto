@@ -48,7 +48,7 @@ PROGRAM(program) at line 1, position 5
 ID(funcaoTeste) at line 1, position 13
 ```
 
-O lexer que obtivemos encontra-se localizado no ficheio _lexer.py_.
+O lexer que obtivemos encontra-se localizado no ficheiro _lexer.py_.
 
 ## Análise Sintática
 
@@ -202,7 +202,7 @@ P26: expression_list → expression
                      | expression_list ',' expression
 ```
 
-O parser que obtivemos encontra-se localizado no ficheio _parser.py_.
+O parser que obtivemos encontra-se localizado no ficheiro _parser.py_.
 
 ## Análise Semântica
 
@@ -213,7 +213,7 @@ Na análise semântica começamos por definir duas tabelas:
 
 Com estas duas tabelas podemos referenciar qualquer tipo de variável ou chamar qualquer tipo de função que teremos sempre o conhecimento do seu tipo, de onde se encontra o seu valor na stack e conseguimos evitar a atribuição de valores com o tipo errado a uma variável. Também nos permite chamar corretamente uma função, com o número de parâmetros corretos e a devolver o valor esperado. 
 
-A análise semântica foi realizada no ficheio _semantics.py_.
+A análise semântica foi realizada no ficheiro _semantics.py_.
 
 ## Geração de Código
 
@@ -344,7 +344,7 @@ main:
 	STOP
 ```
 
-Tal como a análise semântica, a geração de código foi realizada no ficheio _semantics.py_.
+Tal como a análise semântica, a geração de código foi realizada no ficheiro _semantics.py_.
 
 ## Correr testes
 
