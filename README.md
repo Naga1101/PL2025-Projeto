@@ -219,9 +219,9 @@ A análise semântica foi realizada no ficheiro _semantics.py_.
 
 Nesta etapa optamos por converter o código Passcal em código da máquina virtual seguindo uma tradução dirigida pela sintaxe.
 
-Após ter o código verificado pela análise semântica, é realizada a conversão do mesmo para a linguagem VM, tentámos converter qualquer tipo de comando que encontrássemos mas acabámos por não definir *loops for* nem *arrays* em código da VM. 
+Após ter o código verificado pela análise semântica, é realizada a conversão do mesmo para a linguagem VM, tentámos converter qualquer tipo de comando que encontrássemos mas acabámos por não definir *arrays* nem *procedures* em código da VM. 
 
-Apesar destes serem reconhecidos pelo parser e lexer não é realizado nada com estes comandos na conversão semântica. De resto qualquer coisa escrita em código pascal será convertida em código da VM **(loops while, operações lógicas, operações aritméticas, operações relacionais, operações if else, declaração de variáveis e definição de funções e chamadas de funções)**. 
+Apesar destes serem reconhecidos pelo parser e lexer não é realizado nada com estes comandos na conversão semântica. De resto qualquer coisa escrita em código pascal será convertida em código da VM **(loops while, loops for, operações lógicas, operações aritméticas, operações relacionais, operações if else, declaração de variáveis e definição de funções e chamadas de funções)**. 
 
 Também optámos por implementar algumas funções pré-definidas do Pascal, como os dois tipos de write e read, e ainda as funções ord, length, succ e pred.
 A função ord devolve o código ASCII de um caractere.
@@ -355,4 +355,4 @@ Os ficheiros teste encontram-se na pasta _testes_ e os outputs encontram-se divi
 Todos os testes produzem 3 outputs, a conversão em tokens, a conversão na *tree ast* realizada pelo ply.yacc e por fim  o output esperado para colocar na VM disponibilizada pelos docentes. 
 
 ## Limitações
-Como mencionado anteriormente, na parte de geração de código acabámos por não desenvolver suporte para arrays, procedures e o ciclo for no código da VM. Apesar de estes elementos serem reconhecidos pelo léxico e pelo parser, a sua utilização não irá resultar em qualquer ação durante a geração de código. São funcionalidades que gostaríamos de ter implementado no futuro.
+Como mencionado anteriormente, na parte de geração de código acabámos por não desenvolver suporte para arrays e para procedures no código da VM. Apesar de estes elementos serem reconhecidos pelo léxico e pelo parser, a sua utilização não irá resultar em qualquer ação durante a geração de código. São funcionalidades que gostaríamos de ter implementado no futuro.

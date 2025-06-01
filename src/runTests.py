@@ -53,9 +53,9 @@ def main():
                     print(f" {i+1}: O teste {i+1} está selecionado;")
                 else:
                     print(f" {i+1}: O teste {i+1} não está selecionado;")
-            print(" 30: Selecionar todos os testes;")
-            print(" 31: Desselecionar todos os testes;")
-            print(" 32: Correr os testes selecionados.")
+            print(" 21: Selecionar todos os testes;")
+            print(" 22: Desselecionar todos os testes;")
+            print(" 23: Correr os testes selecionados.")
             option = input("> ")
 
             try:
@@ -64,13 +64,13 @@ def main():
                 if 0 <= option < 17:
                     option -= 1
                     runTests[option] = not runTests[option] 
-                elif option == 30:
+                elif option == 21:
                     for i in range(16):
                         runTests[i] = True
-                elif option == 31:
+                elif option == 22:
                     for i in range(16):
                         runTests[i] = False
-                elif option == 32:
+                elif option == 23:
                     if any(runTests):
                         startTests = True
                     else:
